@@ -1,0 +1,16 @@
+<?php foreach ($this->flashMessages(true) as $namespace => $messages) : ?>
+    <?php if (count($messages)) : ?>
+        <?php foreach ($messages as $message) : ?>
+            <div class="alert alert-<?php echo $namespace ?> user-message">
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <?php if (is_array($message)) {
+                    $field = key($message);
+                    echo $field . ':' . print_r($message[$field], true);
+                } else {
+                    echo $message;
+                }
+                ?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+<?php endforeach; ?>

@@ -1,0 +1,355 @@
+<?php
+namespace PageBuilder\View\Helper;
+
+use PageBuilder\Entity\Theme;
+use Application\BaseWidget;
+use PageBuilder\Entity\Page;
+use PageBuilder\View\TagAttributes;
+use Application\WidgetFactory;
+use Gedmo\Sluggable\Util\Urlizer;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Helper\AbstractHelper;
+use Zend\View\Helper\Navigation;
+
+
+/**
+ * Class PageBuilder
+ * Gets the current active Page and retrieves the page details
+ *
+ * @package PageBuilder\View\Helper
+ */
+class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
+{
+    const MAIN_CONTENT   = 'main';
+    const FLASH_MESSAGES = 'flash';
+
+    const LAYOUT_MENU         = 'menu';
+    const LAYOUT_USER_DEFINED = 'component';
+    const LAYOUT_WIDGET       = 'widget';
+    const LAYOUT_BREADCRUMB   = 'breadcrumb';
+
+    private $_activeTheme;
+    private $_mainContent;
+    private $_menuTree;
+    private $_layout = array();
+    /** @var \Zend\View\HelperPluginManager */
+    protected $_pluginManager;
+
+    protected $_serviceManager;
+
+    public static $sections
+        = array(
+            'top'    => 'Top Bar',
+            'header' => 'Header',
+            'menu'   => 'Menu',
+            'body'   => 'Body',
+            'footer' => 'Footer'
+        );
+
+    /**
+     * Prepare page data and widgets
+     * Get the active site theme and find a layout for the the current page that matches the site theme
+     * If not layout is found, use the template assigned to the page if set
+     *
+     * @param Page       $page
+     * @param Navigation $menuTree
+     * @param Theme      $activeTheme
+     *
+     * @return $this
+     */
+    public function preparePageItems(Page $page, Navigation $menuTree, Theme $activeTheme)
+    {
+        $this->_menuTree = $menuTree;
+        $siteTheme       = $activeTheme->getSlug();
+        $layout          = null;
+        foreach ($page->getPageThemes() as $theme) {
+            if ($theme->getIsActive() and $theme->getThemeId()->getSlug() == $siteTheme) {
+                $this->_activeTheme = $theme;
+                $layout             = $theme->getLayout();
+                break;
+            }
+        }
+
+        //try to get the layout from the page template
+        if (!$layout and $template = $page->getTemplates()) {
+            //Use customized page template if set, otherwise use global template
+            $layout = $template->getLayout() ? : array();
+        }
+
+        //try to ge the layout from the parent if it exists
+        if (!$layout and $parent = $page->getParent()) {
+            if ($temp = $parent->getTemplates()) {
+                $layout = $temp->getLayout();
+            }
+        }
+
+        foreach ($layout as &$template) {
+            $sectionAttr               = isset($template['tagAttributes']) ? $template['tagAttributes'] : array();
+            $template['tagAttributes'] = new TagAttributes($sectionAttr);
+            if (isset($template['items'])) {
+                foreach ($template['items'] as &$row) {
+                    $rowAttr              = isset($row['tagAttributes']) ? $row['tagAttributes'] : array();
+                    $row['tagAttributes'] = new TagAttributes($rowAttr);
+                    if (isset($row['rowItems'])) {
+                        foreach ($row['rowItems'] as &$col) {
+                            if (isset($col['item'])) {
+                                foreach ($col['item'] as $index => $item) {
+                                    list($itemType, $itemId) = explode('-', $item['name']);
+                                    $attr                  = isset($item['tagAttributes']) ? $item['tagAttributes']
+                                        : array();
+                                    $item['tagAttributes'] = new TagAttributes($attr);
+                                    $col['item'][$index]   = $this->getItem($itemType, $itemId, $item['tagAttributes']);
+                                }
+                            } else {
+                                $col['item'] = array();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->_layout = $layout;
+
+        return $this;
+    }
+
+    public function __invoke($content = '')
+    {
+        $html               = array();
+        $this->_mainContent = $content;
+
+        if ($layout = $this->getLayout()) {
+
+            foreach ($layout as $section => $template) {
+                $sectionWrapper = $template['tagAttributes']->getWrapper();
+                $template['tagAttributes']->addClass($section . '-section');
+
+                if ($sectionWrapper) {
+                    $html [] = '<' . $sectionWrapper . $template['tagAttributes']->formatClass()
+                        . $template['tagAttributes']->formatId() . $template['tagAttributes']->formatAttr();
+                    switch ($section) {
+                        case 'header':
+                            $microData = $this->getView()->microData()->scopeAndProperty('WebPage', 'WPHeader');
+                            break;
+                        case 'footer':
+                            $microData = $this->getView()->microData()->scopeAndProperty('WebPage', 'WPFooter');
+                            break;
+                        default:
+                            $microData = '';
+                            break;
+                    }
+
+                    $html [] = $microData . '>';
+                }
+
+                list($top, $bottom) = $this->getTopBottomContainers($template['tagAttributes']);
+                $html [] = $top;
+
+                if (isset($template['items'])) {
+
+                    foreach ($template['items'] as $row) {
+                        if (isset($row['rowItems'])) {
+                            /** @var $attr \PageBuilder\View\TagAttributes */
+                            $attr = $row['tagAttributes'];
+
+                            list($rowTop, $rowBottom) = $this->getTopBottomContainers($attr);
+
+                            if ($rowWrapper = $attr->getWrapper()) {
+                                $html [] = '<' . $rowWrapper . $attr->formatClass() . '>';
+                            }
+
+                            $html [] = $rowTop;
+
+                            foreach ($row['rowItems'] as $col) {
+
+                                if (count($row['rowItems']) > 1) {
+                                    $html [] = '<div class="' . $col['class'] . '">'; //bootstrap column
+                                }
+
+                                foreach ($col['item'] as $item) {
+                                    if ($wrapper = $item->attributes->getWrapper()) {
+                                        $html[] = sprintf(
+                                            '<%s %s %s %s>',
+                                            $wrapper,
+                                            $item->attributes->formatClass(),
+                                            $item->attributes->formatId(),
+                                            $item->attributes->formatAttr()
+                                        );
+                                    }
+
+                                    $html[] = str_replace(
+                                        array(
+                                             '{{' . self::MAIN_CONTENT . '}}'
+                                        ),
+                                        array(
+                                             $content
+                                        ),
+                                        is_string($item->data) ? $item->data : $item->data->render()
+                                    );
+
+                                    if ($wrapper) {
+                                        $html[] = '</' . $item->attributes->getWrapper() . '>';
+                                    }
+                                }
+
+                                if (count($row['rowItems']) > 1) {
+                                    $html [] = '</div>';
+                                }
+                            }
+
+
+                            $html [] = $rowBottom;
+
+                            if ($rowWrapper) {
+                                $html [] = '</' . $rowWrapper . '>';
+                            }
+                        }
+                    }
+
+                    $html [] = $bottom;
+
+                    if ($sectionWrapper) {
+                        $html [] = '</' . $sectionWrapper . '>';
+                    }
+                }
+            }
+        } else {
+            $html[] = $this->_mainContent;
+        }
+
+        return implode('', $html);
+    }
+
+    /**
+     * @param               $itemType
+     * @param               $id
+     * @param TagAttributes $attr
+     *
+     * @return object
+     * @throws \RuntimeException
+     */
+    protected function getItem($itemType, $id, TagAttributes $attr)
+    {
+        $data = '';
+
+        switch ($itemType) {
+
+            case self::LAYOUT_WIDGET:
+                try {
+                    /** @var $data \Application\BaseWidget */
+                    $widgetName = $id . WidgetFactory::WIDGET_SUFFIX;
+                    $options    = $attr->getOptions();
+
+                    if (isset($options['shared']) and !$options['shared']) {
+                        $this->getServiceManager()->setShared($widgetName, false);
+                    }
+                    $data = $this->getServiceManager()->get($widgetName);
+                    $attr->addClass($data->getId());
+                    $data->setAttributes($attr);
+                } catch (ServiceNotFoundException $e) {
+                    $this->getServiceManager()->get('logger')->logException($e);
+                    $data = '';
+                }
+
+                break;
+            case self::LAYOUT_USER_DEFINED:
+                if ($component = $this->getServiceManager()->get('component_service')->getContentById($id)) {
+                    $data     = $component['content'];
+                    $comId    = "data-id='{$itemType}-{$id}'";
+                    $cssClass = trim("{$itemType} {$component['cssClass']}");
+                    $attr->addClass($cssClass)
+                        ->addClass($component['cssId'])
+                        ->addAttr($comId)
+                        ->addAttr("id='{$component['cssId']}'");
+
+                    $data = str_replace(
+                        array(
+                             '[year]'
+                        ),
+                        array(
+                             date('Y')
+                        ),
+                        $data
+                    );
+
+                    $data = $this->_pluginManager->get('image_helper')->addCdnDomain($data);
+                }
+
+                break;
+            default:
+                throw new \RuntimeException('Layout itemType ' . $itemType . ' not found');
+        }
+
+        return (object)array(
+            'data'       => $data,
+            'attributes' => $attr,
+        );
+    }
+
+    public static function getSections()
+    {
+        return self::$sections;
+    }
+
+    public function getLayout()
+    {
+        return $this->_layout;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return $this
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->_pluginManager = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->_pluginManager;
+    }
+
+    protected function getTopBottomContainers(TagAttributes $attr)
+    {
+        $top = $bottom = '';
+        if ($containerClass = $attr->getContainer()) {
+            $top    = '<div class="' . $containerClass . '">';
+            $bottom = '</div>';
+
+            if ($container2 = $attr->getContainer2()) {
+                $top .= '<div class="' . $container2 . '">';
+                $bottom .= '</div>';
+            }
+        }
+
+        return array($top, $bottom);
+    }
+
+    public function setServiceManager($serviceManager)
+    {
+        $this->_serviceManager = $serviceManager;
+
+        return $this;
+    }
+
+    public function getServiceManager()
+    {
+        if (!$this->_serviceManager) {
+            $this->_serviceManager = $this->_pluginManager->getServiceLocator();
+        }
+
+        return $this->_serviceManager;
+    }
+}

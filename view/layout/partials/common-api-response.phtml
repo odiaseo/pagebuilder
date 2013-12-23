@@ -1,0 +1,6 @@
+<?php
+if (count($this->vars())) {
+    echo $this->json($this->vars());
+} else {
+    $this->json('No results found');
+}

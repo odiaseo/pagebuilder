@@ -1,0 +1,92 @@
+
+/*~Smartphones (portrait and landscape)~*/
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {    
+    .block, .block-fluid{ overflow: hidden; overflow-x: scroll; }
+    .errorContainer{width: 319px; margin-top: 50px;}
+        .errorContainer h1{font-size: 110px;}
+        .errorContainer h2{font-size: 16px;}
+        
+    /* timeline */
+    .timeline{background-position: 10px 10px;}
+    .timeline .event{padding-left: 50px;}
+    .timeline .event .icon{left: 2px;}
+    .timeline .event .date{display: none;}    
+    .timeline .event .body .text.video{width: 140px !important; height: 80px !important;}
+    .timeline .event .body .text.map{width: 140px !important; height: 100px !important;}                
+    /* eof timeline */
+    
+    .popup{position: static;}
+    .popup.active .body{right: 10px; top: 45px;}
+        .popup.active .body .arrow{display: none;}
+        
+    .toolbar-fluid .information .item .rates .title{font-size: 14px;}            
+}
+
+/*~Smartphones (landscape)~*/
+@media only screen and (min-width : 321px) {
+    
+}
+
+/*~Smartphones (portrait)~*/
+@media only screen and (max-width : 320px) {
+    .errorContainer{width: 319px; margin-top: 50px;}
+        .errorContainer h1{font-size: 110px;}
+        .errorContainer h2{font-size: 16px;}    
+    
+    /* timeline */
+    .timeline{background-position: 10px 10px;}
+    .timeline .event{padding-left: 50px;}
+    .timeline .event .icon{left: 2px;}
+    .timeline .event .date{display: none;}    
+    .timeline .event .body .text.video{width: 140px !important; height: 80px !important;}
+    .timeline .event .body .text.map{width: 140px !important; height: 100px !important;}                
+    /* eof timeline */
+    
+    .popup{position: static;}
+    .popup.active .body{right: 10px; top: 45px;}
+        .popup.active .body .arrow{display: none;}
+        
+    .toolbar-fluid .information .item .rates .title{font-size: 14px;}
+}
+
+/*~Bootstrap fix~*/
+@media only screen and (max-width: 767px) {
+    body{padding: 0px;}
+    .block, .block-fluid{ overflow: hidden; overflow-x: auto; }
+    .video{padding-top: 0;}    
+        .errorContainer{width: 319px; margin-top: 50px;}
+        .errorContainer h1{font-size: 110px;}
+        .errorContainer h2{font-size: 16px;}    
+     
+    /* timeline */
+    .timeline .event .body .text.video{width: 200px; height: 113px;}
+    .timeline .event .body .text.map{width: 200px; height: 150px;}            
+    /* eof timeline */
+    .toolbar .right{float: left; clear: both; margin-top: 5px; text-align: left !important; width: 100%;}
+    .toolbar .left{width: 100%;}
+}
+@media only screen and (min-width: 768px) {
+    /* timeline */
+    .timeline .event .body .text.video{width: 300px; height: 169px;}
+    .timeline .event .body .text.map{width: 300px; height: 200px;}    
+    /* eof timeline */
+}
+/*~iPads (portrait and landscape)~*/
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    
+}
+
+/*~ ~*/
+@media only screen and (max-width : 1025px) {
+    .fc-header-right{display: none;}
+    .footer .left{display: none;}
+}
+
+/*~Desktops and laptops~*/
+@media only screen and (min-width : 1025px) {
+    /* timeline */
+    .timeline .event .body .text.video{width: 400px; height: 225px;}
+    .timeline .event .body .text.map{width: 400px; height: 300px;}
+    /* eof timeline */
+}
+

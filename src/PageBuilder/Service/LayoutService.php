@@ -1,0 +1,210 @@
+<?php
+namespace PageBuilder\Service;
+
+use PageBuilder\Entity\Join\PageTheme;
+use PageBuilder\View\Helper\PageBuilder;
+use PageBuilder\WidgetFactory;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+
+class LayoutService implements ServiceManagerAwareInterface
+{
+    /** @var  \Zend\ServiceManager\ServiceManager */
+    protected $_serviceManager;
+
+    public function setServiceManager(ServiceManager $serviceManager)
+    {
+        $this->_serviceManager = $serviceManager;
+    }
+
+    public function updateTemplateSections($templateId, $sections)
+    {
+
+        $error = false;
+
+        /** @var $templateModel \PageBuilder\Model\TemplateModel */
+        $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+
+        try {
+            $templateModel->updateTemplateSections($templateId, $sections);
+            $message = sprintf('Template (#%d) sections updated successfully', $templateId);
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            $error   = true;
+        }
+
+        return array(
+            'message' => $message,
+            'error'   => $error
+        );
+    }
+
+    public function getActiveTemplateSections($templateId)
+    {
+        $sections = $selected = array();
+
+
+        /** @var $templateModel \PageBuilder\Model\TemplateModel */
+        $templateModel    = $this->_serviceManager->get('pagebuilder\model\template');
+        $templateSections = $templateModel->getActiveSections($templateId);
+
+        $sectionModel = $this->_serviceManager->get('pagebuilder\model\section');
+        $sectionList  = $sectionModel->findAll();
+
+        /** @var \PageBuilder\Entity\Join\TemplateSection $templateSection */
+        foreach ($templateSections as $templateSection) {
+            $id = $templateSection->getSectionId()->getId();
+            $sections[$id]
+                        = $templateSection->getSectionId()->getTitle() . ' {' . $templateSection->getSortOrder() . ')';
+            $selected[] = $id;
+        }
+
+        /** @var \PageBuilder\Entity\Section $section */
+        foreach ($sectionList as $section) {
+            $id = $section->getId();
+            if (!isset($sections[$id])) {
+                $sections[$id] = $section->getTitle();
+            }
+        }
+
+        return array(
+            'templateSections' => $selected,
+            'sections'         => (object)$sections
+        );
+    }
+
+    public function getPageLayout($pageId)
+    {
+        $sections = $templateSections = array();
+        $error    = '';
+
+        /** @var $pageModel \PageBuilder\Model\PageModel */
+        $pageModel = $this->_serviceManager->get('pagebuilder\model\page');
+
+        /** @var $themeModel \PageBuilder\Model\BaseModel */
+        $themeModel = $this->_serviceManager->get('pagebuilder\model\theme');
+
+
+        /** @var $templateModel \PageBuilder\Model\BaseModel */
+        $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+
+
+        /** @var $page \PageBuilder\Entity\Page */
+        $page = $pageModel->getRepository()->find($pageId);
+
+        $details = array(
+            'id'          => $page->getId(),
+            'title'       => $page->getTitle(),
+            'description' => $page->getDescription(),
+            'template'    => $page->getTemplate() ? $page->getTemplate()->getTitle() : '',
+            'layout'      => '',
+            'pageTheme'   => '',
+            'themeId'     => '',
+            'layoutType'  => 'Custom Layout',
+            'parent'      => $page->getParent() ? $page->getParent()->getTitle() : ''
+
+        );
+
+        /** @var $pageTheme \PageBuilder\Entity\Join\PageTheme */
+        foreach ($page->getPageThemes() as $pageTheme) {
+
+            if ($pageTheme->getIsActive()) {
+                $themeId            = $pageTheme->getThemeId()->getId();
+                $details['themeId'] = $themeId;
+
+                $details['layout']    = $pageTheme->getLayout();
+                $details['pageTheme'] = $pageTheme->getId();
+
+                /** @var $temp \PageBuilder\Entity\Template */
+                if ($temp = $page->getTemplate()) {
+                    $sections = $temp->getTemplateSections()->toArray();
+                } elseif ($temp = $page->getParent()->getTemplate()) {
+                    $sections = $temp->getTemplateSections()->toArray();
+                }
+
+                break;
+            }
+        }
+
+        /** @var $section \PageBuilder\Entity\Join\TemplateSection */
+        foreach ($sections as $section) {
+            $slug                    = $section->getSectionId()->getSlug();
+            $templateSections[$slug] = array(
+                'title' => $section->getSectionId()->getTitle(),
+                'class' => $section->getIsActive() ? '' : 'in-active'
+            );
+        }
+
+
+        if ($themeData = $themeModel->getRepository()->findAll()) {
+            /** @var $theme \PageBuilder\Entity\Theme */
+            foreach ($themeData as $theme) {
+                $details['themes'][$theme->getId()] = $theme->toArray();
+            }
+        } else {
+            $details['themes'] = array();
+        }
+
+        $templates  = $templateModel->listItemsByTitle();
+        $config     = $this->_serviceManager->get('config');
+        $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
+
+        $widgetList = WidgetFactory::getWidgetList($config['widgets']['directory_location']);
+        $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
+
+        $return = array(
+            'error'     => $error,
+            'page'      => $details,
+            'editUrl'   => $urlHelper('builder', array('id' => $pageId)),
+            'sections'  => $templateSections,
+            'title'     => 'Layout Manager - ' . $page->getTitle(),
+            'widgets'   => array(
+                'title' => 'Widgets',
+                'items' => WidgetFactory::$registry,
+                'total' => count(WidgetFactory::$registry),
+                'list'  => $widgetList,
+                'id'    => PageBuilder::LAYOUT_WIDGET
+            ),
+            'assets'    => array(
+                PageBuilder::LAYOUT_USER_DEFINED => array(
+                    'title' => 'User Defined',
+                    'items' => $components
+                )
+            ),
+            'templates' => array(
+                'title' => 'Templates',
+                'items' => $templates
+            )
+        );
+
+        return $return;
+    }
+
+    public function updatePageLayout($pageId, $themeId, $layout)
+    {
+        try {
+            /** @var $service \PageBuilder\Model\PageModel */
+            $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
+
+            /** @var \PageBuilder\Entity\Join\PageTheme $pageTheme */
+            if (!$pageTheme = $pageThemeModel->find($themeId)) {
+                $pageTheme = new PageTheme();
+                $pageTheme->setPageId($pageId);
+                $pageTheme->setThemeId($themeId);
+            }
+            $pageTheme->setLayout($layout);
+
+            $pageThemeModel->save($pageTheme);
+
+            return array(
+                'error'   => false,
+                'message' => sprintf('Page #%d updated successfully', $pageId)
+            );
+        } catch (\Exception $exception) {
+            return array(
+                'error'   => true,
+                'message' => $exception->getMessage()
+            );
+        }
+    }
+}

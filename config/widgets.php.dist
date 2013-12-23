@@ -1,0 +1,8 @@
+<?php
+    return array(
+
+        'widgets'         => array(
+            'directory_location' => __DIR__ . '/../src/Application/Widget'
+        ),
+
+    );
