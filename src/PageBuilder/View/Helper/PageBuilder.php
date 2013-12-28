@@ -2,10 +2,11 @@
 namespace PageBuilder\View\Helper;
 
 use PageBuilder\Entity\Theme;
-use Application\BaseWidget;
+use PageBuilder\BaseWidget;
 use PageBuilder\Entity\Page;
 use PageBuilder\View\TagAttributes;
-use Application\WidgetFactory;
+use PageBuilder\WidgetData;
+use PageBuilder\WidgetFactory;
 use Gedmo\Sluggable\Util\Urlizer;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -36,7 +37,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
     private $_layout = array();
     /** @var \Zend\View\HelperPluginManager */
     protected $_pluginManager;
-
+    /** @var \Zend\ServiceManager\ServiceManager */
     protected $_serviceManager;
 
     public static $sections
@@ -64,6 +65,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
         $this->_menuTree = $menuTree;
         $siteTheme       = $activeTheme->getSlug();
         $layout          = null;
+        /** @var $theme \PageBuilder\Entity\Join\PageTheme */
         foreach ($page->getPageThemes() as $theme) {
             if ($theme->getIsActive() and $theme->getThemeId()->getSlug() == $siteTheme) {
                 $this->_activeTheme = $theme;
@@ -73,14 +75,17 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
         }
 
         //try to get the layout from the page template
-        if (!$layout and $template = $page->getTemplates()) {
+        /** @var $template \PageBuilder\Entity\Template */
+
+        /** @var $page \PageBuilder\Entity\Page */
+        if (!$layout and $template = $page->getTemplate()) {
             //Use customized page template if set, otherwise use global template
             $layout = $template->getLayout() ? : array();
         }
 
         //try to ge the layout from the parent if it exists
         if (!$layout and $parent = $page->getParent()) {
-            if ($temp = $parent->getTemplates()) {
+            if ($temp = $parent->getTemplate()) {
                 $layout = $temp->getLayout();
             }
         }
@@ -122,9 +127,14 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
         $this->_mainContent = $content;
 
         if ($layout = $this->getLayout()) {
+            /** @var $microDataHelper  \PageBuilder\View\Helper\MicroData */
+            $microDataHelper = $this->_serviceManager
+                ->get('viewhelpermanager')->get('microdata'); //  getView()->microData();
 
+            /** @var $template['tagAttributes'] \PageBuilder\View\TagAttributes */
             foreach ($layout as $section => $template) {
-                $sectionWrapper = $template['tagAttributes']->getWrapper();
+                $template['tagAttributes'] = $template['tagAttributes'];
+                $sectionWrapper            = $template['tagAttributes']->getWrapper();
                 $template['tagAttributes']->addClass($section . '-section');
 
                 if ($sectionWrapper) {
@@ -132,10 +142,10 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                         . $template['tagAttributes']->formatId() . $template['tagAttributes']->formatAttr();
                     switch ($section) {
                         case 'header':
-                            $microData = $this->getView()->microData()->scopeAndProperty('WebPage', 'WPHeader');
+                            $microData = $microDataHelper->scopeAndProperty('WebPage', 'WPHeader');
                             break;
                         case 'footer':
-                            $microData = $this->getView()->microData()->scopeAndProperty('WebPage', 'WPFooter');
+                            $microData = $microDataHelper->scopeAndProperty('WebPage', 'WPFooter');
                             break;
                         default:
                             $microData = '';
@@ -169,14 +179,15 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                                     $html [] = '<div class="' . $col['class'] . '">'; //bootstrap column
                                 }
 
+                                /** @var $item \PageBuilder\WidgetData */
                                 foreach ($col['item'] as $item) {
-                                    if ($wrapper = $item->attributes->getWrapper()) {
+                                    if ($wrapper = $item->getAttributes()->getWrapper()) {
                                         $html[] = sprintf(
                                             '<%s %s %s %s>',
                                             $wrapper,
-                                            $item->attributes->formatClass(),
-                                            $item->attributes->formatId(),
-                                            $item->attributes->formatAttr()
+                                            $item->getAttributes()->formatClass(),
+                                            $item->getAttributes()->formatId(),
+                                            $item->getAttributes()->formatAttr()
                                         );
                                     }
 
@@ -187,11 +198,11 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                                         array(
                                              $content
                                         ),
-                                        is_string($item->data) ? $item->data : $item->data->render()
+                                        is_string($item->getData()) ? $item->getData() : $item->getData()->render()
                                     );
 
                                     if ($wrapper) {
-                                        $html[] = '</' . $item->attributes->getWrapper() . '>';
+                                        $html[] = '</' . $item->getAttributes()->getWrapper() . '>';
                                     }
                                 }
 
@@ -239,7 +250,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 
             case self::LAYOUT_WIDGET:
                 try {
-                    /** @var $data \Application\BaseWidget */
+                    /** @var $data \PageBuilder\BaseWidget */
                     $widgetName = $id . WidgetFactory::WIDGET_SUFFIX;
                     $options    = $attr->getOptions();
 
@@ -250,20 +261,23 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                     $attr->addClass($data->getId());
                     $data->setAttributes($attr);
                 } catch (ServiceNotFoundException $e) {
-                    $this->getServiceManager()->get('logger')->logException($e);
                     $data = '';
                 }
 
                 break;
             case self::LAYOUT_USER_DEFINED:
-                if ($component = $this->getServiceManager()->get('component_service')->getContentById($id)) {
-                    $data     = $component['content'];
+                /** @var $componentModel \PageBuilder\Model\ComponentModel */
+                $componentModel = $this->getServiceManager()->get('pagebuilder\model\component');
+
+                /** @var $component \PageBuilder\Entity\Component */
+                if ($component = $componentModel->findObject($id)) {
+                    $data     = $component->getContent();
                     $comId    = "data-id='{$itemType}-{$id}'";
-                    $cssClass = trim("{$itemType} {$component['cssClass']}");
+                    $cssClass = trim("{$itemType} {$component->getCssClass()}");
                     $attr->addClass($cssClass)
-                        ->addClass($component['cssId'])
+                        ->addClass($component->getCssId())
                         ->addAttr($comId)
-                        ->addAttr("id='{$component['cssId']}'");
+                        ->addAttr("id='{$component->getCssId()}'");
 
                     $data = str_replace(
                         array(
@@ -275,7 +289,6 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                         $data
                     );
 
-                    $data = $this->_pluginManager->get('image_helper')->addCdnDomain($data);
                 }
 
                 break;
@@ -283,9 +296,11 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                 throw new \RuntimeException('Layout itemType ' . $itemType . ' not found');
         }
 
-        return (object)array(
-            'data'       => $data,
-            'attributes' => $attr,
+        return new WidgetData(
+            array(
+                 'data'       => $data,
+                 'attributes' => $attr,
+            )
         );
     }
 

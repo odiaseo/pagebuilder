@@ -15,32 +15,29 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-    protected $_entities
-        = array(
-            'page',
-            'section',
-            'template',
-            'component',
-            'theme',
-            'site'
-        );
 
     public function indexAction()
     {
-        $gridList = array();
+        $gridList = $listItems = array();
 
-        /** @var $grid \SynergyDataGrid\Grid\GridType\BaseGrid */
-        $grid = $this->getServiceLocator()->get('jqgrid');
+        /** @var $gridService \SynergyDataGrid\Service\GridService */
+        $gridService = $this->getServiceLocator()->get('synergy\service\grid');
 
-        foreach ($this->_entities as $item) {
-            $className = $return[$item . 'Grid'] = $grid->getClassnameFromEntityKey($item);
-            $gridList[$item] = $this->getServiceLocator()->get('jqgrid')->setGridIdentity(
-                $className, $item, null, false
-            );
+        $entityCacheFile = $gridService->getEntityCacheFile();
+        $entities        = include "$entityCacheFile";
+        ksort($entities);
+
+        foreach ($entities as $item => $className) {
+            if (strpos($item, '-') === false) {
+                $gridList[$item] = $this->getServiceLocator()->get('jqgrid')->setGridIdentity(
+                    $className, $item, null, false
+                );
+                $listItems[]     = $item;
+            }
         }
 
         $return = array(
-            'entities' => $this->_entities,
+            'entities' => $listItems,
             'grids'    => $gridList
         );
 

@@ -26,22 +26,10 @@ class TemplateController extends AbstractRestfulController
 
     public function get($id)
     {
-        /** @var \PageBuilder\Service\TemplateService $service */
-        $service = $this->getServiceLocator()->get('pagebuilder\service\template');
-
-        $payLoad   = $service->getPageLayout($id);
-        $viewModel = $this->acceptableViewModelSelector($this->_acceptCriteria);
-        $viewModel->setVariables($payLoad);
-
-        return $viewModel;
-    }
-
-    public function getList()
-    {
         /** @var \PageBuilder\Service\LayoutService $service */
         $service = $this->getServiceLocator()->get('pagebuilder\service\layout');
 
-        $payLoad   = array('test' => time());
+        $payLoad   = $service->getTemplateLayout($id);
         $viewModel = $this->acceptableViewModelSelector($this->_acceptCriteria);
         $viewModel->setVariables($payLoad);
 
@@ -49,13 +37,16 @@ class TemplateController extends AbstractRestfulController
     }
 
     public function update($id, $data)
-    {
+        {
+            /** @var \PageBuilder\Service\LayoutService $service */
+            $service = $this->getServiceLocator()->get('pagebuilder\service\layout');
+        $layout  = isset($data['layout']) ? $data['layout'] : null;
 
+        $payLoad   = $service->updateTemplateLayout($id, $layout);
+        $viewModel = $this->acceptableViewModelSelector($this->_acceptCriteria);
+        $viewModel->setVariables($payLoad);
 
-    }
-
-    public function create($data)
-    {
+        return $viewModel;
 
     }
 }

@@ -8,12 +8,12 @@ use Zend\Navigation\Exception;
 class NavigationFactory extends DefaultNavigationFactory
 {
     protected $_sm;
-    protected $_service = 'pagebuilder\model\page';
+    protected $_model = 'pagebuilder\model\page';
 
 
     protected function getName()
     {
-        return 'menu';
+        return 'pagebuilder\menu';
     }
 
     protected function getPagesFromConfig($config = null)
@@ -25,13 +25,14 @@ class NavigationFactory extends DefaultNavigationFactory
 
     protected function getPages($serviceManager)
     {
-        /** @var $navService \PageBuilder\Service\PageService */
-        $navService = $serviceManager->get($this->_service);
+        /** @var $pageModel \PageBuilder\Model\PageModel */
+        $pageModel = $serviceManager->get($this->_model);
+
         /** @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
-        $repo  = $navService->getRepository(); //  $em->getRepository($navService->getEntity());
+        $repo  = $pageModel->getRepository(); //  $em->getRepository($navService->getEntity());
         $menus = $repo->getNodesHierarchy();
 
-        $pages       = $navService->toHierarchy($menus);
+        $pages       = $pageModel->toHierarchy($menus);
         $this->pages = $this->preparePages($serviceManager, $pages);
 
         return $this->pages;
@@ -39,14 +40,15 @@ class NavigationFactory extends DefaultNavigationFactory
 
     public function getNavigationByRootId($id)
     {
-        /** @var $navService \PageBuilder\Service\PageService */
-        $navService = $this->_sm->get($this->_service);
+        /** @var $pageModel \PageBuilder\Model\PageModel */
+        $pageModel = $this->_sm->get($this->_model);
 
-        $repo     = $navService->getRepository()->getNodesHierarchy();
-        $rootMenu = $navService->getRootMenuById($id);
+        /** @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
+        $repo     = $pageModel->getRepository();
+        $rootMenu = $pageModel->getRootMenuById($id);
         $menus    = $repo->getNodesHierarchy($rootMenu);
 
-        $pages = $navService->toHierarchy($menus);
+        $pages = $pageModel->toHierarchy($menus);
         $pages = $this->preparePages($this->_sm, $pages);
 
         return new Navigation($pages);

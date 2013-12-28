@@ -186,4 +186,34 @@ return array(
             ),
         ),
     ),
+    'pagebuilder'     => array(
+        //Overwrite default entities
+        'entities' => array(
+            'page'      => 'PageBuilder\Entity\Page',
+            'section'   => 'PageBuilder\Entity\Section',
+            'template'  => 'PageBuilder\Entity\Template',
+            'component' => 'PageBuilder\Entity\Component',
+            'theme'     => 'PageBuilder\Entity\Theme',
+            'site'      => 'PageBuilder\Entity\Site'
+        ),
+        'tags'     => array(
+            'html'  => array(
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'img', 'sup',
+                'span', 'div', 'strong', 'button', 'iframe', 'i', 'input',
+                'link', 'label', 'menu', 'meta', 'noscript', 'cite',
+                'object', 'p', 'pre', 'script', 'sub', 'textarea', 'title',
+                'noframes', 'map', 'ins', 'frame', 'frameset', 'code', 'blockquote',
+                'b', 'area', 'address', 'samp', 'small', 'style'
+            ),
+            'form'  => array(
+                'input', 'form', 'legend', 'fieldset'
+            ),
+            'html5' => array(
+                'audio', 'video', 'embed', 'track', 'source', 'canvas',
+                'aside', 'footer', 'header', 'nav', 'section', 'summary',
+                'figure', 'figcaption', 'mark', 'meter', 'progress', 'time',
+                'dialog', 'command', 'output'
+            )
+        )
+    )
 );

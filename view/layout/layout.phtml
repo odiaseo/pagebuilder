@@ -19,9 +19,9 @@
         ->prependStylesheet($this->basePath() . '/css/bootstrap-2.3/bootstrap-responsive.min.css')
         ->prependStylesheet($this->basePath() . '/css/bootstrap-2.3/bootstrap.min.css')
         ->appendStylesheet($this->basePath() . '/css/jqueryui/smoothness/jquery-ui.min.css')
-        //->appendStylesheet($this->basePath() . '/css/jqueryui/smoothness/jquery.ui.theme.css')
+        ->appendStylesheet($this->basePath() . '/css/jqueryui/smoothness/jquery.ui.theme.css')
         ->appendStylesheet($this->basePath() . '/jqGrid/css/ui.jqgrid.css')
-        ->appendStylesheet($this->basePath() . '/pagebuilder/css/style.min.css')
+        ->appendStylesheet($this->basePath() . '/pagebuilder/css/pagebuilder.min.css')
 
     ?>
 
@@ -39,7 +39,7 @@
             data-main="<?php echo $this->basePath() . '/pagebuilder/libs/app.min'; ?>"></script>
 </head>
 <body>
-    <?php echo $this->content; ?>
+<?php echo $this->buildPage($this->content); ?>
 <?php echo $this->inlineScript() ?>
 </body>
 </html>

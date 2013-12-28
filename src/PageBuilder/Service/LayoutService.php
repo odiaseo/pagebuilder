@@ -53,17 +53,24 @@ class LayoutService implements ServiceManagerAwareInterface
 
         /** @var \PageBuilder\Entity\Join\TemplateSection $templateSection */
         foreach ($templateSections as $templateSection) {
-            $id = $templateSection->getSectionId()->getId();
-            $sections[$id]
-                        = $templateSection->getSectionId()->getTitle() . ' {' . $templateSection->getSortOrder() . ')';
-            $selected[] = $id;
+            $id            = $templateSection->getSectionId()->getId();
+            $sortOrder     = $templateSection->getSortOrder();
+            $title         = $templateSection->getSectionId()->getTitle() . ' (' . $sortOrder . ')';
+            $sections[$id] = array(
+                'title' => $title,
+                'order' => $sortOrder
+            );
+            $selected[]    = $id;
         }
 
         /** @var \PageBuilder\Entity\Section $section */
         foreach ($sectionList as $section) {
             $id = $section->getId();
             if (!isset($sections[$id])) {
-                $sections[$id] = $section->getTitle();
+                $sections[$id] = array(
+                    'title' => $section->getTitle(),
+                    'order' => 0
+                );
             }
         }
 
@@ -152,6 +159,7 @@ class LayoutService implements ServiceManagerAwareInterface
         $widgetList = WidgetFactory::getWidgetList($config['widgets']['directory_location']);
         $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
 
+
         $return = array(
             'error'     => $error,
             'page'      => $details,
@@ -174,7 +182,8 @@ class LayoutService implements ServiceManagerAwareInterface
             'templates' => array(
                 'title' => 'Templates',
                 'items' => $templates
-            )
+            ),
+            'tags'      => $this->_getTaglist()
         );
 
         return $return;
@@ -206,5 +215,120 @@ class LayoutService implements ServiceManagerAwareInterface
                 'message' => $exception->getMessage()
             );
         }
+    }
+
+    public function getTemplateLayout($templateId)
+    {
+        $templateSections = array();
+        $error            = '';
+
+        /** @var $themeModel \PageBuilder\Model\BaseModel */
+        $themeModel = $this->_serviceManager->get('pagebuilder\model\theme');
+
+
+        /** @var $templateModel \PageBuilder\Model\BaseModel */
+        $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+
+
+        /** @var $template \PageBuilder\Entity\Template */
+        $template = $templateModel->getRepository()->find($templateId);
+        $sections = $template->getTemplateSections()->toArray();
+
+        $details          = $template->toArray();
+        $details['theme'] = array(
+            'id'        => null,
+            'title'     => '',
+            'pageTheme' => ''
+        );
+
+        /** @var $section \PageBuilder\Entity\Join\TemplateSection */
+        foreach ($sections as $section) {
+            $slug                    = $section->getSectionId()->getSlug();
+            $templateSections[$slug] = array(
+                'title' => $section->getSectionId()->getTitle(),
+                'class' => $section->getIsActive() ? '' : 'in-active'
+            );
+        }
+
+
+        if ($themeData = $themeModel->getRepository()->findAll()) {
+            /** @var $theme \PageBuilder\Entity\Theme */
+            foreach ($themeData as $theme) {
+                $details['themes'][$theme->getId()] = $theme->toArray();
+            }
+        } else {
+            $details['themes'] = array();
+        }
+
+        $templates  = $templateModel->listItemsByTitle();
+        $config     = $this->_serviceManager->get('config');
+        $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
+
+        $widgetList = WidgetFactory::getWidgetList($config['widgets']['directory_location']);
+        $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
+
+        $return = array(
+            'error'     => $error,
+            'page'      => $details,
+            'editUrl'   => $urlHelper('template', array('id' => $templateId)),
+            'sections'  => $templateSections,
+            'title'     => 'Layout Manager - ' . $template->getTitle(),
+            'widgets'   => array(
+                'title' => 'Widgets',
+                'items' => WidgetFactory::$registry,
+                'total' => count(WidgetFactory::$registry),
+                'list'  => $widgetList,
+                'id'    => PageBuilder::LAYOUT_WIDGET
+            ),
+            'assets'    => array(
+                PageBuilder::LAYOUT_USER_DEFINED => array(
+                    'title' => 'User Defined',
+                    'items' => $components
+                )
+            ),
+            'templates' => array(
+                'title' => 'Templates',
+                'items' => $templates
+            ),
+
+        );
+
+        return $return;
+    }
+
+    public function updateTemplateLayout($templateId, $layout)
+    {
+        try {
+
+            /** @var $templateModel \PageBuilder\Model\TemplateModel */
+            $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+
+            /** @var \PageBuilder\Entity\Template $template */
+            $template = $templateModel->findObject($templateId);
+            $template->setlayout($layout);
+            $templateModel->save($template);
+
+            return array(
+                'error'   => false,
+                'message' => sprintf('Template #%d updated successfully', $templateId)
+            );
+        } catch (\Exception $exception) {
+            return array(
+                'error'   => true,
+                'message' => $exception->getMessage()
+            );
+        }
+    }
+
+    protected function _getTaglist()
+    {
+        $tagList = array();
+        $config  = $this->_serviceManager->get('config');
+
+        foreach ($config['pagebuilder']['tags'] as $type => $list) {
+            $tagList[$type] = asort($list);
+        }
+
+        return $tagList;
     }
 }

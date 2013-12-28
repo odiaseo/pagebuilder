@@ -38,37 +38,6 @@ define(
 
             },
 
-            getTagList: function () {
-
-                var html = [
-                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'img', 'sup',
-                    'span', 'div', 'strong', 'button', 'iframe', 'i', 'input',
-                    'link', 'label', 'menu', 'meta', 'noscript', 'cite',
-                    'object', 'p', 'pre' , 'script', 'sub', 'textarea', 'title',
-                    'noframes', 'map', 'ins', 'frame', 'frameset', 'code', 'blockquote',
-                    'b', 'area', 'address', 'samp', 'small', 'style'
-                ];
-
-                var frm = [
-                    'input', 'form', 'legend', 'fieldset'
-                ];
-
-                var html5 = [  'audio', 'video', 'embed', 'track', 'source', 'canvas',
-                    'aside', 'footer', 'header', 'nav', 'section', 'summary',
-                    'figure', 'figcaption', 'mark', 'meter', 'progress', 'time',
-                    'dialog', 'command', 'output'
-                ];
-
-                html.sort();
-                frm.sort();
-                html5.sort();
-
-                return {
-                    Form: frm,
-                    Html: html,
-                    Html5: html5
-                }
-            },
             poison: function () {
                 var dt = new Date();
                 return dt.getTime();
@@ -140,7 +109,7 @@ define(
                         span = $('<div></div><div></div>').addClass('span6');
                         break;
                     case '2-cols-ll':
-                        span = $('<div class="span8"</div><div class="span4"></div>');
+                        span = $('<div class="span8"></div><div class="span4"></div>');
                         break;
                     case '2-cols-rl':
                         span = $('<div class="span4"></div><div class="span8"></div>');
@@ -245,7 +214,7 @@ define(
                             }
 
                             var param = {
-                                tagList: pageBuilder.getTagList(),
+                                tagList: pageBuilder['pageDetails']['tags'],
                                 elemTag: 'div',
                                 options: opt,
                                 id: container.attr('id')
@@ -950,9 +919,10 @@ define(
                                 if (data[i].rowItems) {
                                     var cols = row.find('[class^="span"]');
                                     for (var k = 0; k < cols.length; k++) {
-                                        if (data[i].rowItems[k].item) {
+                                        if (data[i].rowItems[k]) {
                                             var ul = $(cols[k]).find('ul');
-                                            for (var x = 0; x < data[i].rowItems[k].item.length; x++) {
+                                            if(data[i].rowItems[k].item){
+                                                for (var x = 0; x < data[i].rowItems[k].item.length; x++) {
                                                 var li = $('<li></li>');
                                                 var asset = data[i].rowItems[k].item[x];
                                                 var parts = [];
@@ -992,6 +962,7 @@ define(
                                                 ;
 
                                                 ul.append(li);
+                                            }
                                             }
                                             pageBuilder.processAssets(ul);
                                         }

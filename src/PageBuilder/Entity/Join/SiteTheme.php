@@ -35,4 +35,44 @@
          */
         protected $siteId;
 
+        public function setId($id)
+        {
+            $this->id = $id;
+        }
+
+        public function getId()
+        {
+            return $this->id;
+        }
+
+        public function setIsActive($isActive)
+        {
+            $this->isActive = $isActive;
+        }
+
+        public function getIsActive()
+        {
+            return $this->isActive;
+        }
+
+        public function setSiteId($siteId)
+        {
+            $this->siteId = $siteId;
+        }
+
+        public function getSiteId()
+        {
+            return $this->siteId;
+        }
+
+        public function setThemeId($themeId)
+        {
+            $this->themeId = $themeId;
+        }
+
+        public function getThemeId()
+        {
+            return $this->themeId;
+        }
+
     }

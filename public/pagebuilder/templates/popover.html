@@ -10,7 +10,7 @@
                     for(var a in tagList){%>
                     <optgroup label="<%=a %>">
                         <%
-                        for(var i=0; i < tagList[a].length ; i++){
+                        for(var i in tagList[a]){
                         var sel = (tagList[a][i] == elemTag) ? 'selected="selected"' : '';%>
                         <option value="<%=tagList[a][i] %>"
                         <%=sel %>><%=tagList[a][i] %></option>

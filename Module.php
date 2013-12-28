@@ -10,7 +10,13 @@
 namespace PageBuilder;
 
 
+use PageBuilder\View\Helper\FlashMessages;
+use PageBuilder\View\Helper\MicroData;
+use Zend\Console\Request;
+use Zend\Http\Response;
+use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Session\Container;
 
 class Module
 {
@@ -20,6 +26,14 @@ class Module
         $sharedEvents = $moduleManager->getEventManager()->getSharedManager();
         $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'onModuleDispatch'), 103);
         $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'initEntityManager'), 103);
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        /** @var $eventManager \Zend\EventManager\EventManager */
+        $eventManager        = $e->getApplication()->getEventManager();
+        $moduleRouteListener = new ModuleRouteListener();
+        $moduleRouteListener->attach($eventManager);
     }
 
 
@@ -36,8 +50,9 @@ class Module
 
             if ($activeMenu) {
                 $activeTheme = $locator->get('active_theme');
-                $menu        = $locator->get('pages_service')->findObject($activeMenu['page']->id);
+                $menu        = $locator->get('pagebuilder\model\page')->findObject($activeMenu['page']->id);
 
+                /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
                 $pageBuilder = $viewHelperManager->get('buildPage');
                 $pageBuilder->preparePageItems($menu, $menuTree, $activeTheme);
             }
@@ -79,12 +94,13 @@ class Module
                 'component_service' => __NAMESPACE__ . '\Service\ComponentService',
                 'template_service'  => __NAMESPACE__ . '\Service\TemplateService',
                 'widget_service'    => __NAMESPACE__ . '\Service\WidgetService',
-                'menu'              => __NAMESPACE__ . '\Navigation\NavigationFactory',
+                'pagebuilder\menu'  => __NAMESPACE__ . '\Navigation\NavigationFactory',
             ),
             'initializers' => array(
                 'widget' => function ($widget, $sm) {
                     /** @var $widget \PageBuilder\BaseWidget */
                     if ($widget instanceof WidgetInterface) {
+                        /** @var $mvcEvent \Zend\Mvc\MvcEvent */
                         $mvcEvent = $sm->get('application')->getMvcEvent();
                         $widget->setServiceManager($sm);
                         $widget->setView($sm->get('viewrenderer'));
@@ -111,6 +127,49 @@ class Module
                 __NAMESPACE__ . '\Service\WidgetService'        => __NAMESPACE__ . '\Service\WidgetService',
                 __NAMESPACE__ . '\Service\TemplateService'      => __NAMESPACE__ . '\Service\TemplateService',
                 __NAMESPACE__ . '\WidgetDataFactory'            => __NAMESPACE__ . '\WidgetDataFactory',
+
+
+                'active_theme'                                  => function ($sm) {
+                    /** @var  $sm \Zend\Servicemanager\ServiceManager */
+                    $site  = $sm->get('active_site');
+                    $theme = $sm->get('pagebuilder\model\theme')->getActiveTheme($site->getId());
+
+                    return $theme;
+                },
+
+                'active_site'                                   => function ($sm) {
+                    /** @var  $sm \Zend\Servicemanager\ServiceManager */
+                    $containerKey = 'active-site';
+                    $request      = $sm->get('application')->getRequest();
+
+                    if ($request instanceof Request) {
+                        $rm   = $sm->get('application')->getMvcEvent()->getRouteMatch();
+                        $host = $rm->getParam('host');
+                    } else {
+                        $host = $request->getServer('HTTP_HOST');
+                    }
+
+                    $hostname   = str_replace(array('http://', 'https://', 'www.'), '', $host);
+                    $sessionKey = preg_replace('/[^\p{L}\p{N}]+/ui', '', "host{$hostname}");
+                    $container  = new Container($sessionKey);
+
+                    if ($container->offsetExists($containerKey)) {
+                        $em   = $sm->get('doctrine.entitymanager.orm_default');
+                        $site = $container->offsetGet($containerKey);
+                        $site = $em->merge($site);
+                    } elseif (!$site = $sm->get('pagebuilder\model\site')->findOneByDomain($hostname)) {
+                        header
+                        (
+                            'HTTP/1.1 403 Application Error'
+                        );
+                        echo "Site is not registered";
+                        exit;
+                    } else {
+                        $container->offsetSet($containerKey, $site);
+                    }
+
+                    return $site;
+                },
             )
         );
     }
@@ -119,9 +178,7 @@ class Module
     public function getViewHelperConfig()
     {
         return array(
-
             'factories'  => array(
-
                 'flashMessages' => function ($sm) {
                     $flashmessenger = $sm->getServiceLocator()
                         ->get('ControllerPluginManager')
@@ -132,8 +189,6 @@ class Module
 
                     return $messages;
                 },
-
-
                 'microData'     => function ($sm) {
                     $microData = new MicroData();
                     $microData->setServiceManager($sm);
@@ -141,7 +196,6 @@ class Module
                     return $microData;
 
                 },
-
             ),
             'invokables' => array(
                 'buildPage' => __NAMESPACE__ . '\View\Helper\PageBuilder',

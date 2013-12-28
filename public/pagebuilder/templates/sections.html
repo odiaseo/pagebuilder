@@ -8,7 +8,7 @@
                     if(_.has(sections, i)){
                         var v  = i * 1;
                         sel = _.contains(templateSections, v) ?  ' selected="selected" ' : '' ; %>
-                        <option <%=sel %> value="<%=i %>"><%=sections[i] %></option>
+                        <option <%=sel %> value="<%=i %>"><%=sections[i].title %></option>
                 <%  }
                 }
 
