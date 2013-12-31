@@ -152,11 +152,11 @@ class LayoutService implements ServiceManagerAwareInterface
             $details['themes'] = array();
         }
 
-        $templates  = $templateModel->listItemsByTitle();
-        $config     = $this->_serviceManager->get('config');
-        $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
+        $templates     = $templateModel->listItemsByTitle();
+        $components    = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
+        $widgetFactory = $this->_serviceManager->get('pagebuilder\widget\factory');
 
-        $widgetList = WidgetFactory::getWidgetList($config['pagebuilder']['widgets']['paths']);
+        $widgetList = $widgetFactory->getWidgetList();
         $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
 
 
@@ -261,11 +261,11 @@ class LayoutService implements ServiceManagerAwareInterface
         }
 
         $templates  = $templateModel->listItemsByTitle();
-        $config     = $this->_serviceManager->get('config');
         $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
 
-        $widgetList = WidgetFactory::getWidgetList($config['widgets']['directory_location']);
-        $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
+        $widgetFactory = $this->_serviceManager->get('pagebuilder\widget\factory');
+        $widgetList    = $widgetFactory->getWidgetList();
+        $urlHelper     = $this->_serviceManager->get('viewhelpermanager')->get('url');
 
         $return = array(
             'error'     => $error,

@@ -1,9 +1,9 @@
 <?php
 namespace PageBuilder\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use \Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use SynergyCommon\Entity\BasePage;
 
 
@@ -72,6 +72,9 @@ class Page
         $this->parent = $parent;
     }
 
+    /**
+     * @return \PageBuilder\Entity\Page
+     */
     public function getParent()
     {
         return $this->parent;
@@ -82,6 +85,9 @@ class Page
         $this->template = $template;
     }
 
+    /**
+     * @return \PageBuilder\Entity\Template
+     */
     public function getTemplate()
     {
         return $this->template;

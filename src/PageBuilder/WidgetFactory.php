@@ -3,13 +3,23 @@ namespace PageBuilder;
 
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
 
-class WidgetFactory implements AbstractFactoryInterface
+class WidgetFactory
+    implements AbstractFactoryInterface, ServiceManagerAwareInterface
 {
     const WIDGET_SUFFIX = 'widget';
     protected $_config = array();
     public static $registry = array();
+
+    /** @var \Zend\Servicemanager\ServiceManager */
     protected $_sm;
+
+    public function setServiceManager(ServiceManager $serviceManager)
+    {
+        $this->_sm = $serviceManager;
+    }
 
     /**
      * Determine if we can create a service with name
@@ -43,8 +53,7 @@ class WidgetFactory implements AbstractFactoryInterface
      */
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
-        $this->_sm = $serviceLocator;
-        $widgetId  = str_replace(self::WIDGET_SUFFIX, '', $name);
+        $widgetId = str_replace(self::WIDGET_SUFFIX, '', $name);
 
         if ($data = $this->widgetExist($widgetId, $serviceLocator)) {
             /** @var $widget \PageBuilder\BaseWidget */
@@ -70,11 +79,11 @@ class WidgetFactory implements AbstractFactoryInterface
     {
         /** @var $sm \Zend\ServiceManager\ServiceLocatorInterface */
         $name = strtolower($name);
-
+        if (!$this->_sm) {
+            $this->setServiceManager($sm);
+        }
         if (empty(self::$registry)) {
-            $config        = $sm->get('config');
-            $this->_config = $config['widgets'];
-            self::getWidgetList($config['widgets']['directory_location']);
+            $this->getWidgetList();
         }
 
         if (isset(self::$registry[$name])) {
@@ -91,9 +100,16 @@ class WidgetFactory implements AbstractFactoryInterface
      *
      * @return array
      */
-    public static function getWidgetList(array $dirLocations)
+    public function getWidgetList(array $dirLocations = null)
     {
         $r = array();
+
+        if (!$dirLocations) {
+            $config        = $this->_sm->get('config');
+            $this->_config = $config['pagebuilder']['widgets'];
+            $dirLocations  = (array)$this->_config['paths'];
+        }
+
         foreach ($dirLocations as $dirLocation) {
             $iterator  = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($dirLocation, \FilesystemIterator::SKIP_DOTS),

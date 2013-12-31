@@ -128,7 +128,8 @@ return array(
         ),
         'aliases'            => array(
             'pagebuilder\menu'           => 'PageBuilder\Navigation\NavigationFactory',
-            'pagebuilder\service\layout' => 'PageBuilder\Service\LayoutService'
+            'pagebuilder\service\layout' => 'PageBuilder\Service\LayoutService',
+            'pagebuilder\widget\factory' => 'PageBuilder\WidgetFactory',
         ),
         'abstract_factories' => array(
             'PageBuilder\WidgetFactory',
@@ -230,8 +231,8 @@ return array(
         ),
     ),
 
-    'pagebuilder' => array(
-        'widgets' => array(
+    'pagebuilder'     => array(
+        'widgets'         => array(
             'paths' => array(
                 __DIR__ . '/../src/PageBuilder/Widget'
             )
