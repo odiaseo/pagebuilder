@@ -152,11 +152,13 @@ class LayoutService implements ServiceManagerAwareInterface
             $details['themes'] = array();
         }
 
-        $templates     = $templateModel->listItemsByTitle();
-        $components    = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
-        $widgetFactory = $this->_serviceManager->get('pagebuilder\widget\factory');
+        $templates  = $templateModel->listItemsByTitle();
+        $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
 
-        $widgetList = $widgetFactory->getWidgetList();
+        /** @var $widgetUtil \PageBuilder\Util\Widget */
+        $widgetUtil = $this->_serviceManager->get('util\widget');
+
+        $widgetList = $widgetUtil->getWidgetList();
         $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
 
 
@@ -168,8 +170,8 @@ class LayoutService implements ServiceManagerAwareInterface
             'title'     => 'Layout Manager - ' . $page->getTitle(),
             'widgets'   => array(
                 'title' => 'Widgets',
-                'items' => WidgetFactory::$registry,
-                'total' => count(WidgetFactory::$registry),
+                'items' => $widgetUtil->getRegistry(),
+                'total' => count($widgetUtil->getRegistry()),
                 'list'  => $widgetList,
                 'id'    => PageBuilder::LAYOUT_WIDGET
             ),
@@ -263,9 +265,10 @@ class LayoutService implements ServiceManagerAwareInterface
         $templates  = $templateModel->listItemsByTitle();
         $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
 
-        $widgetFactory = $this->_serviceManager->get('pagebuilder\widget\factory');
-        $widgetList    = $widgetFactory->getWidgetList();
-        $urlHelper     = $this->_serviceManager->get('viewhelpermanager')->get('url');
+        /** @var $widgetUtil \PageBuilder\Util\Widget */
+        $widgetUtil = $this->_serviceManager->get('util\widget');
+        $widgetList = $widgetUtil->getWidgetList();
+        $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
 
         $return = array(
             'error'     => $error,
@@ -275,8 +278,8 @@ class LayoutService implements ServiceManagerAwareInterface
             'title'     => 'Layout Manager - ' . $template->getTitle(),
             'widgets'   => array(
                 'title' => 'Widgets',
-                'items' => WidgetFactory::$registry,
-                'total' => count(WidgetFactory::$registry),
+                'items' => $widgetUtil->getRegistry(),
+                'total' => count($widgetUtil->getRegistry()),
                 'list'  => $widgetList,
                 'id'    => PageBuilder::LAYOUT_WIDGET
             ),

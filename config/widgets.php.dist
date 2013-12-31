@@ -3,7 +3,8 @@ return array(
     'pagebuilder' => array(
         'widgets' => array(
             'paths' => array(
-                //__DIR__ . '/../src/PageBuilder/Widget' //Add paths to wideget location
+            //Add paths to wideget location
+               //'Widget Namespace' => 'papth_to_widget'
             )
         ),
     )

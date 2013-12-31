@@ -32,11 +32,12 @@ class WidgetFactory
      */
     public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
-
         if (substr($requestedName, -6) == self::WIDGET_SUFFIX) {
+            /** @var $util \PageBuilder\Util\Widget */
+            $util     = $serviceLocator->get('util\widget');
             $widgetId = str_replace(self::WIDGET_SUFFIX, '', $requestedName);
 
-            return $this->widgetExist($widgetId, $serviceLocator);
+            return $util->widgetExist($widgetId);
         }
 
         return false;
@@ -55,7 +56,10 @@ class WidgetFactory
     {
         $widgetId = str_replace(self::WIDGET_SUFFIX, '', $name);
 
-        if ($data = $this->widgetExist($widgetId, $serviceLocator)) {
+        /** @var $util \PageBuilder\Util\Widget */
+        $util = $serviceLocator->get('util\widget');
+
+        if ($data = $util->widgetExist($widgetId, $serviceLocator)) {
             /** @var $widget \PageBuilder\BaseWidget */
             $widget = new $data['class']();
             $widget->setId($widgetId);
@@ -65,112 +69,5 @@ class WidgetFactory
 
         return false;
 
-    }
-
-    /**
-     *  Checks if a widget exists
-     *
-     * @param $name
-     * @param $sm
-     *
-     * @return bool
-     */
-    public function widgetExist($name, $sm)
-    {
-        /** @var $sm \Zend\ServiceManager\ServiceLocatorInterface */
-        $name = strtolower($name);
-        if (!$this->_sm) {
-            $this->setServiceManager($sm);
-        }
-        if (empty(self::$registry)) {
-            $this->getWidgetList();
-        }
-
-        if (isset(self::$registry[$name])) {
-            return self::$registry[$name];
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Gets widget registry
-     *
-     * @param array $dirLocations
-     *
-     * @return array
-     */
-    public function getWidgetList(array $dirLocations = null)
-    {
-        $r = array();
-
-        if (!$dirLocations) {
-            $config        = $this->_sm->get('config');
-            $this->_config = $config['pagebuilder']['widgets'];
-            $dirLocations  = (array)$this->_config['paths'];
-        }
-
-        foreach ($dirLocations as $dirLocation) {
-            $iterator  = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($dirLocation, \FilesystemIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::CHILD_FIRST
-            );
-            $namespace = __NAMESPACE__ . '\Widget';
-
-            /** @var $splFileInfo \SplFileInfo */
-            foreach ($iterator as $splFileInfo) {
-
-                if ($splFileInfo->isFile()) {
-                    $widgetId   = substr(basename($splFileInfo->getFilename()), 0, -4);
-                    $className  = substr(
-                        $namespace . str_replace('/', "\\", str_replace($dirLocation, '', $splFileInfo->getPathname())),
-                        0, -4
-                    );
-                    $reflection = new \ReflectionClass($className);
-
-                    if ($reflection->implementsInterface(__NAMESPACE__ . '\WidgetInterface')) {
-                        $attributes = $reflection->getDefaultProperties();
-                        $id         = !empty($attributes['id']) ? preg_replace('/[^a-z]/i', '', $attributes['id'])
-                            : $widgetId;
-                        $id         = strtolower($id);
-                        $category   = basename(dirname($splFileInfo->getPathname()));
-
-                        $data = array(
-                            'id'          => $id,
-                            'class'       => $className,
-                            'category'    => ($category == 'Widget') ? 'General' : $category,
-                            'title'       => $attributes['name'] ? : $widgetId,
-                            'description' => $attributes['description'] ? : 'No description found',
-                            'options'     => $attributes['options']
-                        );
-
-                        $path                = array($id => $data);
-                        self::$registry[$id] = $data;
-
-                    } else {
-                        continue;
-                    }
-
-                } else {
-                    $dirName = $splFileInfo->getFilename();
-                    $path    = array($dirName => array());
-                }
-
-                for ($depth = $iterator->getDepth() - 1; $depth >= 0; $depth--) {
-                    $dirName = $iterator->getSubIterator($depth)->current()->getFilename();
-                    $path    = array($dirName => $path);
-                }
-
-                uasort(
-                    $path, function ($a, $b) {
-                        return strcmp($a['title'], $b['title']);
-                    }
-                );
-
-                $r = array_merge_recursive($r, $path);
-            }
-        }
-
-        return $r;
     }
 }

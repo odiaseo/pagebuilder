@@ -116,6 +116,7 @@ class Module
                 'template_service'  => __NAMESPACE__ . '\Service\TemplateService',
                 'widget_service'    => __NAMESPACE__ . '\Service\WidgetService',
                 'pagebuilder\menu'  => __NAMESPACE__ . '\Navigation\NavigationFactory',
+                'util\widget'       => __NAMESPACE__ . '\Util\Widget',
             ),
             'initializers' => array(
                 'widget' => function ($widget, $sm) {
@@ -150,7 +151,6 @@ class Module
                 __NAMESPACE__ . '\Service\WidgetService'        => __NAMESPACE__ . '\Service\WidgetService',
                 __NAMESPACE__ . '\Service\TemplateService'      => __NAMESPACE__ . '\Service\TemplateService',
                 __NAMESPACE__ . '\WidgetDataFactory'            => __NAMESPACE__ . '\WidgetDataFactory',
-
 
                 'active_theme'                                  => function ($sm) {
                     /** @var  $sm \Zend\Servicemanager\ServiceManager */

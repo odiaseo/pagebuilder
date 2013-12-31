@@ -148,6 +148,7 @@ return array(
             'pagebuilder\entity\pageTheme'       => 'PageBuilder\Entity\Join\PageTheme',
             'pagebuilder\entity\siteTheme'       => 'PageBuilder\Entity\Join\SiteTheme',
             'pagebuilder\entity\templateSection' => 'PageBuilder\Entity\Join\TemplateSection',
+            'PageBuilder\Util\Widget'            => 'PageBuilder\Util\Widget',
 
             //Services
             'PageBuilder\Service\LayoutService'  => 'PageBuilder\Service\LayoutService'
@@ -234,7 +235,7 @@ return array(
     'pagebuilder'     => array(
         'widgets'         => array(
             'paths' => array(
-                __DIR__ . '/../src/PageBuilder/Widget'
+                'PageBuilder\Widget' => __DIR__ . '/../src/PageBuilder/Widget'
             )
         ),
         'main_navigation' => 'pagebuilder\menu', // change this to the service alias for the main navigation menu
