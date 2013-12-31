@@ -13,6 +13,10 @@ require(['./../config'], function () {
     );
 });
 
+if (typeof(synergyDataGrid) == 'undefined') {
+    synergyDataGrid = {};
+}
+
 (function (w, synergy, undefined) {
     if (synergy == undefined) {
         synergy = {};

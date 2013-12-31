@@ -7,6 +7,29 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
+$datetime = array(
+    'edittype'      => 'date',
+    'editable'      => true,
+    'hidden'        => true,
+    'sorttype'      => 'date',
+    'editrules'     => array(
+        'edithidden' => true,
+        'required'   => false,
+        'date'       => array(
+            'datefmt' => 'D, d M Y'
+        )
+    ),
+    'formatter'     => 'date',
+    'formatoptions' => array(
+        'newformat' => 'D, d M Y'
+    ),
+    'editoptions'   => array(
+        'format'     => 'D, d M Y',
+        'timeFormat' => 'hh:mm:ss',
+        'region'     => 'en',
+    )
+);
+
 return array(
 
     'controllers'     => array(
@@ -20,7 +43,7 @@ return array(
 
     'router'          => array(
         'routes' => array(
-            'home'             => array(
+            'home'              => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/',
@@ -30,7 +53,17 @@ return array(
                     ),
                 ),
             ),
-            'builder'          => array(
+            'pagebuilder\admin' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/pagebuilder/admin',
+                    'defaults' => array(
+                        'controller' => 'PageBuilder\Controller\Index',
+                        'action'     => 'admin',
+                    ),
+                ),
+            ),
+            'builder'           => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'       => '/pagebuilder/layout/page[s][/:id]',
@@ -44,7 +77,7 @@ return array(
                     ),
                 )
             ),
-            'template'         => array(
+            'template'          => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'       => '/pagebuilder/layout/template[s][/:id]',
@@ -58,7 +91,7 @@ return array(
                     ),
                 )
             ),
-            'template\section' => array(
+            'template\section'  => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'       => '/pagebuilder/template/:id/section[s]',
@@ -72,7 +105,7 @@ return array(
                     ),
                 )
             ),
-            'pagebuilder\crud' => array(
+            'pagebuilder\crud'  => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'       => '/pagebuilder/crud/:entity',
@@ -143,11 +176,6 @@ return array(
         ),
     ),
 
-    'widgets'         => array(
-        'directory_location' => array(
-            __DIR__ . '/../src/PageBuilder/Widget'
-        )
-    ),
     'doctrine'        => array(
         'configuration' => array(
             'orm_default' => array(
@@ -160,36 +188,37 @@ return array(
                 ),
             )
         ),
-        'pagebuilder\entity\default' => array(
-            'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-            'cache' => 'array',
-            'paths' => array(
-                'vendor/synergy/pagebuilder/src/PageBuilder/Entity'
-            )
+        'driver'        => array(
+            'pagebuilder\entity\default' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/PageBuilder/Entity'
+                )
+            ),
+            'pagebuilder\entity\join'    => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/PageBuilder/Entity/Join'
+                )
+            ),
+            'synergy\common\entities'    => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    'vendor/synergy/common/lib/SynergyCommon/Entity'
+                )
+            ),
+            'orm_default'                => array(
+                'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+                'drivers' => array(
+                    'PageBuilder\Entity'      => 'pagebuilder\entity\default',
+                    'PageBuilder\Entity\Join' => 'pagebuilder\entity\join',
+                    'SynergyCommon\Entity'    => 'synergy\common\entities',
+                )
+            ),
         ),
-        'pagebuilder\entity\join'    => array(
-            'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-            'cache' => 'array',
-            'paths' => array(
-                'vendor/synergy/pagebuilder/src/PageBuilder/Entity/Join'
-            )
-        ),
-        'synergy\common\entities'    => array(
-            'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-            'cache' => 'array',
-            'paths' => array(
-                'vendor/synergy/common/lib/SynergyCommon/Entity'
-            )
-        ),
-        'orm_default'                => array(
-            'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
-            'drivers' => array(
-                'PageBuilder\Entity'      => 'pagebuilder\entity\default',
-                'PageBuilder\Entity\Join' => 'pagebuilder\entity\join',
-                'SynergyCommon\Entity'    => 'synergy\common\entities',
-            )
-        ),
-
         'eventmanager'  => array(
             'orm_default' => array(
                 'subscribers' => array(
@@ -200,8 +229,14 @@ return array(
             ),
         ),
     ),
-    'pagebuilder'     => array(
-        'main_navigation' =>  'pagebuilder\menu', // change this to the service alias for the main navigation menu
+
+    'pagebuilder' => array(
+        'widgets' => array(
+            'paths' => array(
+                __DIR__ . '/../src/PageBuilder/Widget'
+            )
+        ),
+        'main_navigation' => 'pagebuilder\menu', // change this to the service alias for the main navigation menu
         //Overwrite default entities
         'entities'        => array(
             'page'      => 'PageBuilder\Entity\Page',
@@ -230,6 +265,225 @@ return array(
                 'figure', 'figcaption', 'mark', 'meter', 'progress', 'time',
                 'dialog', 'command', 'output'
             )
-        )
-    )
+        ),
+        'css_classmap'    => array(
+            'span1'           => 'span1',
+            'span2'           => 'span2',
+            'span3'           => 'span3',
+            'span4'           => 'span4',
+            'span5'           => 'span5',
+            'span6'           => 'span6',
+            'span7'           => 'span7',
+            'span8'           => 'span8',
+            'span9'           => 'span9',
+            'span10'          => 'span10',
+            'span11'          => 'span11',
+            'span12'          => 'span12',
+            'row'             => 'row',
+            'row-fluid'       => 'row-fluid',
+            'container'       => 'container',
+            'container-fluid' => 'container-fluid'
+        ),
+
+    ),
+    'jqgrid'          => array(
+        'render_script_as_template' => false,
+        'grid_options'              => array(
+            'ajaxGridOptions'    => array(
+                'type' => 'GET'
+            ),
+            'toolbar'            => array(
+                true,
+                'bottom'
+            ),
+            'gridview'           => true,
+            'allowResizeColumns' => false,
+            'forceFit'           => true,
+            'shrinkToFit'        => true,
+            'rownumbers'         => true,
+            'onSelectRow'        => new \Zend\Json\Expr("function (rowId) {
+                var grid = $(this);
+                var gsr = grid.data('lastsel');
+                if (rowId && rowId != gsr) {
+                    grid.restoreRow(gsr);
+                    grid.data('lastsel', rowId);
+                }
+            }"),
+        ),
+        'excluded_columns'          => array(
+            'children',
+            'password',
+            'root',
+            'siteTheme'
+        ),
+        'column_model'              => array(
+            'slug'             => array(
+                'hidden'    => true,
+                'editrules' => array(
+                    'required'   => false,
+                    'edithidden' => true
+                )
+            ),
+            'siteId'           => array(
+                'hidden'    => true,
+                'editrules' => array(
+                    'required'   => false,
+                    'edithidden' => true
+                )
+            ),
+            'label'            => array(
+                'hidden'    => true,
+                'editrules' => array(
+                    'required'   => false,
+                    'edithidden' => true
+                )
+            ),
+            'description'      => array(
+                'hidden'    => true,
+                'editrules' => array(
+                    'required'   => false,
+                    'edithidden' => true
+                )
+            ),
+            'timezone'         => array(
+                'editrules'   => array(
+                    'required' => false,
+                ),
+                'editoptions' => array(
+                    'defaultValue' => 'UTC',
+                ),
+            ),
+            'cssId'            => array(
+                'editrules' => array(
+                    'required' => false,
+                )
+            ),
+            'parameters'       => array(
+                'hidden'    => true,
+                'editrules' => array(
+                    'required'   => false,
+                    'edithidden' => true
+                )
+            ),
+            'templates'        => array(
+                'hidden'    => true,
+                'editrules' => array(
+                    'required'   => false,
+                    'edithidden' => false
+                )
+            ),
+            'templateSections' => array(
+                'hidden'          => true,
+                'editrules'       => array(
+                    'required'   => false,
+                    'edithidden' => false
+                ),
+                'isSubGridAsGrid' => true,
+            ),
+            'layout'           => array(
+                'hidden' => true
+            ),
+            'pageThemes'       => array(
+                'isSubGridAsGrid' => true,
+            ),
+
+            'siteThemes'       => array(
+                'isSubGridAsGrid' => true,
+            ),
+            'renewAt'          => $datetime + array(
+                'editable' => true
+            ),
+            'updatedAt'        => $datetime + array(
+                'editable' => true,
+
+            ),
+            'createdAt'        => $datetime + array(
+                'hidden' => false,
+            ),
+            'startAt'          => $datetime,
+            'endAt'            => $datetime,
+        ),
+        'edit_parameters'           => array(
+            'width'           => 550,
+            'ajaxEditOptions' => array(
+                'type' => 'PUT'
+            )
+        ),
+        'add_parameters'            => array(
+            'width' => 550,
+        ),
+        'delete_parameters'         => array(
+            'ajaxDelOptions' => array(
+                'type' => 'DELETE'
+            )
+        ),
+        'toolbar_buttons'           => array( /* Custom toolbar buttons */
+
+            /** model specific */
+            'specific' => array(
+                'page'      => array(
+                    'layout-manager' => array(
+                        'id'         => 'layman',
+                        'class'      => 'btn btn-mini',
+                        'title'      => 'Layout Manager',
+                        'icon'       => 'icon-th-large',
+                        'position'   => 'bottom',
+                        'onLoad'     => '',
+                        'callback'   => new \Zend\Json\Expr("function(){  synergyDataGrid.pageBuilder.manageLayout(this) ;  }"),
+                        'attributes' => array(
+                            'data-endpoint'     => '/pagebuilder/layout/page',
+                            'data-entity'       => 'pages',
+                            'data-template-url' => '/js/app/templates/layout-manager.html'
+                        )
+                    )
+                ),
+                'pageTheme' => array(
+                    'layout-manager' => array(
+                        'id'         => 'layman',
+                        'class'      => 'btn btn-mini',
+                        'title'      => 'Layout Manager',
+                        'icon'       => 'icon-th-large',
+                        'position'   => 'bottom',
+                        'onLoad'     => '',
+                        'callback'   => new \Zend\Json\Expr("function(){  if(pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }"),
+                        'attributes' => array(
+                            'data-endpoint'     => '/pagebuilder/layout/theme',
+                            'data-entity'       => 'themes',
+                            'data-template-url' => '/js/app/templates/layout-manager.html'
+                        )
+                    )
+                ),
+                'template'  => array(
+                    'layout-manager'  => array(
+                        'id'         => 'tempman',
+                        'class'      => 'btn btn-mini',
+                        'title'      => 'Template Manager',
+                        'icon'       => 'icon-list',
+                        'position'   => 'bottom',
+                        'onLoad'     => '',
+                        'callback'   => new \Zend\Json\Expr("function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }"),
+                        'attributes' => array(
+                            'data-entity'       => 'templates',
+                            'data-endpoint'     => '/pagebuilder/layout/template',
+                            'data-template-url' => '/js/app/templates/layout-manager.html'
+                        )
+                    ),
+                    'section-manager' => array(
+                        'id'         => 'sectionman',
+                        'class'      => 'btn btn-mini',
+                        'title'      => 'Sections',
+                        'icon'       => 'icon-list',
+                        'position'   => 'bottom',
+                        'onLoad'     => '',
+                        'callback'   => new  \Zend\Json\Expr("function(){ if(synergyDataGrid.pageBuilder) {  synergyDataGrid.pageBuilder.manageSections(this) ; } }"),
+                        'attributes' => array(
+                            'data-entity'       => 'sections',
+                            'data-href'         => '/pagebuilder/template/:id/sections',
+                            'data-template-url' => '/js/app/templates/sections.html'
+                        )
+                    ),
+                ),
+            )
+        ),
+    ),
 );

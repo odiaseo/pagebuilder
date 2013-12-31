@@ -1,0 +1,30 @@
+<div class="container">
+    <ul class="nav nav-tabs">
+        <?php
+        $count = 0;
+        foreach ($entities as $item) {
+            $active = ($count++ == 0) ? 'active' : '';
+            printf('<li class="%s"><a href="#%s" data-toggle="tab">%s</a></li>', $active, $item, ucwords($item));
+        }
+        ?>
+    </ul>
+    <?php
+    $firstGrid = current($grids);
+    $firstGrid->getJsCode()->addCustomScript(
+        new \Zend\Json\Expr("; $('body').delegate('.nav li', 'click', function(){
+        $(window).trigger('resize');
+    }); "
+        )
+    );
+    ?>
+
+    <div class="tab-content">
+        <?php
+        $count = 0;
+        foreach ($grids as $item => $grid) {
+            $active = ($count++ == 0) ? ' active' : '';
+            printf('<div class="tab-pane%s" id="%s">%s</div>', $active, $item, $this->displayGrid($grid));
+        }
+        ?>
+    </div>
+</div>

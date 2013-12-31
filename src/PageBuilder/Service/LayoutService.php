@@ -156,7 +156,7 @@ class LayoutService implements ServiceManagerAwareInterface
         $config     = $this->_serviceManager->get('config');
         $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
 
-        $widgetList = WidgetFactory::getWidgetList($config['widgets']['directory_location']);
+        $widgetList = WidgetFactory::getWidgetList($config['pagebuilder']['widgets']['paths']);
         $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
 
 

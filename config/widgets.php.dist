@@ -1,8 +1,10 @@
 <?php
-    return array(
-
-        'widgets'         => array(
-            'directory_location' => __DIR__ . '/../src/Application/Widget'
+return array(
+    'pagebuilder' => array(
+        'widgets' => array(
+            'paths' => array(
+                //__DIR__ . '/../src/PageBuilder/Widget' //Add paths to wideget location
+            )
         ),
-
-    );
+    )
+);
