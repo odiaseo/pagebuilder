@@ -14,12 +14,19 @@ use PageBuilder\View\Helper\FlashMessages;
 use PageBuilder\View\Helper\MicroData;
 use Zend\Console\Request;
 use Zend\Http\Response;
+use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
 
 class Module
+    implements DependencyIndicatorInterface
 {
+
+    public function getModuleDependencies()
+    {
+        return array('SynergyDataGrid');
+    }
 
     public function init($moduleManager)
     {
