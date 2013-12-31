@@ -37,9 +37,9 @@ class TemplateController extends AbstractRestfulController
     }
 
     public function update($id, $data)
-        {
-            /** @var \PageBuilder\Service\LayoutService $service */
-            $service = $this->getServiceLocator()->get('pagebuilder\service\layout');
+    {
+        /** @var \PageBuilder\Service\LayoutService $service */
+        $service = $this->getServiceLocator()->get('pagebuilder\service\layout');
         $layout  = isset($data['layout']) ? $data['layout'] : null;
 
         $payLoad   = $service->updateTemplateLayout($id, $layout);

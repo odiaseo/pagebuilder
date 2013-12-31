@@ -99,7 +99,10 @@ return array(
         ),
         'abstract_factories' => array(
             'PageBuilder\WidgetFactory',
-            'PageBuilder\Model\AbstractModelFactory'
+            'PageBuilder\Model\AbstractModelFactory',
+            'SynergyCommon\Model\AbstractModelFactory',
+            'SynergyCommon\Service\AbstractServiceFactory',
+            'SynergyCommon\Entity\AbstractEntityFactory',
         ),
         'invokables'         => array(
             'pagebuilder\entity\component'       => 'PageBuilder\Entity\Component',
@@ -153,26 +156,32 @@ return array(
                 'proxy_dir'        => 'data/DoctrineORMModule/Proxy',
                 'proxy_namespace'  => 'DoctrineORMModule\Proxy',
                 'filters'          => array(
-                    'site-specific' => 'PageBuilder\Filter\SiteFilter',
+                    'site-specific' => 'SynergyCommon\Doctrine\Filter\SiteFilter',
                 ),
             )
         ),
         'driver'        => array(
-            'app_entity_default' => array(
+            'pagebuilder\entity\default' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(__DIR__ . '/../src/PageBuilder/Entity')
             ),
-            'app_entity_join'    => array(
+            'synergy\common\entities'    => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../vendor/synergy/common/lib/SynergyCommon/Entity')
+            ),
+            'pagebuilder\entity\join'    => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(__DIR__ . '/../src/PageBuilder/Entity/Join')
             ),
-            'orm_default'        => array(
+            'orm_default'                => array(
                 'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
                 'drivers' => array(
-                    'PageBuilder\Entity'      => 'app_entity_default',
-                    'PageBuilder\Entity\Join' => 'app_entity_join'
+                    'PageBuilder\Entity'      => 'pagebuilder\entity\default',
+                    'PageBuilder\Entity\Join' => 'pagebuilder\entity\join',
+                    'SynergyCommon\Entity'    => 'synergy\common\entities',
                 )
             )
         ),
@@ -187,8 +196,9 @@ return array(
         ),
     ),
     'pagebuilder'     => array(
+        'main_navigation' =>  'pagebuilder\menu', // change this to the service alias for the main navigation menu
         //Overwrite default entities
-        'entities' => array(
+        'entities'        => array(
             'page'      => 'PageBuilder\Entity\Page',
             'section'   => 'PageBuilder\Entity\Section',
             'template'  => 'PageBuilder\Entity\Template',
@@ -196,7 +206,8 @@ return array(
             'theme'     => 'PageBuilder\Entity\Theme',
             'site'      => 'PageBuilder\Entity\Site'
         ),
-        'tags'     => array(
+        //supported HTML tags
+        'tags'            => array(
             'html'  => array(
                 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'img', 'sup',
                 'span', 'div', 'strong', 'button', 'iframe', 'i', 'input',

@@ -20,6 +20,7 @@ class SiteFilter extends SQLFilter implements ServiceManagerAwareInterface
         ) {
             try {
                 $site = $this->_sm->get('active_site');
+
                 return $targetTableAlias . '.site_id = ' . $site->getId();
             } catch (\Exception $e) {
                 $site = null; //@todo logg error

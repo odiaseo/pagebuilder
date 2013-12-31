@@ -1,13 +1,14 @@
 <?php
 namespace PageBuilder\View\Helper;
 
-use PageBuilder\Entity\Theme;
+use Gedmo\Sluggable\Util\Urlizer;
 use PageBuilder\BaseWidget;
 use PageBuilder\Entity\Page;
 use PageBuilder\View\TagAttributes;
 use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
-use Gedmo\Sluggable\Util\Urlizer;
+use SynergyCommon\Entity\AbstractEntity;
+use SynergyCommon\Entity\BasePage;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -54,23 +55,26 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      * Get the active site theme and find a layout for the the current page that matches the site theme
      * If not layout is found, use the template assigned to the page if set
      *
-     * @param Page       $page
-     * @param Navigation $menuTree
-     * @param Theme      $activeTheme
+     * @param BasePage       $page
+     * @param Navigation     $menuTree
+     * @param AbstractEntity $activeTheme
      *
      * @return $this
      */
-    public function preparePageItems(Page $page, Navigation $menuTree, Theme $activeTheme)
+    public function init(BasePage $page, Navigation $menuTree, AbstractEntity $activeTheme)
     {
         $this->_menuTree = $menuTree;
         $siteTheme       = $activeTheme->getSlug();
         $layout          = null;
         /** @var $theme \PageBuilder\Entity\Join\PageTheme */
-        foreach ($page->getPageThemes() as $theme) {
-            if ($theme->getIsActive() and $theme->getThemeId()->getSlug() == $siteTheme) {
-                $this->_activeTheme = $theme;
-                $layout             = $theme->getLayout();
-                break;
+
+        if (method_exists($page, 'getPageThemes')) {
+            foreach ($page->getPageThemes() as $theme) {
+                if ($theme->getIsActive() and $theme->getThemeId()->getSlug() == $siteTheme) {
+                    $this->_activeTheme = $theme;
+                    $layout             = $theme->getLayout();
+                    break;
+                }
             }
         }
 
@@ -83,8 +87,10 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
             $layout = $template->getLayout() ? : array();
         }
 
+        /** @var $parent \PageBuilder\Entity\Page */
         //try to ge the layout from the parent if it exists
         if (!$layout and $parent = $page->getParent()) {
+            /** @var $temp \PageBuilder\Entity\Template */
             if ($temp = $parent->getTemplate()) {
                 $layout = $temp->getLayout();
             }
@@ -123,23 +129,25 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 
     public function __invoke($content = '')
     {
-        $html               = array();
-        $this->_mainContent = $content;
+        $html = array();
 
         if ($layout = $this->getLayout()) {
+            $this->_mainContent = $content;
+
             /** @var $microDataHelper  \PageBuilder\View\Helper\MicroData */
             $microDataHelper = $this->_serviceManager
                 ->get('viewhelpermanager')->get('microdata'); //  getView()->microData();
 
             /** @var $template['tagAttributes'] \PageBuilder\View\TagAttributes */
             foreach ($layout as $section => $template) {
-                $template['tagAttributes'] = $template['tagAttributes'];
-                $sectionWrapper            = $template['tagAttributes']->getWrapper();
-                $template['tagAttributes']->addClass($section . '-section');
+                /** @var $templateAttr \PageBuilder\View\TagAttributes */
+                $templateAttr   = $template['tagAttributes'];
+                $sectionWrapper = $templateAttr->getWrapper();
+                $templateAttr->addClass($section . '-section');
 
                 if ($sectionWrapper) {
-                    $html [] = '<' . $sectionWrapper . $template['tagAttributes']->formatClass()
-                        . $template['tagAttributes']->formatId() . $template['tagAttributes']->formatAttr();
+                    $html [] = '<' . $sectionWrapper . $templateAttr->formatClass()
+                        . $templateAttr->formatId() . $templateAttr->formatAttr();
                     switch ($section) {
                         case 'header':
                             $microData = $microDataHelper->scopeAndProperty('WebPage', 'WPHeader');
@@ -227,11 +235,11 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                     }
                 }
             }
-        } else {
-            $html[] = $this->_mainContent;
-        }
 
-        return implode('', $html);
+            return implode('', $html);
+        } else {
+            return $content;
+        }
     }
 
     /**

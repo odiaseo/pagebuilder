@@ -4,7 +4,8 @@ namespace PageBuilder\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use PageBuilder\BaseEntity;
+use SynergyCommon\Entity\AbstractEntity;
+
 /**
  * Section
  *
@@ -12,7 +13,8 @@ use PageBuilder\BaseEntity;
  * @ORM\Entity
  *
  */
-class Section extends BaseEntity
+class Section
+    extends AbstractEntity
 {
     /**
      * @ORM\Id

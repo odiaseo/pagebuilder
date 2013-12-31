@@ -1,16 +1,16 @@
 <?php
-    namespace PageBuilder\Widget\Core;
+namespace PageBuilder\Widget\Core;
 
-    use PageBuilder\BaseWidget;
+use PageBuilder\BaseWidget;
 
-    class Gap extends BaseWidget
+class Gap extends BaseWidget
+{
+    protected $name = 'Gap';
+    protected $description = 'Content spacer';
+    protected $options = array();
+
+    public function render()
     {
-        protected $name = 'Gap';
-        protected $description = 'Content spacer';
-        protected $options = array();
-
-        public function render()
-        {
-            return '<div class="gap"></div>';
-        }
+        return '<div class="gap"></div>';
     }
+}

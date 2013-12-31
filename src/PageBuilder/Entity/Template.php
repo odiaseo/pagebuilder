@@ -4,7 +4,7 @@ namespace PageBuilder\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use PageBuilder\BaseEntity;
+
 
 /**
  * Product Template
@@ -13,7 +13,8 @@ use PageBuilder\BaseEntity;
  * @ORM\Table(name="Template")
  *
  */
-class Template extends BaseEntity
+class Template
+    extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -39,47 +40,13 @@ class Template extends BaseEntity
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $templateSections;
-    /**
-     * @var \datetime createdAt
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", name="created_at", nullable=true)
-     */
-    protected $createdAt;
-    /**
-     * @var \datetime updatedAt
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", name="updated_at", nullable=true)
-     */
-    protected $updatedAt;
-    /**
-     * @ORM\ManyToOne(targetEntity="Site", cascade="persist")
-     * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
-     * @ORM\OrderBy({"sortOrder" = "ASC"})
-     */
-    protected $siteId;
+
 
     public function __construct()
     {
         $this->templateSections = new ArrayCollection();
     }
 
-    /**
-     * @param \datetime $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return \datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
 
     public function setDescription($description)
     {
@@ -111,16 +78,6 @@ class Template extends BaseEntity
         return $this->layout;
     }
 
-    public function setSiteId($siteId)
-    {
-        $this->siteId = $siteId;
-    }
-
-    public function getSiteId()
-    {
-        return $this->siteId;
-    }
-
     public function setTemplateSections($templateSections)
     {
         $this->templateSections = $templateSections;
@@ -139,22 +96,6 @@ class Template extends BaseEntity
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * @param \datetime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
-     * @return \datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
 }

@@ -3,7 +3,8 @@ namespace PageBuilder\Entity\Join;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use PageBuilder\BaseEntity;
+use SynergyCommon\Entity\AbstractEntity;
+
 
 /**
  * Template Section Join table
@@ -12,7 +13,8 @@ use PageBuilder\BaseEntity;
  * @ORM\Table(name="Template_Section", uniqueConstraints={@ORM\UniqueConstraint(name="tsx_idx", columns={"template_id", "section_id"})})
  *
  */
-class TemplateSection extends BaseEntity
+class TemplateSection
+    extends AbstractEntity
 {
     /**
      * @ORM\Id

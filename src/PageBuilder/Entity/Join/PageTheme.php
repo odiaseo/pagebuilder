@@ -3,7 +3,8 @@ namespace PageBuilder\Entity\Join;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use PageBuilder\BaseEntity;
+use SynergyCommon\Entity\AbstractEntity;
+
 
 /**
  * Page Themes Join table
@@ -12,7 +13,8 @@ use PageBuilder\BaseEntity;
  * @ORM\Table(name="Page_Theme", uniqueConstraints={@ORM\UniqueConstraint(name="page_theme_idx", columns={"page_id", "theme_id"})})
  *
  */
-class PageTheme extends BaseEntity
+class PageTheme
+    extends AbstractEntity
 {
     /**
      * @ORM\Id

@@ -4,7 +4,7 @@ namespace PageBuilder\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use PageBuilder\BaseEntity;
+
 
 /**
  * Themes
@@ -13,7 +13,8 @@ use PageBuilder\BaseEntity;
  * @ORM\Table(name="Theme")
  *
  */
-class Theme extends BaseEntity
+class Theme
+    extends BaseEntity
 {
     /**
      * @ORM\Id

@@ -23,6 +23,7 @@ class Module
 
     public function init($moduleManager)
     {
+        /** @var $moduleManager \Zend\ModuleManager\ModuleManager */
         $sharedEvents = $moduleManager->getEventManager()->getSharedManager();
         $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'onModuleDispatch'), 103);
         $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'initEntityManager'), 103);
@@ -37,36 +38,49 @@ class Module
     }
 
 
-    public function onModuleDispatch($e)
+    public function onModuleDispatch(MvcEvent $e)
     {
         if ($app = $e->getApplication()) {
             $locator = $app->getServiceManager();
+            $config  = $locator->get('config');
 
-            $viewHelperManager = $locator->get('viewHelperManager');
-            $navigation        = $viewHelperManager->get('navigation');
-            $menuTree          = $navigation('pagebuilder\menu');
-            $container         = $menuTree->getContainer();
-            $activeMenu        = $navigation->findActive($container);
+            if ($mainMenuKey = $config['pagebuilder']['main_navigation']) {
 
-            if ($activeMenu) {
-                $activeTheme = $locator->get('active_theme');
-                $menu        = $locator->get('pagebuilder\model\page')->findObject($activeMenu['page']->id);
+                $viewHelperManager = $locator->get('viewHelperManager');
 
-                /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
-                $pageBuilder = $viewHelperManager->get('buildPage');
-                $pageBuilder->preparePageItems($menu, $menuTree, $activeTheme);
+                /** @var $navigation \Zend\View\Helper\Navigation */
+                $navigation = $viewHelperManager->get('navigation');
+
+                /** @var $menuTree \Zend\View\Helper\Navigation */
+                $menuTree  = $navigation($mainMenuKey);
+                $container = $menuTree->getContainer();
+
+                $activeMenu = $navigation->findActive($container);
+
+                if ($activeMenu) {
+                    /** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
+                    $activeTheme = $locator->get('active_theme');
+                    $menu        = $locator->get('pagebuilder\model\page')->findObject($activeMenu['page']->id);
+
+                    /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
+                    $pageBuilder = $viewHelperManager->get('buildPage');
+                    $pageBuilder->init($menu, $menuTree, $activeTheme);
+                }
             }
         }
     }
 
-    public function initEntityManager($e)
+    public function initEntityManager(MvcEvent $e)
     {
+        /** @var  $sm \Zend\Servicemanager\ServiceManager */
         $sm = $e->getApplication()->getServiceManager();
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $sm->get('doctrine.entitymanager.orm_default');
 
-        $em->getFilters()->enable("site-specific")->setServiceManager($sm);
+        /** @var $siteFilter \SynergyCommon\Doctrine\Filter\SiteFilter */
+        $siteFilter = $em->getFilters()->enable("site-specific");
+        $siteFilter->setServiceManager($sm);
     }
 
     public function getConfig()
@@ -98,7 +112,9 @@ class Module
             ),
             'initializers' => array(
                 'widget' => function ($widget, $sm) {
-                    /** @var $widget \PageBuilder\BaseWidget */
+                    /** @var  $sm \Zend\Servicemanager\ServiceManager */
+
+                    /** @var $widget  \object */
                     if ($widget instanceof WidgetInterface) {
                         /** @var $mvcEvent \Zend\Mvc\MvcEvent */
                         $mvcEvent = $sm->get('application')->getMvcEvent();
@@ -143,15 +159,21 @@ class Module
                     $request      = $sm->get('application')->getRequest();
 
                     if ($request instanceof Request) {
-                        $rm   = $sm->get('application')->getMvcEvent()->getRouteMatch();
+                        /** @var $event \Zend\Mvc\MvcEvent */
+                        $event = $sm->get('application')->getMvcEvent();
+                        /** @var $rm \Zend\Mvc\Router\RouteMatch */
+                        $rm   = $event->getRouteMatch();
                         $host = $rm->getParam('host');
                     } else {
+                        /** @var $request \Zend\Http\PhpEnvironment\Request */
                         $host = $request->getServer('HTTP_HOST');
                     }
 
                     $hostname   = str_replace(array('http://', 'https://', 'www.'), '', $host);
                     $sessionKey = preg_replace('/[^\p{L}\p{N}]+/ui', '', "host{$hostname}");
-                    $container  = new Container($sessionKey);
+
+                    /** @var $container \ArrayObject */
+                    $container = new Container($sessionKey);
 
                     if ($container->offsetExists($containerKey)) {
                         $em   = $sm->get('doctrine.entitymanager.orm_default');
@@ -180,9 +202,10 @@ class Module
         return array(
             'factories'  => array(
                 'flashMessages' => function ($sm) {
-                    $flashmessenger = $sm->getServiceLocator()
-                        ->get('ControllerPluginManager')
-                        ->get('flashmessenger');
+                    /** @var  $sm \Zend\Servicemanager\ServiceLocatorAwareInterface */
+                    /** @var  $serviceManager \Zend\Servicemanager\ServiceManager */
+                    $serviceManager = $sm->getServiceLocator();
+                    $flashmessenger = $serviceManager->get('ControllerPluginManager')->get('flashmessenger');
 
                     $messages = new FlashMessages();
                     $messages->setFlashMessenger($flashmessenger);

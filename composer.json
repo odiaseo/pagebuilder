@@ -23,15 +23,19 @@
         "doctrine/doctrine-module": ">=0.7",
         "gedmo/doctrine-extensions": ">=v2.2.0",
         "synergy/synergydatagrid": "dev-master",
-        "symfony/yaml": "dev-master"
+        "synergy/common": "dev-master",
+        "monolog/monolog": "dev-master",
+        "symfony/yaml": "dev-master",
+        "ewgo/solarium-module": "dev-master"
     },
     "autoload": {
         "psr-0": {
             "PageBuilder": "src/",
-            "PageBuilderTest": "tests/"
+            "PageBuilderTest": "tests/module/"
         },
         "classmap": [
-            "./Module.php"
+            "./Module.php",
+            "./tests/module/Module.php"
         ]
     }
 }
