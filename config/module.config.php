@@ -160,31 +160,36 @@ return array(
                 ),
             )
         ),
-        'driver'        => array(
-            'pagebuilder\entity\default' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/PageBuilder/Entity')
-            ),
-            'synergy\common\entities'    => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(__DIR__ . '/../vendor/synergy/common/lib/SynergyCommon/Entity')
-            ),
-            'pagebuilder\entity\join'    => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/PageBuilder/Entity/Join')
-            ),
-            'orm_default'                => array(
-                'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
-                'drivers' => array(
-                    'PageBuilder\Entity'      => 'pagebuilder\entity\default',
-                    'PageBuilder\Entity\Join' => 'pagebuilder\entity\join',
-                    'SynergyCommon\Entity'    => 'synergy\common\entities',
-                )
+        'pagebuilder\entity\default' => array(
+            'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+            'cache' => 'array',
+            'paths' => array(
+                'vendor/synergy/pagebuilder/src/PageBuilder/Entity'
             )
         ),
+        'pagebuilder\entity\join'    => array(
+            'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+            'cache' => 'array',
+            'paths' => array(
+                'vendor/synergy/pagebuilder/src/PageBuilder/Entity/Join'
+            )
+        ),
+        'synergy\common\entities'    => array(
+            'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+            'cache' => 'array',
+            'paths' => array(
+                'vendor/synergy/common/lib/SynergyCommon/Entity'
+            )
+        ),
+        'orm_default'                => array(
+            'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+            'drivers' => array(
+                'PageBuilder\Entity'      => 'pagebuilder\entity\default',
+                'PageBuilder\Entity\Join' => 'pagebuilder\entity\join',
+                'SynergyCommon\Entity'    => 'synergy\common\entities',
+            )
+        ),
+
         'eventmanager'  => array(
             'orm_default' => array(
                 'subscribers' => array(
