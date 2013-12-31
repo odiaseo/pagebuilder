@@ -15,3 +15,5 @@
 + MultiSelect
 + Tags Input
 + P Notify
+
+#copy widgets.php.dist to config.autoload and rename
