@@ -19,18 +19,18 @@ class Page
     extends BasePage
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Template")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=true)
      */
     protected $template;
     /**
      * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Page", inversedBy="children", fetch="LAZY", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", inversedBy="children", fetch="LAZY", cascade={"persist"})
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      */
     protected $parent;
     /**
-     * @ORM\OneToMany(targetEntity="Page", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Page", mappedBy="parent")
      * @ORM\OrderBy({"title" = "ASC"})
      */
     protected $children;
