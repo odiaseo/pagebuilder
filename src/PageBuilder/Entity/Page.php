@@ -43,6 +43,7 @@ class Page
 
     public function __construct()
     {
+        parent::__construct();
         $this->children   = new ArrayCollection();
         $this->pageThemes = new ArrayCollection();
     }

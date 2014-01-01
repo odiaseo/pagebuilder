@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SynergyCommon\Entity\BaseSite;
@@ -10,7 +11,6 @@ use SynergyCommon\Entity\BaseSite;
  *
  * @ORM\Entity
  * @ORM\Table(name="Site")
- * @ORM\HasLifecycleCallbacks
  */
 class Site
     extends BaseSite
@@ -18,7 +18,17 @@ class Site
     /**
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade="persist")
      */
-    protected $siteThemes;
+    private $siteThemes;
+    /**
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Licence", cascade="persist")
+     * @ORM\JoinTable(name="Site_Licence")
+     */
+    private $licences;
+
+    public function __construct()
+    {
+        $this->licences = new ArrayCollection();
+    }
 
     public function setSiteThemes($siteThemes)
     {
@@ -28,6 +38,16 @@ class Site
     public function getSiteThemes()
     {
         return $this->siteThemes;
+    }
+
+    public function setLicences($licences)
+    {
+        $this->licences = $licences;
+    }
+
+    public function getLicences()
+    {
+        return $this->licences;
     }
 
 

@@ -10,7 +10,6 @@ define(
         'text!templates/layout-manager.html',
         'text!templates/popover.html',
         'text!templates/sections.html',
-        'text!templates/row-info.html',
         "multiselect",
         'tagsinput',
         'select2',
@@ -18,8 +17,14 @@ define(
         'pnotify',
         'fancybox'
     ],
-    function (_, layoutTemp, popTemp, sectionTemp, rowInfo) {
+    function (_, layoutTemp, popTemp, sectionTemp) {
         "use strict";
+
+        function _getRowInfo() {
+            var rowInfo = $('body').data('rowInfo');
+            return rowInfo;
+        }
+
         var pageBuilder = {
             canvasClass: '.template-canvas',
             actionToolbar: '.template-actions',
@@ -91,6 +96,7 @@ define(
             },
 
             addRowItem: function (attr, dest, rowData, customData) {
+                var rowInfo = _getRowInfo();
                 rowData = rowData || [];
                 var cls = _.has(rowData, 'class') ? rowData['class'] : pageBuilder.defaultRowClass;
                 var cssClass = cls.replace(',', ' ');
