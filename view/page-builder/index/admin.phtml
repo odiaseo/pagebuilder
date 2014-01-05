@@ -11,10 +11,7 @@
     <?php
     $firstGrid = current($grids);
     $firstGrid->getJsCode()->addCustomScript(
-        new \Zend\Json\Expr("; $('body').delegate('.nav li', 'click', function(){
-        $(window).trigger('resize');
-    }); "
-        )
+        new \Zend\Json\Expr(";jQuery('.nav-tabs').on('shown', function(){ jQuery(window).trigger('resize');   }); ")
     );
     ?>
 

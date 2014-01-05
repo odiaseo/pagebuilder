@@ -61,11 +61,11 @@ class Bootstrap
                 'module_paths' => $zf2ModulePaths,
             ),
             'modules'                 => array(
+                'SynergyDataGrid',
                 'PageBuilder',
                 'PageBuilderTest',
                 'DoctrineModule',
                 'DoctrineORMModule',
-                'SynergyDataGrid',
             )
         );
 
