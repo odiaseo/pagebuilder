@@ -27,7 +27,7 @@
         "monolog/monolog": "dev-master",
         "symfony/yaml": "dev-master",
         "ewgo/solarium-module": "dev-master",
-        "zf-commons/zfc-user-doctrine-orm": "dev-master",
+        "zf-commons/zfc-user-doctrine-orm": "0.*",
         "bjyoungblood/bjy-authorize": "dev-master"
     },
     "autoload": {
