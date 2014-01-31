@@ -43,10 +43,10 @@ return array(
 
     'router'          => array(
         'routes' => array(
-            'home'              => array(
+            'pagebuilder\home'              => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/home',
+                    'route'    => '/pagebuilder-app',
                     'defaults' => array(
                         'controller' => 'PageBuilder\Controller\Index',
                         'action'     => 'index',
@@ -233,6 +233,7 @@ return array(
     ),
 
     'pagebuilder'     => array(
+        'enabled'         => true,
         'widgets'         => array(
             'paths' => array(
                 'PageBuilder\Widget' => __DIR__ . '/../src/PageBuilder/Widget'

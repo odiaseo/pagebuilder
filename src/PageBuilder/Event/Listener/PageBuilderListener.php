@@ -32,7 +32,10 @@ class PageBuilderListener
             $locator = $app->getServiceManager();
             $config  = $locator->get('config');
 
-            if ($mainMenuKey = $config['pagebuilder']['main_navigation']) {
+            $enabled = (!empty($config['pagebuilder']['enabled'])  and $config['pagebuilder']['enabled']) ? true
+                : false;
+
+            if ($enabled and $mainMenuKey = $config['pagebuilder']['main_navigation']) {
 
                 $viewHelperManager = $locator->get('viewHelperManager');
 
