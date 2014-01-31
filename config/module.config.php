@@ -46,7 +46,7 @@ return array(
             'home'              => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/',
+                    'route'    => '/home',
                     'defaults' => array(
                         'controller' => 'PageBuilder\Controller\Index',
                         'action'     => 'index',
