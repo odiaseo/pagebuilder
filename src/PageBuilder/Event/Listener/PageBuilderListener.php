@@ -14,7 +14,6 @@ class PageBuilderListener
 
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initEntityManager'), 10);
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initialiseWidgets'), -2);
     }
 
@@ -57,18 +56,5 @@ class PageBuilderListener
                 }
             }
         }
-    }
-
-    public function initEntityManager(MvcEvent $e)
-    {
-        /** @var  $sm \Zend\Servicemanager\ServiceManager */
-        $sm = $e->getApplication()->getServiceManager();
-
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $sm->get('doctrine.entitymanager.orm_default');
-
-        /** @var $siteFilter \SynergyCommon\Doctrine\Filter\SiteFilter */
-        $siteFilter = $em->getFilters()->enable("site-specific");
-        $siteFilter->setServiceManager($sm);
     }
 }

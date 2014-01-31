@@ -11,6 +11,7 @@ namespace PageBuilder;
 
 
 use PageBuilder\Event\Listener\PageBuilderListener;
+use SynergyCommon\Event\Listener\SynergyModuleListener;
 use Zend\Http\Response;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\Mvc\ModuleRouteListener;
@@ -33,6 +34,8 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        $eventManager->attach(new SynergyModuleListener());
         $eventManager->attach(new PageBuilderListener());
     }
 
@@ -91,7 +94,7 @@ class Module
             ),
 
             'factories'    => array(
-                'active_site'                              => 'SynergyCommon\Service\ActiveClientSite',
+                'active_site'                              => 'PageBuilder\Service\LocalSiteFactory',
                 'PageBuilder\Service\PageService'          => 'PageBuilder\Service\PageService',
                 'PageBuilder\Navigation\NavigationFactory' => 'PageBuilder\Navigation\NavigationFactory',
                 'PageBuilder\Service\ComponentService'     => 'PageBuilder\Service\ComponentService',
