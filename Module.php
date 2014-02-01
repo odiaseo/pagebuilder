@@ -116,12 +116,10 @@ class Module
     public function getViewHelperConfig()
     {
         return array(
-            'factories'  => array(
+            'invokables' => array(
+                'buildPage'     => 'PageBuilder\View\Helper\PageBuilder',
                 'flashMessages' => 'SynergyCommon\View\Helper\FlashMessages',
                 'microData'     => 'SynergyCommon\View\Helper\MicroData',
-            ),
-            'invokables' => array(
-                'buildPage' => 'PageBuilder\View\Helper\PageBuilder',
             )
         );
     }
