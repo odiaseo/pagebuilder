@@ -233,7 +233,7 @@ return array(
     ),
 
     'pagebuilder'     => array(
-        'enabled'         => true,
+        'enabled'         => false, //change to true to enable
         'widgets'         => array(
             'paths' => array(
                 'PageBuilder\Widget' => __DIR__ . '/../src/PageBuilder/Widget'
@@ -489,4 +489,10 @@ return array(
             )
         ),
     ),
+    'synergy' => array(
+        'logger'        => array(
+            'directory' => __DIR__ . '/../data/logs',
+            'namespace' => 'pagebuilder'
+        )
+    )
 );

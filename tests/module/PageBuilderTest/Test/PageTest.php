@@ -16,5 +16,10 @@ class PageTest extends BaseTestClass
         $pageService = $this->_serviceManager->get('pagebuilder\service\layout');
         $this->assertInstanceOf('PageBuilder\Service\LayoutService', $pageService);
     }
+    public function testPageBuilder()
+    {
+        $pageService = $this->_serviceManager->get('viewhelpermanager')->get('buildpage');
+        $this->assertInstanceOf('PageBuilder\View\Helper\PageBuilder', $pageService);
+    }
 
 }

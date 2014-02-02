@@ -22,7 +22,9 @@ use Zend\View\Helper\Navigation;
  *
  * @package PageBuilder\View\Helper
  */
-class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
+class PageBuilder
+    extends AbstractHelper
+    implements ServiceLocatorAwareInterface
 {
     const MAIN_CONTENT   = 'main';
     const FLASH_MESSAGES = 'flash';
@@ -63,66 +65,74 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     public function init(BasePage $page, Navigation $menuTree, AbstractEntity $activeTheme)
     {
-        $this->_menuTree = $menuTree;
-        $siteTheme       = $activeTheme->getSlug();
-        $layout          = null;
-        /** @var $theme \PageBuilder\Entity\Join\PageTheme */
+        $config = $this->_serviceManager->get('config');
 
-        if (method_exists($page, 'getPageThemes')) {
-            foreach ($page->getPageThemes() as $theme) {
-                if ($theme->getIsActive() and $theme->getThemeId()->getSlug() == $siteTheme) {
-                    $this->_activeTheme = $theme;
-                    $layout             = $theme->getLayout();
-                    break;
+        if (!empty($config['pagebuilder']['enabled'])) {
+
+            $this->_menuTree = $menuTree;
+            $siteTheme       = (string)$activeTheme;
+
+            $layout = null;
+            /** @var $theme \PageBuilder\Entity\Join\PageTheme */
+
+            if (method_exists($page, 'getPageThemes')) {
+                foreach ($page->getPageThemes() as $theme) {
+                    if ($theme->getIsActive() and $theme->getThemeId()->getSlug() == $siteTheme) {
+                        $this->_activeTheme = $theme;
+                        $layout             = $theme->getLayout();
+                        break;
+                    }
                 }
             }
-        }
 
-        //try to get the layout from the page template
-        /** @var $template \PageBuilder\Entity\Template */
+            //try to get the layout from the page template
+            /** @var $template \PageBuilder\Entity\Template */
 
-        /** @var $page \PageBuilder\Entity\Page */
-        if (!$layout and $template = $page->getTemplate()) {
-            //Use customized page template if set, otherwise use global template
-            $layout = $template->getLayout() ? : array();
-        }
-
-        /** @var $parent \PageBuilder\Entity\Page */
-        //try to ge the layout from the parent if it exists
-        if (!$layout and $parent = $page->getParent()) {
-            /** @var $temp \PageBuilder\Entity\Template */
-            if ($temp = $parent->getTemplate()) {
-                $layout = $temp->getLayout();
+            /** @var $page \PageBuilder\Entity\Page */
+            if (!$layout and $template = $page->getTemplate()) {
+                //Use customized page template if set, otherwise use global template
+                $layout = $template->getLayout() ? : array();
             }
-        }
 
-        foreach ($layout as &$template) {
-            $sectionAttr               = isset($template['tagAttributes']) ? $template['tagAttributes'] : array();
-            $template['tagAttributes'] = new TagAttributes($sectionAttr);
-            if (isset($template['items'])) {
-                foreach ($template['items'] as &$row) {
-                    $rowAttr              = isset($row['tagAttributes']) ? $row['tagAttributes'] : array();
-                    $row['tagAttributes'] = new TagAttributes($rowAttr);
-                    if (isset($row['rowItems'])) {
-                        foreach ($row['rowItems'] as &$col) {
-                            if (isset($col['item'])) {
-                                foreach ($col['item'] as $index => $item) {
-                                    list($itemType, $itemId) = explode('-', $item['name']);
-                                    $attr                  = isset($item['tagAttributes']) ? $item['tagAttributes']
-                                        : array();
-                                    $item['tagAttributes'] = new TagAttributes($attr);
-                                    $col['item'][$index]   = $this->getItem($itemType, $itemId, $item['tagAttributes']);
+            /** @var $parent \PageBuilder\Entity\Page */
+            //try to ge the layout from the parent if it exists
+            if (!$layout and $parent = $page->getParent()) {
+                /** @var $temp \PageBuilder\Entity\Template */
+                if ($temp = $parent->getTemplate()) {
+                    $layout = $temp->getLayout();
+                }
+            }
+
+            foreach ($layout as &$template) {
+                $sectionAttr               = isset($template['tagAttributes']) ? $template['tagAttributes'] : array();
+                $template['tagAttributes'] = new TagAttributes($sectionAttr);
+                if (isset($template['items'])) {
+                    foreach ($template['items'] as &$row) {
+                        $rowAttr              = isset($row['tagAttributes']) ? $row['tagAttributes'] : array();
+                        $row['tagAttributes'] = new TagAttributes($rowAttr);
+                        if (isset($row['rowItems'])) {
+                            foreach ($row['rowItems'] as &$col) {
+                                if (isset($col['item'])) {
+                                    foreach ($col['item'] as $index => $item) {
+                                        list($itemType, $itemId) = explode('-', $item['name']);
+                                        $attr                  = isset($item['tagAttributes']) ? $item['tagAttributes']
+                                            : array();
+                                        $item['tagAttributes'] = new TagAttributes($attr);
+                                        $col['item'][$index]   = $this->getItem(
+                                            $itemType, $itemId, $item['tagAttributes']
+                                        );
+                                    }
+                                } else {
+                                    $col['item'] = array();
                                 }
-                            } else {
-                                $col['item'] = array();
                             }
                         }
                     }
                 }
             }
-        }
 
-        $this->_layout = $layout;
+            $this->_layout = $layout;
+        }
 
         return $this;
     }

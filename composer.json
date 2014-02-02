@@ -23,12 +23,7 @@
         "doctrine/doctrine-module": ">=0.7",
         "gedmo/doctrine-extensions": ">=v2.2.0",
         "synergy/synergydatagrid": "dev-master",
-        "synergy/common": "dev-master",
-        "monolog/monolog": "dev-master",
-        "symfony/yaml": "dev-master",
-        "ewgo/solarium-module": "dev-master",
-        "zf-commons/zfc-user-doctrine-orm": "0.*",
-        "bjyoungblood/bjy-authorize": "dev-master"
+        "synergy/common": "dev-master"
     },
     "autoload": {
         "psr-0": {
