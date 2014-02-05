@@ -65,7 +65,7 @@ class PageBuilder
      */
     public function init(BasePage $page, Navigation $menuTree, AbstractEntity $activeTheme)
     {
-        $config = $this->_serviceManager->get('config');
+        $config = $this->getServiceManager()->get('config');
 
         if (!empty($config['pagebuilder']['enabled'])) {
 

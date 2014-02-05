@@ -1,0 +1,19 @@
+<div id="show-sections" title="Template Sections" class="temp">
+    <div>
+        <form action="<%=updateUrl %>" method="post">
+            <select name="sectionId" multiple="true" class="multiselect" style='height:300px; width:450px'>
+                <%
+                var sel = '';
+                for(var i in sections){
+                    if(_.has(sections, i)){
+                        var v  = i * 1;
+                        sel = _.contains(templateSections, v) ?  ' selected="selected" ' : '' ; %>
+                        <option <%=sel %> value="<%=i %>"><%=sections[i].title %></option>
+                <%  }
+                }
+
+                %>
+            </select>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<div id="attr-<%=id %>">
+    <form class="attr-container">
+        <fieldset>
+            <legend>Main Wrapper</legend>
+            <div class="control">
+                <label>Tag</label>
+                <select name="wrapper" class="input-medium">
+                    <option value=""> -- None --</option>
+                    <%
+                    for(var a in tagList){%>
+                    <optgroup label="<%=a %>">
+                        <%
+                        for(var i in tagList[a]){
+                        var sel = (tagList[a][i] == elemTag) ? 'selected="selected"' : '';%>
+                        <option value="<%=tagList[a][i] %>"
+                        <%=sel %>><%=tagList[a][i] %></option>
+                        <% }
+                        %>
+                    </optgroup>
+                    <% } %>
+                </select>
+            </div>
+            <div class="control">
+                <label>ID</label>
+                <input class="tags" type="text" name="id" placeholder="add ID">
+            </div>
+
+            <div class="control">
+                <label>Class</label>
+                <input class="tags" type="text" name="class" placeholder="add Class">
+            </div>
+
+
+            <div class="control">
+                <label>Attributes</label>
+                <input class="tags" type="text" name="attr" placeholder="add attribute">
+            </div>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Inner Wrappers</legend>
+            <div class="control">
+                <label>Level 1</label>
+                <input class="tags" type="text" name="container" placeholder="add class">
+            </div>
+            <div class="control">
+                <label>Level 2</label>
+                <input class="tags" type="text" name="container2" placeholder="add class">
+            </div>
+
+        </fieldset>
+        <% if(_.size( $(options)[0])){%>
+        <fieldset>
+            <legend>Additional Options</legend>
+
+            <div class="control">
+                <%
+                for(var o in options){ %>
+                <label><%=o %></label>
+                <input class="tags" type="text" name="options_<%=o %>" placeholder="add <%=o %>" value="<%=options[o] %>">
+                <%}
+                %>
+            </div>
+        </fieldset>
+        <% } %>
+        <div class="btn-group pull-right">
+            <button id="pop-cancel" class="btn btn-mini btn-danger"><i class="icon-remove icon-white"></i></button>
+            <button id="pop-ok" class="btn btn-mini btn-success"><i class="icon-ok icon-white"></i></button>
+        </div>
+    </form>
+</div>

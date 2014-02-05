@@ -23,7 +23,7 @@
         ->appendStylesheet($this->basePath() . '/css/jqueryui/smoothness/jquery-ui.min.css')
         ->appendStylesheet($this->basePath() . '/css/jqueryui/smoothness/jquery.ui.theme.css')
         ->appendStylesheet($this->basePath() . '/jqGrid/css/ui.jqgrid.css')
-        ->appendStylesheet($this->basePath() . '/pagebuilder/css/pagebuilder.min.css')
+        ->appendStylesheet($this->basePath() . '/plugin/pagebuilder/css/pagebuilder.min.css')
 
     ?>
 
@@ -37,8 +37,8 @@
         ->appendFile($this->basePath() . '/jqGrid/src/jquery.jqGrid.js')
         ->appendFile($this->basePath() . '/js/jquery-ui-1.10.3.custom.min.js');
     ?>
-    <script src="<?php echo $this->basePath() . '/pagebuilder/libs/require.min.js'; ?>" type="text/javascript"
-            data-main="<?php echo $this->basePath() . '/pagebuilder/libs/app'; ?>"></script>
+    <script src="<?php echo $this->basePath() . '/plugin/pagebuilder/libs/require.min.js'; ?>" type="text/javascript"
+            data-main="<?php echo $this->basePath() . '/plugin/pagebuilder/libs/app'; ?>"></script>
 </head>
 <body>
 
