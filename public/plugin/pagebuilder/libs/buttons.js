@@ -7,9 +7,9 @@
 define(
     [
         "underscore",
-        'text!templates/layout-manager.html',
-        'text!templates/popover.html',
-        'text!templates/sections.html',
+        'text!page-templates/layout-manager.html',
+        'text!page-templates/popover.html',
+        'text!page-templates/sections.html',
         "multiselect",
         'tagsinput',
         'select2',

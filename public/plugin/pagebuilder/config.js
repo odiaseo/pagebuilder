@@ -20,7 +20,7 @@ require.config(
             "require": "require.min",
             "select2": "select2.min",
             "tagsinput": 'jquery.tagsinput.min',
-            "templates": "../templates",
+            "page-templates": "../templates",
             "text": "text",
             "underscore": "lodash"
         },
