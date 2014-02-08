@@ -80,7 +80,15 @@ class LayoutService implements ServiceManagerAwareInterface
         );
     }
 
-    public function getPageLayout($pageId)
+    /**
+     * Get page layout
+     *
+     * @param      $pageId
+     * @param null $pageThemeId
+     *
+     * @return array
+     */
+    public function getPageLayout($pageId, $pageThemeId = null)
     {
         $sections = $templateSections = array();
         $error    = '';
@@ -112,27 +120,37 @@ class LayoutService implements ServiceManagerAwareInterface
 
         );
 
+        $themeId = null;
         /** @var $pageTheme \PageBuilder\Entity\Join\PageTheme */
-        foreach ($page->getPageThemes() as $pageTheme) {
+        if ($pageThemeId) {
+            /** @var $pageThemeModel \PageBuilder\Model\BaseModel */
+            $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
+            $pageTheme      = $pageThemeModel->findOneBy(array('themeId' => $pageThemeId));
+            $themeId        = $pageTheme->getThemeId()->getId();
+        } else {
 
-            if ($pageTheme->getIsActive()) {
-                $themeId            = $pageTheme->getThemeId()->getId();
-                $details['themeId'] = $themeId;
-
-                $details['layout']    = $pageTheme->getLayout();
-                $details['pageTheme'] = $pageTheme->getId();
-
-                /** @var $temp \PageBuilder\Entity\Template */
-                if ($temp = $page->getTemplate()) {
-                    $sections = $temp->getTemplateSections()->toArray();
-                } elseif ($temp = $page->getParent()->getTemplate()) {
-                    $sections = $temp->getTemplateSections()->toArray();
+            foreach ($page->getPageThemes() as $pageTheme) {
+                if ($pageTheme->getIsActive()) {
+                    $themeId = $pageTheme->getThemeId()->getId();
+                    break;
                 }
-
-                break;
             }
         }
 
+        if ($themeId) {
+            $details['themeId'] = $themeId;
+
+            $details['layout']    = $pageTheme->getLayout();
+            $details['pageTheme'] = $pageTheme->getId();
+
+            /** @var $temp \PageBuilder\Entity\Template */
+            if ($temp = $page->getTemplate()) {
+                $sections = $temp->getTemplateSections()->toArray();
+            } elseif ($temp = $page->getParent()->getTemplate()) {
+                $sections = $temp->getTemplateSections()->toArray();
+            }
+
+        }
         /** @var $section \PageBuilder\Entity\Join\TemplateSection */
         foreach ($sections as $section) {
             $slug                    = $section->getSectionId()->getSlug();
@@ -165,7 +183,11 @@ class LayoutService implements ServiceManagerAwareInterface
         $return = array(
             'error'     => $error,
             'page'      => $details,
-            'editUrl'   => $urlHelper('builder', array('id' => $pageId)),
+            'editUrl'   => $pageThemeId
+                ? $urlHelper('builder\theme', array('id' => $pageThemeId))
+                : $urlHelper(
+                    'builder', array('id' => $pageId)
+                ),
             'sections'  => $templateSections,
             'title'     => 'Layout Manager - ' . $page->getTitle(),
             'widgets'   => array(
@@ -189,6 +211,29 @@ class LayoutService implements ServiceManagerAwareInterface
         );
 
         return $return;
+    }
+
+    public function updatePageThemeLayout($pageThemeId, $layout)
+    {
+        try {
+            /** @var $service \PageBuilder\Model\PageModel */
+            $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
+
+            /** @var \PageBuilder\Entity\Join\PageTheme $pageTheme */
+            $pageTheme = $pageThemeModel->find($pageThemeId);
+            $pageTheme->setLayout($layout);
+            $pageThemeModel->save($pageTheme);
+
+            return array(
+                'error'   => false,
+                'message' => sprintf('Page Theme #%d updated successfully', $pageThemeId)
+            );
+        } catch (\Exception $exception) {
+            return array(
+                'error'   => true,
+                'message' => $exception->getMessage()
+            );
+        }
     }
 
     public function updatePageLayout($pageId, $themeId, $layout)

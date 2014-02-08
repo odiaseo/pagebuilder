@@ -3,50 +3,44 @@ namespace PageBuilder\Controller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 
-class PageController extends AbstractRestfulController
+/**
+ * Class PageController
+ *
+ * @package PageBuilder\Controller
+ */
+class PageController
+    extends BaseRestfulController
 {
 
     /**
-     * Accept header criteria
+     * Get page layout details
      *
-     * @var array
+     * @param mixed $id
+     *
+     * @return mixed|\Zend\View\Model\ModelInterface
      */
-    protected $_acceptCriteria
-        = array(
-            'Zend\View\Model\JsonModel' => array(
-                'application/json',
-                'application/jsonp',
-                'application/javascript',
-                '*/*'
-            ),
-            'Zend\View\Model\ViewModel' => array(
-                '*/*'
-            ),
-        );
-
     public function get($id)
     {
-        /** @var \PageBuilder\Service\LayoutService $service */
-        $service = $this->getServiceLocator()->get('pagebuilder\service\layout');
-
-        $payLoad   = $service->getPageLayout($id);
-        $viewModel = $this->acceptableViewModelSelector($this->_acceptCriteria);
-        $viewModel->setVariables($payLoad);
-
-        return $viewModel;
+        return $this->_sendPayload(
+            $this->_getService($this->_pageServiceKey)->getPageLayout($id)
+        );
     }
 
+    /**
+     * Update page layout
+     *
+     * @param mixed $id
+     * @param mixed $data
+     *
+     * @return mixed|\Zend\View\Model\ModelInterface
+     */
     public function update($id, $data)
     {
-        /** @var \PageBuilder\Service\LayoutService $service */
-        $service = $this->getServiceLocator()->get('pagebuilder\service\layout');
-        $layout  = isset($data['layout']) ? $data['layout'] : null;
+        $layout = isset($data['layout']) ? $data['layout'] : null;
 
-        $payLoad   = $service->updatePageLayout($id, $data['themeId'], $layout);
-        $viewModel = $this->acceptableViewModelSelector($this->_acceptCriteria);
-        $viewModel->setVariables($payLoad);
-
-        return $viewModel;
+        return $this->_sendPayload(
+            $this->_getService($this->_pageServiceKey)->updatePageLayout($id, $data['themeId'], $layout)
+        );
 
     }
 

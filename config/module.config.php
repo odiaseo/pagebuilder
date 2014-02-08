@@ -35,6 +35,7 @@ return array(
     'controllers'     => array(
         'invokables' => array(
             'PageBuilder\Controller\Page'            => 'PageBuilder\Controller\PageController',
+            'PageBuilder\Controller\PageTheme'       => 'PageBuilder\Controller\PageThemeController',
             'PageBuilder\Controller\Index'           => 'PageBuilder\Controller\IndexController',
             'PageBuilder\Controller\TemplateSection' => 'PageBuilder\Controller\TemplateSectionController',
             'PageBuilder\Controller\Template'        => 'PageBuilder\Controller\TemplateController',
@@ -43,7 +44,7 @@ return array(
 
     'router'          => array(
         'routes' => array(
-            'pagebuilder\home'              => array(
+            'pagebuilder\home'  => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/pagebuilder-app',
@@ -71,6 +72,20 @@ return array(
                         '__NAMESPACE__' => 'PageBuilder\Controller',
                         'module'        => 'page-builder',
                         'controller'    => 'PageBuilder\Controller\Page'
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+'
+                    ),
+                )
+            ),
+            'builder\theme'           => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'       => '/pagebuilder/layout/theme[/:id]',
+                    'defaults'    => array(
+                        '__NAMESPACE__' => 'PageBuilder\Controller',
+                        'module'        => 'page-builder',
+                        'controller'    => 'PageBuilder\Controller\PageTheme'
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+'
@@ -424,7 +439,7 @@ return array(
 
             /** model specific */
             'specific' => array(
-                'page'      => array(
+                'page'       => array(
                     'layout-manager' => array(
                         'id'         => 'layman',
                         'class'      => 'btn btn-mini',
@@ -440,7 +455,7 @@ return array(
                         )
                     )
                 ),
-                'pageTheme' => array(
+                'pageThemes' => array(
                     'layout-manager' => array(
                         'id'         => 'layman',
                         'class'      => 'btn btn-mini',
@@ -448,7 +463,7 @@ return array(
                         'icon'       => 'icon-th-large',
                         'position'   => 'bottom',
                         'onLoad'     => '',
-                        'callback'   => new \Zend\Json\Expr("function(){  if(pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }"),
+                        'callback'   => new \Zend\Json\Expr("function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }"),
                         'attributes' => array(
                             'data-endpoint'     => '/pagebuilder/layout/theme',
                             'data-entity'       => 'themes',
@@ -456,7 +471,7 @@ return array(
                         )
                     )
                 ),
-                'template'  => array(
+                'template'   => array(
                     'layout-manager'  => array(
                         'id'         => 'tempman',
                         'class'      => 'btn btn-mini',
@@ -489,8 +504,8 @@ return array(
             )
         ),
     ),
-    'synergy' => array(
-        'logger'        => array(
+    'synergy'         => array(
+        'logger' => array(
             'directory' => __DIR__ . '/../data/logs',
             'namespace' => 'pagebuilder'
         )

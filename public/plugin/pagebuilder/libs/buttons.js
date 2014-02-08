@@ -502,6 +502,19 @@ define(
 
                     var row = $(layoutTemp).find('#row-data-template').html();
                     $('body').data('rowInfo', row);
+                    var pageId = false;
+
+                    if (_.has(rowdata, 'pageId')) {
+                        var options = $('select[name="pageId"] option');
+                        var option = options.filter(
+                            function () {
+                                var opt = $(this);
+                                var txt = $.trim(opt.text());
+                                return (txt == rowdata['pageId']);
+                            }
+                        );
+                        pageId = option.val();
+                    }
 
                     div.fancybox({
                         type: 'ajax',
@@ -514,9 +527,7 @@ define(
                             type: 'GET',
                             dataType: 'json',
                             data: {
-                                entity: elm.data('entity'),
-                                id: rowdata.id,
-                                menuId: _.has(rowdata, 'menuId') ? rowdata.menuId : false
+                                pageId: pageId
                             }
                         },
                         afterLoad: function () {
@@ -927,48 +938,48 @@ define(
                                     for (var k = 0; k < cols.length; k++) {
                                         if (data[i].rowItems[k]) {
                                             var ul = $(cols[k]).find('ul');
-                                            if(data[i].rowItems[k].item){
+                                            if (data[i].rowItems[k].item) {
                                                 for (var x = 0; x < data[i].rowItems[k].item.length; x++) {
-                                                var li = $('<li></li>');
-                                                var asset = data[i].rowItems[k].item[x];
-                                                var parts = [];
-                                                var desc = '';
-                                                var title = '';
+                                                    var li = $('<li></li>');
+                                                    var asset = data[i].rowItems[k].item[x];
+                                                    var parts = [];
+                                                    var desc = '';
+                                                    var title = '';
 
-                                                if (_.has(asset, 'name')) {
-                                                    parts = asset.name.split('-');
-                                                    title = asset.name;
-                                                } else if (_.isString(asset)) {
-                                                    parts = asset.split('-');
-                                                } else {
-                                                    asset['name'] = 'undefined';
-                                                }
+                                                    if (_.has(asset, 'name')) {
+                                                        parts = asset.name.split('-');
+                                                        title = asset.name;
+                                                    } else if (_.isString(asset)) {
+                                                        parts = asset.split('-');
+                                                    } else {
+                                                        asset['name'] = 'undefined';
+                                                    }
 
-                                                if (parts[0] == widgets.id) {
-                                                    if (!_.isUndefined(widgets['items'][parts[1]])) {
-                                                        title = widgets['items'][parts[1]].title;
-                                                        desc = widgets['items'][parts[1]].description;
+                                                    if (parts[0] == widgets.id) {
+                                                        if (!_.isUndefined(widgets['items'][parts[1]])) {
+                                                            title = widgets['items'][parts[1]].title;
+                                                            desc = widgets['items'][parts[1]].description;
+                                                        } else {
+                                                            title = parts[1];
+                                                        }
+                                                    } else if (!(_.isUndefined(assets[parts[0]]) ||
+                                                        _.isUndefined(assets[parts[0]]['items'][parts[1]]) )) {
+                                                        title = assets[parts[0]]['items'][parts[1]].title;
+                                                        desc = assets[parts[0]]['items'][parts[1]].description;
                                                     } else {
                                                         title = parts[1];
                                                     }
-                                                } else if (!(_.isUndefined(assets[parts[0]]) ||
-                                                    _.isUndefined(assets[parts[0]]['items'][parts[1]]) )) {
-                                                    title = assets[parts[0]]['items'][parts[1]].title;
-                                                    desc = assets[parts[0]]['items'][parts[1]].description;
-                                                } else {
-                                                    title = parts[1];
+
+                                                    var itemAttr = _.has(asset, pageBuilder.attributeKey) ? asset[pageBuilder.attributeKey] : {};
+                                                    li.text(title)
+                                                        .addClass('asset')
+                                                        .attr('id', asset['name'])
+                                                        .attr('title', desc)
+                                                        .data(pageBuilder.attributeKey, itemAttr)
+                                                    ;
+
+                                                    ul.append(li);
                                                 }
-
-                                                var itemAttr = _.has(asset, pageBuilder.attributeKey) ? asset[pageBuilder.attributeKey] : {};
-                                                li.text(title)
-                                                    .addClass('asset')
-                                                    .attr('id', asset['name'])
-                                                    .attr('title', desc)
-                                                    .data(pageBuilder.attributeKey, itemAttr)
-                                                ;
-
-                                                ul.append(li);
-                                            }
                                             }
                                             pageBuilder.processAssets(ul);
                                         }
