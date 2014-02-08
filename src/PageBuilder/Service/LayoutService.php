@@ -125,7 +125,7 @@ class LayoutService implements ServiceManagerAwareInterface
         if ($pageThemeId) {
             /** @var $pageThemeModel \PageBuilder\Model\BaseModel */
             $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
-            $pageTheme      = $pageThemeModel->findOneBy(array('themeId' => $pageThemeId));
+            $pageTheme      = $pageThemeModel->findObject($pageThemeId);
             $themeId        = $pageTheme->getThemeId()->getId();
         } else {
 
