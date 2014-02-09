@@ -50,7 +50,7 @@ class PageBuilderListener
 
                 if ($activeMenu) {
                     /** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
-                    $activeTheme = $locator->get('active_theme');
+                    $activeTheme = $locator->get('active_theme') ? : null;
                     $menu        = $locator->get('pagebuilder\model\page')->findObject($activeMenu['page']->id);
 
                     /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */

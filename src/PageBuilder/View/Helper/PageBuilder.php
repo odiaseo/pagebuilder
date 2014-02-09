@@ -63,14 +63,14 @@ class PageBuilder
      *
      * @return $this
      */
-    public function init(BasePage $page, Navigation $menuTree, AbstractEntity $activeTheme)
+    public function init(BasePage $page, Navigation $menuTree, AbstractEntity $activeTheme = null)
     {
         $config = $this->getServiceManager()->get('config');
 
         if (!empty($config['pagebuilder']['enabled'])) {
 
             $this->_menuTree = $menuTree;
-            $siteTheme       = (string)$activeTheme;
+            $siteTheme       = $activeTheme ? (string)$activeTheme : 'default';
 
             $layout = null;
             /** @var $theme \PageBuilder\Entity\Join\PageTheme */
