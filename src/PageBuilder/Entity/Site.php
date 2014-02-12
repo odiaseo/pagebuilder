@@ -30,10 +30,10 @@ class Site
      */
     private $settings;
     /**
-     * @ORM\ManyToMany(targetEntity="Module")
+     * @ORM\ManyToMany(targetEntity="Module", cascade={"persist"})
      * @ORM\JoinTable(name="Site_Module")
      */
-    protected $modules;
+    private $modules;
     /**
      * @var array
      */
