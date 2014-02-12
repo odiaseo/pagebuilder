@@ -24,11 +24,39 @@ class Site
      * @ORM\JoinTable(name="Site_Licence")
      */
     private $licences;
+    /**
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"})
+     * @ORM\JoinTable(name="Site_Setting")
+     */
+    private $settings;
+    /**
+     * @ORM\ManyToMany(targetEntity="Module")
+     * @ORM\JoinTable(name="Site_Module")
+     */
+    protected $modules;
+    /**
+     * @var array
+     */
+    protected $settingList = array();
 
     public function __construct()
     {
-        $this->licences = new ArrayCollection();
+        $this->licences   = new ArrayCollection();
+        $this->settings   = new ArrayCollection();
+        $this->siteThemes = new ArrayCollection();
+        $this->modules    = new ArrayCollection();
     }
+
+    public function setModules($modules)
+    {
+        $this->modules = $modules;
+    }
+
+    public function getModules()
+    {
+        return $this->modules;
+    }
+
 
     public function setSiteThemes($siteThemes)
     {
@@ -50,5 +78,36 @@ class Site
         return $this->licences;
     }
 
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+    }
 
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    public function getSettingList()
+    {
+
+        if (!$this->settingList) {
+            /** @var $item \PageBuilder\Entity\Setting */
+            foreach ($this->settings as $item) {
+                $code                     = $item->getSettingKey()->getCode();
+                $value                    = $item->getValue() ? : $item->getSettingKey()->getDefaultValue();
+                $this->settingList[$code] = $value;
+            }
+
+            if (!isset($this->settingList['locale'])) {
+                $this->settingList['locale'] = 'en_GB';
+            }
+
+            list($this->settingList['language'], $this->settingList['region']) = explode(
+                '_', $this->settingList['locale']
+            );
+        }
+
+        return $this->settingList;
+    }
 }

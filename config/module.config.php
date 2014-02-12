@@ -78,7 +78,7 @@ return array(
                     ),
                 )
             ),
-            'builder\theme'           => array(
+            'builder\theme'     => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'       => '/pagebuilder/layout/theme[/:id]',
@@ -224,7 +224,7 @@ return array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(
-                    'vendor/synergy/common/lib/SynergyCommon/Entity'
+                    'vendor/synergy/common/lib/SynergyCommon/Entity',
                 )
             ),
             'orm_default'                => array(
@@ -233,6 +233,7 @@ return array(
                     'PageBuilder\Entity'      => 'pagebuilder\entity\default',
                     'PageBuilder\Entity\Join' => 'pagebuilder\entity\join',
                     'SynergyCommon\Entity'    => 'synergy\common\entities',
+
                 )
             ),
         ),
