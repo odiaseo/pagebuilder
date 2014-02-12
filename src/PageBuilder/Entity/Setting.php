@@ -60,7 +60,7 @@ class Setting
     }
 
     /**
-     * @return \SynergyCommon\Admin\Entity\SettingKey
+     * @return \PageBuilder\Entity\SettingKey
      */
     public function getSettingKey()
     {
