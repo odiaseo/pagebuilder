@@ -91,7 +91,7 @@ class Site
     public function getSettingList()
     {
 
-        if (!$this->settingList) {
+        if (!$this->settingList and $this->settings) {
             /** @var $item \PageBuilder\Entity\Setting */
             foreach ($this->settings as $item) {
                 $code                     = $item->getSettingKey()->getCode();

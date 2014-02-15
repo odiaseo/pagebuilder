@@ -374,7 +374,8 @@ class LayoutService implements ServiceManagerAwareInterface
         $config  = $this->_serviceManager->get('config');
 
         foreach ($config['pagebuilder']['tags'] as $type => $list) {
-            $tagList[$type] = asort($list);
+            asort($list);
+            $tagList[$type] = $list ;
         }
 
         return $tagList;
