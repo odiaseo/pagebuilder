@@ -25,7 +25,7 @@ class Site
      */
     private $licences;
     /**
-     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"}, fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"})
      * @ORM\JoinTable(name="Site_Setting")
      */
     private $settings;
