@@ -338,7 +338,7 @@ class LayoutService implements ServiceManagerAwareInterface
                 'title' => 'Templates',
                 'items' => $templates
             ),
-
+            'tags'      => $this->_getTaglist()
         );
 
         return $return;
