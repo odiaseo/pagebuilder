@@ -249,15 +249,15 @@ return array(
     ),
 
     'pagebuilder'     => array(
-        'enabled'         => false, //change to true to enable
-        'widgets'         => array(
+        'enabled'          => false, //change to true to enable
+        'widgets'          => array(
             'paths' => array(
                 'PageBuilder\Widget' => __DIR__ . '/../src/PageBuilder/Widget'
             )
         ),
-        'main_navigation' => 'pagebuilder\menu', // change this to the service alias for the main navigation menu
+        'main_navigation'  => 'pagebuilder\menu', // change this to the service alias for the main navigation menu
         //Overwrite default entities
-        'entities'        => array(
+        'entities'         => array(
             'page'      => 'PageBuilder\Entity\Page',
             'section'   => 'PageBuilder\Entity\Section',
             'template'  => 'PageBuilder\Entity\Template',
@@ -266,7 +266,7 @@ return array(
             'site'      => 'PageBuilder\Entity\Site'
         ),
         //supported HTML tags
-        'tags'            => array(
+        'tags'             => array(
             'html'  => array(
                 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'img', 'sup',
                 'span', 'div', 'strong', 'button', 'iframe', 'i', 'input',
@@ -285,7 +285,7 @@ return array(
                 'dialog', 'command', 'output'
             )
         ),
-        'css_classmap'    => array(
+        'css_classmap'     => array(
             'span1'           => 'span1',
             'span2'           => 'span2',
             'span3'           => 'span3',
@@ -303,9 +303,10 @@ return array(
             'container'       => 'container',
             'container-fluid' => 'container-fluid'
         ),
-        'replacements'    => array(
+        'replacements'     => array(
             '[year]' => date('Y')
-        )
+        ),
+        'output_formatters' => array()
 
     ),
     'jqgrid'          => array(

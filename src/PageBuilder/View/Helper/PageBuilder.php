@@ -10,6 +10,7 @@ use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
 use SynergyCommon\Entity\AbstractEntity;
 use SynergyCommon\Entity\BasePage;
+use Zend\Log\Formatter\FormatterInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -299,8 +300,12 @@ class PageBuilder
                         ->addAttr($comId)
                         ->addAttr("id='{$component->getCssId()}'");
 
+                    //Apply replaces to the output
                     $replacements = $this->getOptions()->getReplacements();
                     $data         = str_replace(array_keys($replacements), array_values($replacements), $data);
+
+                    //apply formats to the data
+                    $data = $this->_applyFormats($data);
                 }
 
                 break;
@@ -319,6 +324,27 @@ class PageBuilder
                  'attributes' => $attr,
             )
         );
+    }
+
+    /**
+     * Apply formatter using the formatters in the order they were defined
+     *
+     * @param $data
+     *
+     * @return string
+     */
+    protected function _applyFormats($data)
+    {
+        if ($this->getOptions()->getOutputFormatters()) {
+            /** @var $formatter \PageBuilder\FormatterInterface */
+            foreach ($this->getOptions()->getOutputFormatters() as $formatter) {
+                if ($formatter instanceof FormatterInterface) {
+                    $data = $formatter->format($data);
+                }
+            }
+        }
+
+        return $data;
     }
 
     public static function getSections()
