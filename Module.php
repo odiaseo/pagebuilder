@@ -139,8 +139,23 @@ class Module
                     /** @var $serviceManager \Zend\ServiceManager\ServiceManager */
                     $serviceManager = $helperManager->getServicelocator();
                     if ($helper instanceof PageBuilder) {
-                        $config  = $serviceManager->get('config');
+                        $config = $serviceManager->get('config');
+
+                        $formatters = array();
+                        foreach ($config['pagebuilder']['output_formatters'] as $format) {
+                            if (is_string($format)) {
+                                $formatters[] = $serviceManager->get($format);
+                            } elseif ($format instanceof FormatterInterface) {
+                                $formatters[] = $format;
+                            } elseif (is_callable($format)) {
+                                $formatters[] = $format;
+                            } else {
+                                continue;
+                            }
+                        }
                         $options = new PageBuilderConfig($config['pagebuilder']);
+                        $options->setOutputFormatters($formatters);
+
                         $helper->setOptions($options);
                     }
                 }

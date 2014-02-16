@@ -336,10 +336,13 @@ class PageBuilder
     protected function _applyFormats($data)
     {
         if ($this->getOptions()->getOutputFormatters()) {
-            /** @var $formatter \PageBuilder\FormatterInterface */
+
             foreach ($this->getOptions()->getOutputFormatters() as $formatter) {
                 if ($formatter instanceof FormatterInterface) {
+                    /** @var $formatter \PageBuilder\FormatterInterface */
                     $data = $formatter->format($data);
+                } elseif (is_callable($formatter)) {
+                    $data = $formatter($data, $this->_serviceManager);
                 }
             }
         }

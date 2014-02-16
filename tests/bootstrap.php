@@ -3,7 +3,7 @@
 use Zend\Mvc\Application;
 use Zend\ServiceManager\ServiceManager;
 
-
+\date_default_timezone_set('UTC');
 error_reporting(E_ALL | E_STRICT);
 
 chdir(dirname(__DIR__));
