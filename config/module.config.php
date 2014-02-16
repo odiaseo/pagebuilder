@@ -303,6 +303,9 @@ return array(
             'container'       => 'container',
             'container-fluid' => 'container-fluid'
         ),
+        'replacements'    => array(
+            '[year]' => date('Y')
+        )
 
     ),
     'jqgrid'          => array(

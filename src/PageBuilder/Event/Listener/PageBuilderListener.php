@@ -12,6 +12,14 @@ class PageBuilderListener
 {
     protected $listeners = array();
 
+    /** @var \Zend\ServiceManager\ServiceManager */
+    protected $_serviceManager;
+
+    public function __construct($serviceManager)
+    {
+        $this->_serviceManager = $serviceManager;
+    }
+
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initialiseWidgets'), -2);
@@ -29,29 +37,33 @@ class PageBuilderListener
     public function initialiseWidgets(MvcEvent $event)
     {
         if ($app = $event->getApplication()) {
-            $locator = $app->getServiceManager();
-            $config  = $locator->get('config');
+            /** @var $viewHelperManager \Zend\View\HelperPluginManager */
+            $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
 
-            $enabled = (!empty($config['pagebuilder']['enabled'])  and $config['pagebuilder']['enabled']) ? true
-                : false;
+            /** @var $helper \PageBuilder\View\Helper\PageBuilder */
+            $helper  = $viewHelperManager->get('buildPage');
+            $options = $helper->getOptions();
 
-            if ($enabled and $mainMenuKey = $config['pagebuilder']['main_navigation']) {
-
-                $viewHelperManager = $locator->get('viewHelperManager');
+            if ($options->getEnabled() and $options->getMainNavigation()) {
 
                 /** @var $navigation \Zend\View\Helper\Navigation */
                 $navigation = $viewHelperManager->get('navigation');
 
                 /** @var $menuTree \Zend\View\Helper\Navigation */
-                $menuTree  = $navigation($mainMenuKey);
+                $menuTree  = $navigation($options->getMainNavigation());
                 $container = $menuTree->getContainer();
 
                 $activeMenu = $navigation->findActive($container);
 
                 if ($activeMenu) {
                     /** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
-                    $activeTheme = $locator->get('active_theme') ? : null;
-                    $menu        = $locator->get('pagebuilder\model\page')->findObject($activeMenu['page']->id);
+                    $activeTheme = $this->_serviceManager->get('active_theme') ? : null;
+
+                    /** @var $model \pageBuilder\Model\PageModel */
+                    $model = $this->_serviceManager->get('pagebuilder\model\page');
+
+                    /** @var $menu \SynergyCommon\Entity\BasePage */
+                    $menu = $model->findObject($activeMenu['page']->id);
 
                     /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
                     $pageBuilder = $viewHelperManager->get('buildPage');

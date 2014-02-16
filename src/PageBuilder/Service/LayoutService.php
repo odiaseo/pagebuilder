@@ -371,11 +371,12 @@ class LayoutService implements ServiceManagerAwareInterface
     protected function _getTaglist()
     {
         $tagList = array();
-        $config  = $this->_serviceManager->get('config');
+        /** @var $builder \PageBuilder\View\Helper\PageBuilder */
+        $builder = $this->_serviceManager->get('viewhelpermanager')->get('buildpage');
 
-        foreach ($config['pagebuilder']['tags'] as $type => $list) {
+        foreach ($builder->getOptions()->getTags() as $type => $list) {
             asort($list);
-            $tagList[$type] = $list ;
+            $tagList[$type] = $list;
         }
 
         return $tagList;

@@ -4,6 +4,7 @@ namespace PageBuilder\View\Helper;
 use Gedmo\Sluggable\Util\Urlizer;
 use PageBuilder\BaseWidget;
 use PageBuilder\Entity\Page;
+use PageBuilder\Exception\RuntimeException;
 use PageBuilder\View\TagAttributes;
 use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
@@ -43,6 +44,9 @@ class PageBuilder
     /** @var \Zend\ServiceManager\ServiceManager */
     protected $_serviceManager;
 
+    /** @var Config\PageBuilderConfig */
+    protected $_options;
+
     public static $sections
         = array(
             'top'    => 'Top Bar',
@@ -65,9 +69,7 @@ class PageBuilder
      */
     public function init(BasePage $page, Navigation $menuTree, AbstractEntity $activeTheme = null)
     {
-        $config = $this->getServiceManager()->get('config');
-
-        if (!empty($config['pagebuilder']['enabled'])) {
+        if ($this->getOptions()->getEnabled()) {
 
             $this->_menuTree = $menuTree;
             $siteTheme       = $activeTheme ? (string)$activeTheme : 'default';
@@ -258,7 +260,7 @@ class PageBuilder
      * @param TagAttributes $attr
      *
      * @return object
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function getItem($itemType, $id, TagAttributes $attr)
     {
@@ -297,21 +299,18 @@ class PageBuilder
                         ->addAttr($comId)
                         ->addAttr("id='{$component->getCssId()}'");
 
-                    $data = str_replace(
-                        array(
-                             '[year]'
-                        ),
-                        array(
-                             date('Y')
-                        ),
-                        $data
-                    );
-
+                    $replacements = $this->getOptions()->getReplacements();
+                    $data         = str_replace(array_keys($replacements), array_values($replacements), $data);
                 }
 
                 break;
             default:
-                throw new \RuntimeException('Layout itemType ' . $itemType . ' not found');
+                $message = 'Layout itemType ' . $itemType . ' not found';
+                if ($this->_serviceManager->has('logger')) {
+                    $this->_serviceManager->get('logger')->err($message);
+                } else {
+                    throw new RuntimeException($message);
+                }
         }
 
         return new WidgetData(
@@ -385,4 +384,21 @@ class PageBuilder
 
         return $this->_serviceManager;
     }
+
+    /**
+     * @param \PageBuilder\View\Helper\Config\PageBuilderConfig $options
+     */
+    public function setOptions($options)
+    {
+        $this->_options = $options;
+    }
+
+    /**
+     * @return \PageBuilder\View\Helper\Config\PageBuilderConfig
+     */
+    public function getOptions()
+    {
+        return $this->_options;
+    }
+
 }

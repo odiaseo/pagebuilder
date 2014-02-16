@@ -11,6 +11,8 @@ namespace PageBuilder;
 
 
 use PageBuilder\Event\Listener\PageBuilderListener;
+use PageBuilder\View\Helper\Config\PageBuilderConfig;
+use PageBuilder\View\Helper\PageBuilder;
 use SynergyCommon\Event\Listener\SynergyModuleListener;
 use Zend\Http\Response;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
@@ -35,8 +37,10 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
+        $serviceLocator = $e->getApplication()->getServiceManager();
+
         $eventManager->attach(new SynergyModuleListener());
-        $eventManager->attach(new PageBuilderListener());
+        $eventManager->attach(new PageBuilderListener($serviceLocator));
     }
 
 
@@ -112,14 +116,34 @@ class Module
         );
     }
 
+    public function getControllerPluginConfig()
+    {
+        return array(
+            'invokables' => array(
+                'buildPage' => 'PageBuilder\Controller\Plugin\PageBuilder'
+            )
+        );
+    }
 
     public function getViewHelperConfig()
     {
         return array(
-            'invokables' => array(
+            'invokables'   => array(
                 'buildPage'     => 'PageBuilder\View\Helper\PageBuilder',
                 'flashMessages' => 'SynergyCommon\View\Helper\FlashMessages',
                 'microData'     => 'SynergyCommon\View\Helper\MicroData',
+            ),
+            'initializers' => array(
+                'initbuilder' => function ($helper, $helperManager) {
+                    /** @var $helperManager \Zend\View\HelperPluginManager */
+                    /** @var $serviceManager \Zend\ServiceManager\ServiceManager */
+                    $serviceManager = $helperManager->getServicelocator();
+                    if ($helper instanceof PageBuilder) {
+                        $config  = $serviceManager->get('config');
+                        $options = new PageBuilderConfig($config['pagebuilder']);
+                        $helper->setOptions($options);
+                    }
+                }
             )
         );
     }
