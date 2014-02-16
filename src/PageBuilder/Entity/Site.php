@@ -95,7 +95,7 @@ class Site
             /** @var $item \PageBuilder\Entity\Setting */
             foreach ($this->settings as $item) {
                 $code                     = $item->getSettingKey()->getCode();
-                $value                    = $item->getValue() ? : $item->getSettingKey()->getDefaultValue();
+                $value                    = $item->getSettingValue() ? : $item->getSettingKey()->getDefaultValue();
                 $this->settingList[$code] = $value;
             }
 

@@ -28,7 +28,7 @@ class Setting
     /**
      * @ORM\Column(type="text", name="setting_value")
      */
-    protected $value = '';
+    protected $settingValue = '';
 
     public function setId($id)
     {
@@ -41,14 +41,14 @@ class Setting
     }
 
 
-    public function setValue($value)
+    public function setSettingValue($value)
     {
-        $this->value = $value;
+        $this->settingValue = $value;
     }
 
-    public function getValue()
+    public function getSettingValue()
     {
-        return $this->value;
+        return $this->settingValue;
     }
 
     /**
