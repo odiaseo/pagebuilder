@@ -3,6 +3,7 @@ namespace PageBuilder\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SynergyCommon\Entity\AbstractEntity;
 
 /**
  * SettingKey
@@ -12,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  */
 class SettingKey
-    extends BaseEntity
+    extends AbstractEntity
 {
     /**
      * @ORM\Id

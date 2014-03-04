@@ -39,7 +39,11 @@ class Page
      * @ORM\JoinTable(name="Page_Theme")
      */
     protected $pageThemes;
-
+    /**
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
+     * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
+     */
+    protected $site;
 
     public function __construct()
     {
@@ -56,6 +60,16 @@ class Page
     public function getChildren()
     {
         return $this->children;
+    }
+
+    public function setSite($site)
+    {
+        $this->site = $site;
+    }
+
+    public function getSite()
+    {
+        return $this->site;
     }
 
     public function setPageThemes($pageThemes)
