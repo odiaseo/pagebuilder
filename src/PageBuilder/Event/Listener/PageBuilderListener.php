@@ -23,6 +23,14 @@ class PageBuilderListener
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initialiseWidgets'), -2);
+        $this->listeners[] = $events->attach(
+            array(
+                 MvcEvent::EVENT_RENDER_ERROR,
+                 MvcEvent::EVENT_DISPATCH_ERROR
+            ),
+            array($this, 'renderErrorPage'),
+            9999
+        );
     }
 
     public function detach(EventManagerInterface $events)
@@ -31,6 +39,24 @@ class PageBuilderListener
             if ($events->detach($listener)) {
                 unset($this->listeners[$index]);
             }
+        }
+    }
+
+    public function renderErrorPage()
+    {
+        /** @var $model \pageBuilder\Model\PageModel */
+        $model = $this->_serviceManager->get('pagebuilder\model\page');
+
+        /** @var $errorPage \SynergyCommon\Entity\BasePage */
+        $errorPage = $model->getRepository()->findOneBy(array('slug' => 'error-page'));
+
+        if ($errorPage) {
+            /** @var $viewHelperManager \Zend\View\HelperPluginManager */
+            $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
+
+            /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
+            $pageBuilder = $viewHelperManager->get('buildPage');
+            $pageBuilder->init($errorPage, null, null);
         }
     }
 

@@ -7,7 +7,8 @@ use Doctrine\ORM\Query\QueryException;
 use Zend\Navigation\Navigation;
 
 
-class PageModel extends BaseModel
+class PageModel
+    extends BaseModel
 {
     /**
      * Returns the navigation menus
