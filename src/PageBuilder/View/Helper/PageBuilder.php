@@ -11,6 +11,7 @@ use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
 use SynergyCommon\Entity\AbstractEntity;
 use SynergyCommon\Entity\BasePage;
+use Zend\Filter\FilterInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -248,7 +249,17 @@ class PageBuilder
                 }
             }
 
-            return implode('', $html);
+            $html = implode('', $html);
+
+            if ($alias = $this->_options->getFilter()) {
+                $filter = $this->getServiceManager()->get($alias);
+
+                if ($filter instanceof FilterInterface) {
+                    $html = $filter->filter($html);
+                }
+            }
+
+            return $html;
         } else {
             return $content;
         }

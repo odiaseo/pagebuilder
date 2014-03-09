@@ -7,6 +7,10 @@ class PageBuilderConfig
     extends AbstractOptions
 {
     /**
+     * Filter to filter the HTML should be servicemanger alias to a a \Zend\Filter\FilterInterface istance
+     */
+    protected $filter;
+    /**
      * Enable/Disable the view helper
      *
      * @var boolean
@@ -55,6 +59,16 @@ class PageBuilderConfig
      * @var array
      */
     protected $outputFormatters = array();
+
+    public function setFilter($filter)
+    {
+        $this->filter = $filter;
+    }
+
+    public function getFilter()
+    {
+        return $this->filter;
+    }
 
     /**
      * @param array $cssClassmap
