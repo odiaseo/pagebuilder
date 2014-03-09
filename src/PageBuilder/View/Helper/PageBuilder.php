@@ -68,7 +68,7 @@ class PageBuilder
      *
      * @return $this
      */
-    public function init(BasePage $page, Navigation $menuTree, AbstractEntity $activeTheme = null)
+    public function init(BasePage $page, Navigation $menuTree = null, AbstractEntity $activeTheme = null)
     {
         if ($this->getOptions()->getEnabled()) {
 
