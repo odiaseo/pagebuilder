@@ -148,8 +148,7 @@ class PageBuilder
             $this->_mainContent = $content;
 
             /** @var $microDataHelper  \PageBuilder\View\Helper\MicroData */
-            $microDataHelper = $this->_serviceManager
-                ->get('viewhelpermanager')->get('microdata'); //  getView()->microData();
+            $microDataHelper = $this->_pluginManager->get('microdata');
 
             /** @var $template['tagAttributes'] \PageBuilder\View\TagAttributes */
             foreach ($layout as $section => $template) {

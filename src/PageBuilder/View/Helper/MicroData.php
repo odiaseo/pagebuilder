@@ -2,20 +2,21 @@
 
 namespace PageBuilder\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\View\Helper\AbstractHelper;
 
 class MicroData extends AbstractHelper implements ServiceManagerAwareInterface
 {
 
     private $_enabled = true;
 
-    protected $_sm;
+    /** @var \Zend\View\HelperPluginManager */
+    protected $_pluginManager;
 
     public function setServiceManager(ServiceManager $serviceManager)
     {
-        $this->_sm = $serviceManager;
+        $this->_pluginManager = $serviceManager;
     }
 
     /**
@@ -120,9 +121,11 @@ class MicroData extends AbstractHelper implements ServiceManagerAwareInterface
         );
 
         if (!in_array($property, $valid)) {
-            $this->_sm->getServiceLocator()
-                ->get('logger')
-                ->warn('Invalid microData property found: ' . $property);
+            if ($this->_pluginManager->getServiceLocator()->has('logger')) {
+                /** @var $logger \Zend\Log\LoggerInterface */
+                $logger = $this->_pluginManager->getServiceLocator()->get('logger');
+                $logger->warn('Invalid microData property found: ' . $property);
+            }
         }
 
         return true;
