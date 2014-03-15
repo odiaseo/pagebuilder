@@ -1,11 +1,11 @@
 <?php
 namespace PageBuilder\Model;
 
+
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use Zend\Navigation\Navigation;
-
 
 class PageModel
     extends BaseModel
@@ -309,5 +309,13 @@ class PageModel
         return 'mvc:' . strtolower($routeName) . '.' . strtolower($uniqueId);
     }
 
+    public function getPages()
+    {
+        /** @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
+        $repo  = $this->getRepository(); //  $em->getRepository($navService->getEntity());
+        $menus = $repo->getNodesHierarchy();
+
+        return $this->toHierarchy($menus);
+    }
 
 }
