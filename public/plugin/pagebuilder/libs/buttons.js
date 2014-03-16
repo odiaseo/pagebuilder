@@ -233,6 +233,7 @@ define(
 
                 trigger.on('click', function () {
                     var me = $(this);
+                    me.closest('.fancybox-inner').css('overflow', 'visible');
                     var pop = me.siblings('.popover');
 
                     pop.find('.tags')

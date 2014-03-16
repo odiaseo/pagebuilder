@@ -251,6 +251,9 @@ return array(
 
     'pagebuilder'     => array(
         'enabled'           => false, //change to true to enable
+        'modules'           => array(
+            'page-builder'
+        ),
         'widgets'           => array(
             'paths' => array(
                 'PageBuilder\Widget' => __DIR__ . '/../src/PageBuilder/Widget'
@@ -445,7 +448,7 @@ return array(
 
             /** model specific */
             'specific' => array(
-                'page'       => array(
+                /*'page'       => array(
                     'layout-manager' => array(
                         'id'         => 'layman',
                         'class'      => 'btn btn-mini',
@@ -460,7 +463,7 @@ return array(
                             'data-template-url' => '/js/app/templates/layout-manager.html'
                         )
                     )
-                ),
+                ),*/
                 'pageThemes' => array(
                     'layout-manager' => array(
                         'id'         => 'layman',

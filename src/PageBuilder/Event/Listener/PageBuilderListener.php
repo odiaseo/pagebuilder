@@ -67,7 +67,9 @@ class PageBuilderListener
             $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
 
             /** @var $helper \PageBuilder\View\Helper\PageBuilder */
-            $helper  = $viewHelperManager->get('buildPage');
+            $helper = $viewHelperManager->get('buildPage');
+
+            /** @var $options \PageBuilder\View\Helper\Config\PageBuilderConfig */
             $options = $helper->getOptions();
 
             if ($options->getEnabled() and $options->getMainNavigation()) {

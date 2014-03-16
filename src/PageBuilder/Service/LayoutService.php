@@ -81,6 +81,24 @@ class LayoutService implements ServiceManagerAwareInterface
     }
 
     /**
+     * Get Page theme layout
+     *
+     * @param $pageThemeId
+     *
+     * @return array
+     */
+    public function getPageThemeLayout($pageThemeId)
+    {
+        /** @var $themeModel \PageBuilder\Model\PageThemeModel */
+        $themeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
+
+        /** @var $pageTheme \PageBuilder\Entity\Join\PageTheme */
+        $pageTheme = $themeModel->findObject($pageThemeId);
+
+        return $this->getPageLayout($pageTheme->getPageId(), $pageTheme->getThemeId());
+    }
+
+    /**
      * Get page layout
      *
      * @param      $pageId

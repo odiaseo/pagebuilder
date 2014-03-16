@@ -15,10 +15,8 @@ class PageThemeController
      */
     public function get($id)
     {
-        $pageId = $this->params()->fromQuery('pageId');
-
         return $this->_sendPayload(
-            $this->_getService($this->_pageServiceKey)->getPageLayout($pageId, $id)
+            $this->_getService($this->_pageServiceKey)->getPageThemeLayout($id)
         );
     }
 

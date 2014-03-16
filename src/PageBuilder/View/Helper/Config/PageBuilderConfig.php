@@ -60,6 +60,31 @@ class PageBuilderConfig
      */
     protected $outputFormatters = array();
 
+    /**
+     * Modules the helper should be enabled for
+     *
+     * @var array
+     */
+    protected $modules = array();
+
+    /**
+     * @param array $modules
+     */
+    public function setModules($modules)
+    {
+        $this->modules = $modules;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModules()
+    {
+        return $this->modules;
+    }
+
+
+
     public function setFilter($filter)
     {
         $this->filter = $filter;
