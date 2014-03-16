@@ -38,7 +38,7 @@ class TagAttributes
 
         foreach ($parts as $item) {
             list($k, $v) = explode('=', $item);
-            $k = preg_replace('/[^a-z0-9\-\_]/', '', $k);
+            $k = $this->_filter($k);
             if ($k and $v) {
 
                 $attr[$k] = trim($v, '"\'');
@@ -75,7 +75,7 @@ class TagAttributes
     {
         $class = array_unique(array_filter(explode(',', $class)));
         foreach ($class as $c) {
-            $this->class[] = preg_replace('/[^a-z0-9\-\_ ]/', '', $c);
+            $this->class[] = $this->_filter($c);
         }
 
         return $this;
@@ -93,8 +93,8 @@ class TagAttributes
         foreach ((array)$class as $c) {
             $c   = str_replace(',', ' ', $c);
             $cls = explode(' ', $c);
-            foreach ($cls as $c) {
-                $this->class[] = trim(preg_replace('/[^a-z0-9\-\_ ]/', '', $c));
+            foreach ($cls as $k) {
+                $this->class[] = trim($this->_filter($k));
             }
         }
         $this->class = array_unique(array_filter($this->class));
@@ -109,7 +109,7 @@ class TagAttributes
 
     protected function setId($id)
     {
-        $this->id = preg_replace('/[^a-z0-9\-\_]/', '', $id);
+        $this->id = $this->_filter($id);
 
         return $this;
     }
@@ -198,4 +198,8 @@ class TagAttributes
         return $this->container2;
     }
 
+    protected function _filter($string)
+    {
+        return preg_replace('/[^a-z0-9\-\_]/i', '', $string);
+    }
 }
