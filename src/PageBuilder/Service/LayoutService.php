@@ -311,8 +311,9 @@ class LayoutService implements ServiceManagerAwareInterface
         foreach ($sections as $section) {
             $slug                    = $section->getSectionId()->getSlug();
             $templateSections[$slug] = array(
-                'title' => $section->getSectionId()->getTitle(),
-                'class' => $section->getIsActive() ? '' : 'in-active'
+                'title'  => $section->getSectionId()->getTitle(),
+                'class'  => $section->getIsActive() ? '' : 'in-active',
+                'status' => $section->getIsActive() ? 1 : 0
             );
         }
 
