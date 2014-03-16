@@ -208,6 +208,7 @@ class PageBuilder
 
                                 /** @var $item \PageBuilder\WidgetData */
                                 foreach ($col['item'] as $item) {
+                                    //Main wrapper
                                     if ($wrapper = $item->getAttributes()->getWrapper()) {
                                         $html[] = sprintf(
                                             '<%s %s %s %s>',
@@ -218,6 +219,17 @@ class PageBuilder
                                         );
                                     }
 
+                                    //First level deep
+                                    if ($item->getAttributes()->getContainer()) {
+                                        $html[] = '<div class="' . $item->getAttributes()->getContainer() . '">';
+                                    }
+
+                                    //Second level deep
+                                    if ($item->getAttributes()->getContainer2()) {
+                                        $html[] = '<div class="' . $item->getAttributes()->getContainer2() . '">';
+                                    }
+
+                                    //Main template content
                                     $html[] = str_replace(
                                         array(
                                              '{{' . self::MAIN_CONTENT . '}}'
@@ -228,6 +240,17 @@ class PageBuilder
                                         is_string($item->getData()) ? $item->getData() : $item->getData()->render()
                                     );
 
+                                    //Second level close
+                                    if ($item->getAttributes()->getContainer2()) {
+                                        $html[] = '</div>';
+                                    }
+
+                                    //First level deep
+                                    if ($item->getAttributes()->getContainer()) {
+                                        $html[] = '</div>';
+                                    }
+
+                                    //main wrapper close
                                     if ($wrapper) {
                                         $html[] = '</' . $item->getAttributes()->getWrapper() . '>';
                                     }
