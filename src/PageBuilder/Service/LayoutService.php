@@ -95,7 +95,7 @@ class LayoutService implements ServiceManagerAwareInterface
         /** @var $pageTheme \PageBuilder\Entity\Join\PageTheme */
         $pageTheme = $themeModel->findObject($pageThemeId);
 
-        return $this->getPageLayout($pageTheme->getPageId(), $pageTheme->getThemeId());
+        return $this->getPageLayout($pageTheme->getPageId()->getId(), $pageTheme->getThemeId()->getId());
     }
 
     /**
@@ -173,8 +173,9 @@ class LayoutService implements ServiceManagerAwareInterface
         foreach ($sections as $section) {
             $slug                    = $section->getSectionId()->getSlug();
             $templateSections[$slug] = array(
-                'title' => $section->getSectionId()->getTitle(),
-                'class' => $section->getIsActive() ? '' : 'in-active'
+                'title'  => $section->getSectionId()->getTitle(),
+                'status' => $section->getIsActive() ? 1 : 0,
+                'class'  => $section->getIsActive() ? '' : 'in-active'
             );
         }
 

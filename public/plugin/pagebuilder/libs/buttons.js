@@ -339,6 +339,7 @@ define(
                         var s = $('#' + i + '-section');
                         var attr = s.data(pageBuilder.attributeKey);
                         layout[i] = {
+                            status : s.data('status'),
                             items: pageBuilder.processSection(s)
                         };
                         layout[i][pageBuilder.attributeKey] = attr || {};

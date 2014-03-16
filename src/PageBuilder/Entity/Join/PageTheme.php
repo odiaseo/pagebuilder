@@ -76,6 +76,9 @@ class PageTheme
         $this->pageId = $pageId;
     }
 
+    /**
+     * @return \PageBuilder\Entity\Page
+     */
     public function getPageId()
     {
         return $this->pageId;

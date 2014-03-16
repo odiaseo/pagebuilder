@@ -143,7 +143,7 @@
 
         <div class="block-fluid template-canvas ui-widget-content">
             <% for( var sec in sections){ %>
-            <div id="<%=sec %>-section" class="section well bg-bottom <%=sections[sec].class %>">
+            <div id="<%=sec %>-section" class="section well bg-bottom <%=sections[sec].class %>" data-status="<%=sections[sec].status %>">
                 <div class="pull-right badge-edit">
                     <span class="badge badge-inverse">0</span>
                     <button class="attr-trigger btn btn-mini"><i class="icon icon-edit"></i></button>
