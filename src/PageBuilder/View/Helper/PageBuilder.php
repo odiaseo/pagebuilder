@@ -120,6 +120,9 @@ class PageBuilder
                             $row['tagAttributes'] = new TagAttributes($rowAttr);
                             if (isset($row['rowItems'])) {
                                 foreach ($row['rowItems'] as &$col) {
+                                    $colAttr              = isset($col['tagAttributes']) ? $col['tagAttributes']
+                                        : array();
+                                    $col['tagAttributes'] = new TagAttributes($colAttr);
                                     if (isset($col['item'])) {
                                         foreach ($col['item'] as $index => $item) {
                                             list($itemType, $itemId) = explode('-', $item['name']);
@@ -201,9 +204,13 @@ class PageBuilder
                             $html [] = $rowTop;
 
                             foreach ($row['rowItems'] as $col) {
-
+                                /** @var $colAttr \PageBuilder\View\TagAttributes */
+                                $colAttr = $col['tagAttributes'];
                                 if (count($row['rowItems']) > 1) {
-                                    $html [] = '<div class="' . $col['class'] . '">'; //bootstrap column
+                                    $colAttr->addClass($col['class']);
+                                    $html []
+                                        = '<' . $colAttr->getWrapper() . $colAttr->formatClass() . $colAttr->formatId()
+                                        . '>';
                                 }
 
                                 /** @var $item \PageBuilder\WidgetData */
@@ -257,7 +264,7 @@ class PageBuilder
                                 }
 
                                 if (count($row['rowItems']) > 1) {
-                                    $html [] = '</div>';
+                                    $html [] = '</' . $colAttr->getWrapper() . '>';
                                 }
                             }
 
