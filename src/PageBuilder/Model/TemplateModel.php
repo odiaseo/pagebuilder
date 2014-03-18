@@ -64,4 +64,31 @@ class TemplateModel extends BaseModel
 
         return $this->save($entity);
     }
+
+    public function listTemplates()
+    {
+
+        $list = array();
+        $qb   = $this->_em->createQueryBuilder();
+        /** @var $query \Doctrine\ORM\Query */
+        $query = $qb->select('e.id, e.title, e.description, e.layout')
+            ->from($this->_entity, 'e')
+            ->getQuery();
+
+        $result = $query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+
+        if ($result) {
+            foreach ($result as $item) {
+                $list[$item['id']] = array(
+                    'title'       => $item['title'],
+                    'description' => $item['description'],
+                    'layout'      => $item['layout']
+                );
+            }
+
+        }
+
+        return $list;
+
+    }
 }

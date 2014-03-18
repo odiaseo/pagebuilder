@@ -189,7 +189,8 @@ class LayoutService implements ServiceManagerAwareInterface
             $details['themes'] = array();
         }
 
-        $templates  = $templateModel->listItemsByTitle();
+        /** @var $templateModel \PageBuilder\Model\TemplateModel */
+        $templates  = $templateModel->listTemplates();
         $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
 
         /** @var $widgetUtil \PageBuilder\Util\Widget */
@@ -292,7 +293,7 @@ class LayoutService implements ServiceManagerAwareInterface
         $themeModel = $this->_serviceManager->get('pagebuilder\model\theme');
 
 
-        /** @var $templateModel \PageBuilder\Model\BaseModel */
+        /** @var $templateModel \PageBuilder\Model\TemplateModel */
         $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
 
 
@@ -327,7 +328,7 @@ class LayoutService implements ServiceManagerAwareInterface
             $details['themes'] = array();
         }
 
-        $templates  = $templateModel->listItemsByTitle();
+        $templates  = $templateModel->listTemplates();
         $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
 
         /** @var $widgetUtil \PageBuilder\Util\Widget */

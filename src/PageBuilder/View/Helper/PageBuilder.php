@@ -195,7 +195,7 @@ class PageBuilder
                             list($rowTop, $rowBottom) = $this->getTopBottomContainers($attr);
 
                             if ($rowWrapper = $attr->getWrapper()) {
-                                $html [] = '<' . $rowWrapper . $attr->formatClass() . '>';
+                                $html [] = '<' . $rowWrapper . $attr->formatClass() . $attr->formatId() . '>';
                             }
 
                             $html [] = $rowTop;
