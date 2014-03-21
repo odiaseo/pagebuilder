@@ -157,131 +157,53 @@ class PageBuilder
         if ($layout = $this->getLayout()) {
             $this->_mainContent = $content;
 
-            /** @var $microDataHelper  \PageBuilder\View\Helper\MicroData */
-            $microDataHelper = $this->_pluginManager->get('microdata');
-
             /** @var $template['tagAttributes'] \PageBuilder\View\TagAttributes */
             foreach ($layout as $section => $template) {
                 /** @var $templateAttr \PageBuilder\View\TagAttributes */
-                $templateAttr   = $template['tagAttributes'];
-                $sectionWrapper = $templateAttr->getWrapper();
+                $templateAttr = $template['tagAttributes'];
                 $templateAttr->addClass($section . '-section');
+                list($top, $bottom) = $this->getTopBottomContainers($template['tagAttributes'], $section);
 
-                if ($sectionWrapper) {
-                    $html [] = '<' . $sectionWrapper . $templateAttr->formatClass()
-                        . $templateAttr->formatId() . $templateAttr->formatAttr();
-                    switch ($section) {
-                        case 'header':
-                            $microData = $microDataHelper->scopeAndProperty('WebPage', 'WPHeader');
-                            break;
-                        case 'footer':
-                            $microData = $microDataHelper->scopeAndProperty('WebPage', 'WPFooter');
-                            break;
-                        default:
-                            $microData = '';
-                            break;
-                    }
-
-                    $html [] = $microData . '>';
-                }
-
-                list($top, $bottom) = $this->getTopBottomContainers($template['tagAttributes']);
                 $html [] = $top;
 
                 if (isset($template['items'])) {
 
                     foreach ($template['items'] as $row) {
                         if (isset($row['rowItems'])) {
-                            /** @var $attr \PageBuilder\View\TagAttributes */
-                            $attr = $row['tagAttributes'];
-
-                            list($rowTop, $rowBottom) = $this->getTopBottomContainers($attr);
-
-                            if ($rowWrapper = $attr->getWrapper()) {
-                                $html [] = '<' . $rowWrapper . $attr->formatClass() . $attr->formatId() . '>';
-                            }
-
+                            list($rowTop, $rowBottom) = $this->getTopBottomContainers($row['tagAttributes']);
                             $html [] = $rowTop;
 
                             foreach ($row['rowItems'] as $col) {
+
                                 /** @var $colAttr \PageBuilder\View\TagAttributes */
                                 $colAttr = $col['tagAttributes'];
+
                                 if (count($row['rowItems']) > 1) {
-                                    $colAttr->addClass($col['class']);
-                                    $html []
-                                        = '<' . $colAttr->getWrapper() . $colAttr->formatClass() . $colAttr->formatId()
-                                        . '>';
+                                    $colAttr->setClass($col['class']);
                                 }
+                                list($colTop, $colBottom) = $this->getTopBottomContainers($colAttr);
+
+                                $html [] = $colTop;
 
                                 /** @var $item \PageBuilder\WidgetData */
                                 foreach ($col['item'] as $item) {
-                                    //Main wrapper
-                                    if ($wrapper = $item->getAttributes()->getWrapper()) {
-                                        $html[] = sprintf(
-                                            '<%s %s %s %s>',
-                                            $wrapper,
-                                            $item->getAttributes()->formatClass(),
-                                            $item->getAttributes()->formatId(),
-                                            $item->getAttributes()->formatAttr()
-                                        );
-                                    }
-
-                                    //First level deep
-                                    if ($item->getAttributes()->getContainer()) {
-                                        $html[] = '<div class="' . $item->getAttributes()->getContainer() . '">';
-                                    }
-
-                                    //Second level deep
-                                    if ($item->getAttributes()->getContainer2()) {
-                                        $html[] = '<div class="' . $item->getAttributes()->getContainer2() . '">';
-                                    }
-
-                                    //Main template content
+                                    list($itemTop, $itemBottom) = $this->getTopBottomContainers(
+                                        $item->getAttributes(), null, count($row['rowItems'])
+                                    );
+                                    $html[] = $itemTop;
                                     $html[] = str_replace(
-                                        array(
-                                             '{{' . self::MAIN_CONTENT . '}}'
-                                        ),
-                                        array(
-                                             $content
-                                        ),
+                                        array('{{' . self::MAIN_CONTENT . '}}'), array($content),
                                         is_string($item->getData()) ? $item->getData() : $item->getData()->render()
                                     );
-
-                                    //Second level close
-                                    if ($item->getAttributes()->getContainer2()) {
-                                        $html[] = '</div>';
-                                    }
-
-                                    //First level deep
-                                    if ($item->getAttributes()->getContainer()) {
-                                        $html[] = '</div>';
-                                    }
-
-                                    //main wrapper close
-                                    if ($wrapper) {
-                                        $html[] = '</' . $item->getAttributes()->getWrapper() . '>';
-                                    }
+                                    $html[] = $itemBottom;
                                 }
 
-                                if (count($row['rowItems']) > 1) {
-                                    $html [] = '</' . $colAttr->getWrapper() . '>';
-                                }
+                                $html[] = $colBottom;
                             }
-
-
                             $html [] = $rowBottom;
-
-                            if ($rowWrapper) {
-                                $html [] = '</' . $rowWrapper . '>';
-                            }
                         }
                     }
-
                     $html [] = $bottom;
-
-                    if ($sectionWrapper) {
-                        $html [] = '</' . $sectionWrapper . '>';
-                    }
                 }
             }
 
@@ -428,17 +350,56 @@ class PageBuilder
         return $this->_pluginManager;
     }
 
-    protected function getTopBottomContainers(TagAttributes $attr)
+    /**
+     * @param TagAttributes $attr
+     * @param string        $section
+     * @param null          $itemTotal
+     *
+     * @return array
+     */
+    protected function getTopBottomContainers(TagAttributes $attr, $section = '')
     {
         $top = $bottom = '';
+        if ($wrapper = $attr->getWrapper()) {
+            /** @var $microDataHelper  \PageBuilder\View\Helper\MicroData */
+            $microDataHelper = $this->_pluginManager->get('microdata');
+
+            switch ($section) {
+                case 'header':
+                    $microData = $microDataHelper->scopeAndProperty('WebPage', 'WPHeader');
+                    break;
+                case 'footer':
+                    $microData = $microDataHelper->scopeAndProperty('WebPage', 'WPFooter');
+                    break;
+                default:
+                    $microData = '';
+                    break;
+            }
+
+            $top .= sprintf(
+                '<%s %s %s %s %s>',
+                $wrapper,
+                $attr->formatClass(),
+                $attr->formatId(),
+                $attr->formatAttr(),
+                $microData
+            );
+        }
+
         if ($containerClass = $attr->getContainer()) {
-            $top    = '<div class="' . $containerClass . '">';
-            $bottom = '</div>';
+            $top .= '<div class="' . $containerClass . '">';
+            $bottom .= '</div>';
+
 
             if ($container2 = $attr->getContainer2()) {
                 $top .= '<div class="' . $container2 . '">';
                 $bottom .= '</div>';
             }
+        }
+
+        //main wrapper close
+        if ($wrapper) {
+            $bottom .= '</' . $wrapper . '>';
         }
 
         return array($top, $bottom);

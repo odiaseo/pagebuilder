@@ -71,9 +71,10 @@ class TagAttributes
         return $this->attributes;
     }
 
-    protected function setClass($class)
+    public function setClass($class)
     {
-        $class = array_unique(array_filter(explode(',', $class)));
+        $this->class = array();
+        $class       = array_unique(array_filter(explode(',', $class)));
         foreach ($class as $c) {
             $this->class[] = $this->_filter($c);
         }
