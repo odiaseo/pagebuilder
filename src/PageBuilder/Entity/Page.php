@@ -10,7 +10,7 @@ use SynergyCommon\Entity\BasePage;
 /**
  * Page
  *
- * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @ORM\Entity(repositoryClass="SynergyCommon\Model\NestedSetRepository")
  * @ORM\Table(name="Page")
  * @Gedmo\Tree(type="nested")
  *

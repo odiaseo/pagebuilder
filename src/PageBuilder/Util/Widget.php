@@ -56,7 +56,10 @@ class Widget
 
                         $reflection = new \ReflectionClass($className);
 
-                        if ($reflection->implementsInterface('PageBuilder\WidgetInterface')) {
+
+                        if ($reflection->isInstantiable()
+                            && $reflection->implementsInterface('PageBuilder\WidgetInterface')
+                        ) {
                             $attributes = $reflection->getDefaultProperties();
                             $id         = !empty($attributes['id']) ? preg_replace('/[^a-z]/i', '', $attributes['id'])
                                 : $widgetId;
