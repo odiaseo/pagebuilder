@@ -3,10 +3,14 @@ namespace PageBuilder\Model;
 
 
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
-use Zend\Navigation\Navigation;
 
+/**
+ * Class PageModel
+ *
+ * @method \SynergyCommon\Model\NestedSetRepository getRepository()
+ * @package PageBuilder\Model
+ */
 class PageModel
     extends BaseModel
 {
@@ -19,113 +23,32 @@ class PageModel
      */
     public function getTreeStructure($rootLevel = 1)
     {
-        $entityManager = $this->getEntityManager();
-        $query         = $entityManager
-            ->createQueryBuilder()
-            ->select('e')
-            ->from($this->_entity, 'e')
-            ->where('e.level > :level')
-            ->setParameter(':level', $rootLevel - 1)
-            ->orderBy('e.root, e.lft', 'ASC')
-            ->getQuery();
-
-        return $query->getArrayResult();
+        return $this->getRepository()->getTreeStructure($rootLevel);
     }
 
     public function getRootMenu()
     {
-        $qb = $this->_em->createQueryBuilder();
-        /** @var $query \Doctrine\ORM\Query */
-
-        $query = $qb->select('e')
-            ->from($this->_entity, 'e')
-            ->where($qb->expr()->eq('e.level', ':level'))
-            ->setMaxResults(1)
-            ->setParameter('level', 0)
-            ->getQuery();
-
-        return $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
+        return $this->getRepository()->getRootMenu();
     }
 
     public function getRootMenuById($pageId)
     {
-        $qb = $this->_em->createQueryBuilder();
-        /** @var $query \Doctrine\ORM\Query */
-
-        $query = $qb->select('e')
-            ->from($this->_entity, 'e')
-            ->where($qb->expr()->eq('e.id', ':id'))
-            ->setMaxResults(1)
-            ->setParameter('id', $pageId)
-            ->getQuery();
-
-        return $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
+        return $this->getRepository()->getRootMenuById($pageId);
     }
 
-    public function nestify($arrs, $depth_key = 'level')
+    public function nestify($arrs, $depthKey = 'level')
     {
-        $nested = array();
-        $depths = array();
-
-        foreach ($arrs as $key => $arr) {
-            if ($arr[$depth_key] == 0) {
-                $nested[$key]                 = $arr;
-                $depths[$arr[$depth_key] + 1] = $key;
-            } else {
-                $parent =& $nested;
-                for ($i = 1; $i <= ($arr[$depth_key]); $i++) {
-                    $parent =& $parent[$depths[$i]];
-                }
-
-                $parent[$key]                 = $arr;
-                $depths[$arr[$depth_key] + 1] = $key;
-            }
-        }
-
-        return $nested;
+        return $this->getRepository()->nestify($arrs, $depthKey);
     }
 
     public function getNavigationContainer($menus, $routeMatch)
     {
-        $nestedMenus = $this->toHierarchy($menus, $routeMatch);
-
-        return new Navigation($nestedMenus);
+        return $this->getRepository()->getNavigationContainer($menus, $routeMatch);
     }
 
     public function toHierarchy($collection, $childKey = 'pages')
     {
-        // Trees mapped
-
-        $trees = array();
-        //$l = 0;
-        if (count($collection) > 0) {
-            // Node Stack. Used to help building the hierarchy
-            $stack = array();
-            foreach ($collection as $node) {
-                $item            = $this->_buildPage($node);
-                $item[$childKey] = array();
-                // Number of stack items
-                $l = count($stack);
-                // Check if we're dealing with different levels
-                while ($l > 0 && $stack[$l - 1]['level'] >= $item['level']) {
-                    array_pop($stack);
-                    $l--;
-                }
-                // Stack is empty (we are inspecting the root)
-                if ($l == 0) {
-                    // Assigning the root node
-                    $i         = count($trees);
-                    $trees[$i] = $item;
-                    $stack[]   = & $trees[$i];
-                } else {
-                    // Add node to parent
-                    $i                            = count($stack[$l - 1][$childKey]);
-                    $stack[$l - 1][$childKey][$i] = $item;
-                    $stack[]                      = & $stack[$l - 1][$childKey][$i];
-                }
-            }
-        }
-
+        $trees    = $this->getRepository()->toHierarchy($collection, $childKey, array($this, 'buildPage'));
         $entities = $this->buildEntityTree();
 
         if ($entities) {
@@ -141,7 +64,7 @@ class PageModel
 
     }
 
-    protected function _buildPage($node, $hasIdentity = false)
+    public static function buildPage($node, $hasIdentity = false)
     {
         $params = array();
         if ($node['parameters']) {
@@ -186,31 +109,7 @@ class PageModel
      */
     public function getBreadcrumbPath($slug)
     {
-        try {
-            $path = array();
-            $qb   = $this->_em->createQueryBuilder();
-            $query
-                  = $qb->select('e')
-                ->from($this->_entity, 'e')
-                ->where('e.slug = :slug')
-                ->setParameter(':slug', $slug)
-                ->setMaxResults(1)
-                ->getQuery();
-
-            $menu = $query->execute(array(), AbstractQuery::HYDRATE_OBJECT);
-
-            if ($menu) {
-                /** @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
-                $repo = $this->_em->getRepository($this->_entity);
-                $path = $repo->getPath($menu[0]);
-            }
-        } catch (NonUniqueResultException $ex) {
-
-        } catch (QueryException $ex) {
-
-        }
-
-        return $path;
+        return $this->getRepository()->getBreadcrumbPath($slug);
     }
 
 
