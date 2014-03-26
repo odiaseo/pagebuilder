@@ -3,6 +3,8 @@
 namespace PageBuilder\Controller;
 
 use Doctrine\ORM\EntityManager;
+use PageBuilder\PageAwareInterface;
+use PageBuilder\PageMetaData;
 use SynergyCommon\SiteAwareInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 
@@ -16,7 +18,8 @@ use Zend\Mvc\Controller\AbstractActionController;
  */
 class BaseActionController
     extends AbstractActionController
-    implements SiteAwareInterface
+    implements SiteAwareInterface, PageAwareInterface
+
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -26,10 +29,29 @@ class BaseActionController
     /** @var \PageBuilder\Entity\Site */
     protected $_site;
 
+    /** @var  PageMetaData */
     protected $_pageMetadata;
 
     /** @var \Zend\Log\Logger */
     protected $_log;
+
+    /**
+     * @param PageMetaData $meta
+     *
+     * @return mixed
+     */
+    public function setPageMetadata(PageMetaData $meta)
+    {
+        $this->_pageMetadata = $meta;
+    }
+
+    /**
+     * @return PageMetaData
+     */
+    public function getPageMeta()
+    {
+        return $this->_pageMetadata;
+    }
 
     /**
      * @param EntityManager $em
