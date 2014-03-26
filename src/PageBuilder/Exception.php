@@ -1,5 +1,5 @@
 <?php
-namespace Application;
+namespace PageBuilder;
 
 
 class Exception extends \Exception
