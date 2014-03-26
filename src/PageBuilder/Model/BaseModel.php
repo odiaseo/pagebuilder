@@ -14,11 +14,14 @@ class BaseModel
 {
     /** @var string */
     protected $orm = 'orm_default';
+
     /** @var \Doctrine\ORM\EntityManager */
     protected $_em;
+
     /** @var string */
     protected $_entity;
-    /** @var \PageBuilder\BaseEntity */
+
+    /** @var \SynergyCommon\Entity\BaseEntity */
     protected $_entityInstance;
 
     public function setEntity($entity)
@@ -385,7 +388,7 @@ class BaseModel
     }
 
     /**
-     * @return \PageBuilder\BaseEntity
+     * @return \SynergyCommon\Entity\BaseEntity
      */
     public function getEntityInstance()
     {

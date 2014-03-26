@@ -31,6 +31,45 @@ class PageMetaData
     protected $metaTitle;
     protected $metaKeywords;
 
+    /** @var string */
+    protected $domain;
+
+    /** @var \Zend\Stdlib\AbstractOptions */
+    protected $settings;
+
+    /**
+     * @param string $domain
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * @param \Zend\Stdlib\AbstractOptions $settings
+     */
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+    }
+
+    /**
+     * @return \Zend\Stdlib\AbstractOptions
+     */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+
     public function setType($type)
     {
         $this->type = $type;

@@ -1,7 +1,7 @@
 <?php
 namespace PageBuilder\Model;
 
-class SiteModel extends BaseModel
+class SiteModel
+    extends BaseModel
 {
-
 }
