@@ -1,39 +1,13 @@
 <?php
 namespace PageBuilder\Controller;
 
+use SynergyCommon\Controller\BaseRestfulController as BaseRestController;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
 class BaseRestfulController
-    extends AbstractRestfulController
+    extends BaseRestController
 {
-
     protected $_pageServiceKey = 'pagebuilder\service\layout';
-    /**
-     * Accept header criteria
-     *
-     * @var array
-     */
-    protected $_acceptCriteria
-        = array(
-            'Zend\View\Model\JsonModel' => array(
-                'application/json',
-                'application/jsonp',
-                'application/javascript',
-                '*/*'
-            ),
-            'Zend\View\Model\ViewModel' => array(
-                '*/*'
-            ),
-        );
-
-    protected function _sendPayload($payLoad)
-    {
-        $viewModel = $this->acceptableViewModelSelector($this->_acceptCriteria);
-        $viewModel->setVariables($payLoad);
-
-        return $viewModel;
-    }
-
     /**
      * @param $key
      *

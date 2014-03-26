@@ -1,0 +1,91 @@
+<?php
+
+namespace PageBuilder\Controller;
+
+use Doctrine\ORM\EntityManager;
+use SynergyCommon\SiteAwareInterface;
+use Zend\Mvc\Controller\AbstractActionController;
+
+/**
+ * Class BaseController
+ *
+ * @method \Zend\Http\Response getResponse()
+ * @method \Zend\Http\Request  getRequest()
+ * @method translate()
+ * @package Application\Controller
+ */
+class BaseActionController
+    extends AbstractActionController
+    implements SiteAwareInterface
+{
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $_em = null;
+
+    /** @var \PageBuilder\Entity\Site */
+    protected $_site;
+
+    protected $_pageMetadata;
+
+    /** @var \Zend\Log\Logger */
+    protected $_log;
+
+    /**
+     * @param EntityManager $em
+     */
+    public function setEntityManager(EntityManager $em)
+    {
+        $this->_em = $em;
+    }
+
+    /**
+     * @return array|EntityManager|null|object
+     */
+    public function getEntityManager()
+    {
+        if (null === $this->_em) {
+            // doctrine.entitymanager.orm_default
+            $this->_em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+
+        return $this->_em;
+    }
+
+    public function setSite($site = null)
+    {
+        $this->_site = $site;
+
+        return $this;
+    }
+
+
+    /**
+     * @return \PageBuilder\Entity\Site
+     */
+    public function getSite()
+    {
+        return $this->_site;
+    }
+
+    /**
+     * @param \Zend\Log\Logger $log
+     *
+     * @return $this
+     */
+    public function setLog($log)
+    {
+        $this->_log = $log;
+
+        return $this;
+    }
+
+    /**
+     * @return \Zend\Log\Logger
+     */
+    public function getLog()
+    {
+        return $this->_log;
+    }
+
+}
