@@ -1,9 +1,7 @@
 <?php
 namespace PageBuilder\Model;
 
-
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManager;
 use SynergyCommon\Model\AbstractModel;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\ServiceManager\ServiceManager;

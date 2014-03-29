@@ -16,6 +16,14 @@ class Site
     extends BaseSite
 {
     /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $description;
+    /**
+     * @ORM\Column(type="string", length=150, nullable=true)
+     */
+    private $strapline;
+    /**
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade="persist")
      */
     private $siteThemes;
@@ -86,6 +94,26 @@ class Site
     public function getSettings()
     {
         return $this->settings;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setStrapline($strapline)
+    {
+        $this->strapline = $strapline;
+    }
+
+    public function getStrapline()
+    {
+        return $this->strapline;
     }
 
     public function getSettingList()
