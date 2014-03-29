@@ -11,9 +11,6 @@ use Zend\ServiceManager\ServiceManager;
 class BaseModel
     extends AbstractModel
 {
-    /** @var \Doctrine\ORM\EntityManager */
-    protected $_em;
-
     /** @var \SynergyCommon\Entity\BaseEntity */
     protected $_entityInstance;
 

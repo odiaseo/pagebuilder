@@ -115,7 +115,7 @@ class PageModel
 
     public function getDetails($pageId)
     {
-        $page = $this->_em->getRepository($this->_entity)->find($pageId);
+        $page = $this->getRepository()->find($pageId);
 
         $details           = $page->toArray();
         $details['layout'] = is_object($page->template) ? $page->template->layout : '';
@@ -126,7 +126,7 @@ class PageModel
 
     public function updateTemplateId($pageId, $templateId)
     {
-        $page             = $this->_em->getRepository($this->_entity)->find($pageId);
+        $page             = $this->getRepository()->find($pageId);
         $page->templateId = $templateId;
         $res              = $this->save($page);
 
@@ -157,7 +157,7 @@ class PageModel
 
     public function getRoots($mode = AbstractQuery::HYDRATE_ARRAY)
     {
-        $qb = $this->_em->createQueryBuilder();
+        $qb = $this->getEntityManager()->createQueryBuilder();
 
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e')
@@ -175,7 +175,7 @@ class PageModel
 
     public function getPageDetails($pageId)
     {
-        $page = $this->_em->getRepository($this->_entity)->find($pageId);
+        $page = $this->getRepository()->find($pageId);
 
         $details           = $page->toArray();
         $details['layout'] = is_object($page->template) ? $page->template->layout : '';
@@ -186,7 +186,7 @@ class PageModel
 
     public function getActivePages()
     {
-        $qb = $this->_em->createQueryBuilder();
+        $qb = $this->getEntityManager()->createQueryBuilder();
 
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e')

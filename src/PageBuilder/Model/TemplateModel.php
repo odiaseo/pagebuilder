@@ -9,7 +9,7 @@ class TemplateModel extends BaseModel
 {
     public function getActiveSections($id)
     {
-        $qb = $this->_em->createQueryBuilder();
+        $qb = $this->getEntityManager()->createQueryBuilder();
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e')
             ->from('PageBuilder\Entity\Join\TemplateSection', 'e')
@@ -47,12 +47,12 @@ class TemplateModel extends BaseModel
         }
 
         foreach ($sections as $order => $v) {
-            if ($entry = $this->_em->getRepository('PageBuilder\Entity\Join\TemplateSection')
+            if ($entry = $this->getEntityManager()->getRepository('PageBuilder\Entity\Join\TemplateSection')
                 ->findOneBy(array('templateId' => $id, 'sectionId' => $v))
             ) {
                 $entry->setSortOrder($order);
                 $entry->setIsActive(1);
-            } elseif ($section = $this->_em->getRepository('PageBuilder\Entity\Section')->find($v)) {
+            } elseif ($section = $this->getEntityManager()->getRepository('PageBuilder\Entity\Section')->find($v)) {
                 $entry = new TemplateSection();
                 $entry->setSectionId($section);
                 $entry->setTemplateId($entity);
@@ -69,7 +69,7 @@ class TemplateModel extends BaseModel
     {
 
         $list = array();
-        $qb   = $this->_em->createQueryBuilder();
+        $qb   = $this->getEntityManager()->createQueryBuilder();
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e.id, e.title, e.description, e.layout')
             ->from($this->_entity, 'e')
