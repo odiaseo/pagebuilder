@@ -1,8 +1,8 @@
 <?php
 namespace PageBuilder\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Zend\Mvc\Controller\Plugin\FlashMessenger as FlashMessenger;
+use Zend\View\Helper\AbstractHelper;
 
 class FlashMessages extends AbstractHelper
 {

@@ -4,6 +4,7 @@ namespace PageBuilder\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
 use PageBuilder\Entity\Join\TemplateSection;
+use PageBuilder\Entity\Template;
 
 class TemplateModel extends BaseModel
 {
@@ -91,4 +92,20 @@ class TemplateModel extends BaseModel
         return $list;
 
     }
+
+    public function updateTemplate($id, $layout, $title = '')
+    {
+        $template = $this->getEntityManager()
+            ->getRepository($this->getEntity())->find($id);
+
+        if (!$template) {
+            $template = new Template();
+            $template->setTitle($title);
+        }
+
+        $template->setLayout($layout);
+
+        return $this->save($template);
+    }
+
 }

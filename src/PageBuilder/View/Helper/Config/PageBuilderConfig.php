@@ -84,7 +84,6 @@ class PageBuilderConfig
     }
 
 
-
     public function setFilter($filter)
     {
         $this->filter = $filter;

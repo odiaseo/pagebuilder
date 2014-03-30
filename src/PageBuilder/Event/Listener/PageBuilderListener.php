@@ -5,7 +5,6 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Http\Request;
 use Zend\Mvc\MvcEvent;
-use Zend\Session\Container;
 
 class PageBuilderListener
     implements ListenerAggregateInterface

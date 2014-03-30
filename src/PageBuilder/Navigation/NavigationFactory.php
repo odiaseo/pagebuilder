@@ -1,9 +1,9 @@
 <?php
 namespace PageBuilder\Navigation;
 
+use Zend\Navigation\Exception;
 use Zend\Navigation\Navigation;
 use Zend\Navigation\Service\DefaultNavigationFactory;
-use Zend\Navigation\Exception;
 
 class NavigationFactory extends DefaultNavigationFactory
 {

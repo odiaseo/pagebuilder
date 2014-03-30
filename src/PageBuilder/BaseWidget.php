@@ -2,12 +2,12 @@
 
 namespace PageBuilder;
 
+
 use PageBuilder\View\TagAttributes;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\View\Helper\AbstractHelper;
-
 
 abstract class BaseWidget extends AbstractHelper implements
     ServiceManagerAwareInterface,
