@@ -11,8 +11,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 /**
  * Class BaseController
  *
- * @method \Zend\Http\Response getResponse()
- * @method \Zend\Http\Request  getRequest()
+ * @method \Zend\Http\PhpEnvironment\Response getResponse()
+ * @method \Zend\Http\PhpEnvironment\Request   getRequest()
  * @method translate()
  * @package Application\Controller
  */
