@@ -18,7 +18,6 @@ use Zend\Http\Response;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Session\Container;
 
 class Module
     implements DependencyIndicatorInterface
@@ -71,6 +70,7 @@ class Module
                 'widget_service'    => 'PageBuilder\Service\WidgetService',
                 'pagebuilder\menu'  => 'PageBuilder\Navigation\NavigationFactory',
                 'util\widget'       => 'PageBuilder\Util\Widget',
+                'active_site'       => 'PageBuilder\Service\LocalSiteFactory',
             ),
             'initializers' => array(
                 'widget' => function ($widget, $sm) {
@@ -98,7 +98,7 @@ class Module
             ),
 
             'factories'    => array(
-                'active_site'                              => 'PageBuilder\Service\LocalSiteFactory',
+                'PageBuilder\Service\LocalSiteFactory'     => 'PageBuilder\Service\LocalSiteFactory',
                 'PageBuilder\Service\PageService'          => 'PageBuilder\Service\PageService',
                 'PageBuilder\Navigation\NavigationFactory' => 'PageBuilder\Navigation\NavigationFactory',
                 'PageBuilder\Service\ComponentService'     => 'PageBuilder\Service\ComponentService',
