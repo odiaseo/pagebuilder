@@ -26,12 +26,12 @@ class SettingKey
      */
     private $title;
     /**
-     * @Gedmo\Slug(fields={"title"})
+     * @Gedmo\Slug(fields={"title"}, updatable=false)
      * @ORM\Column(type="string")
      */
     private $code;
     /**
-     * @ORM\Column(type="string", name="default_value")
+     * @ORM\Column(type="string", name="default_value", nullable=true)
      */
     private $defaultValue = '';
     /**
@@ -39,7 +39,7 @@ class SettingKey
      */
     private $inputType = 'text';
     /**
-     * @ORM\Column(type="string", name="data_source")
+     * @ORM\Column(type="string", name="data_source", nullable=true)
      */
     private $dataSource;
     /**
