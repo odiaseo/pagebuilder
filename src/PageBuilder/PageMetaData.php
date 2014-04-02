@@ -23,7 +23,7 @@ class PageMetaData
 
     public $section = '';
     public $categories = array();
-
+    public $searchTerm;
     public $type = 'website';
 
     //SEO Header Metadata
@@ -36,6 +36,16 @@ class PageMetaData
 
     /** @var \Zend\Stdlib\AbstractOptions */
     protected $settings;
+
+    public function setSearchTerm($searchTerm)
+    {
+        $this->searchTerm = $searchTerm;
+    }
+
+    public function getSearchTerm()
+    {
+        return $this->searchTerm;
+    }
 
     /**
      * @param string $domain
