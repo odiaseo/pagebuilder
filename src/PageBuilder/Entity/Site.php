@@ -138,4 +138,16 @@ class Site
 
         return $this->settingList;
     }
+
+    public function getDisplayDomain()
+    {
+        if ($this->domain && strpos($this->domain, '.') !== 2) {
+            return 'http://www.' . rtrim($this->domain, '/');
+        } elseif ($this->domain) {
+            return 'http://' . rtrim($this->domain, '/');
+        }
+
+        return $this->domain;
+
+    }
 }
