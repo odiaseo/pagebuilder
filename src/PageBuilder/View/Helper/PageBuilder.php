@@ -81,7 +81,8 @@ class PageBuilder
 
             if (method_exists($page, 'getPageThemes')) {
                 foreach ($page->getPageThemes() as $theme) {
-                    if ($theme->getIsActive() and $theme->getThemeId()->getSlug() == $siteTheme) {
+                    if ($theme->getIsActive() && $theme->getThemeId() && $theme->getThemeId()->getSlug() == $siteTheme
+                    ) {
                         $this->_activeTheme = $theme;
                         $layout             = $theme->getLayout();
                         break;
