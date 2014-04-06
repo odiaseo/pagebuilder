@@ -4,7 +4,7 @@ namespace PageBuilder\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SynergyCommon\Entity\BaseEntity;
+use SynergyCommon\Entity\BaseEntity as CommonBaseEntity;
 
 
 /**
@@ -15,7 +15,7 @@ use SynergyCommon\Entity\BaseEntity;
  *
  */
 class Template
-    extends BaseEntity
+    extends CommonBaseEntity
 {
     /**
      * @ORM\Id
