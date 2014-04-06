@@ -39,11 +39,6 @@ class Page
      * @ORM\JoinTable(name="Page_Theme")
      */
     protected $pageThemes;
-    /**
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
-     * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
-     */
-    protected $site;
 
     public function __construct()
     {
