@@ -208,6 +208,7 @@ class PageBuilder
                 }
             }
 
+            $html = array_filter($html);
             $html = implode('', $html);
 
             if ($alias = $this->_options->getFilter()) {
@@ -353,8 +354,9 @@ class PageBuilder
 
     /**
      * @param TagAttributes $attr
+     *
+     * @param TagAttributes $attr
      * @param string        $section
-     * @param null          $itemTotal
      *
      * @return array
      */
@@ -377,14 +379,17 @@ class PageBuilder
                     break;
             }
 
-            $top .= sprintf(
-                '<%s %s %s %s %s>',
-                $wrapper,
-                $attr->formatClass(),
-                $attr->formatId(),
-                $attr->formatAttr(),
-                $microData
+            $variables = array(
+                trim($wrapper),
+                trim($attr->formatClass()),
+                trim($attr->formatId()),
+                trim($attr->formatAttr()),
+                trim($microData)
             );
+
+            $variables = array_filter($variables);
+
+            $top .= sprintf('<%s>', implode(' ', $variables));
         }
 
         if ($containerClass = $attr->getContainer()) {
