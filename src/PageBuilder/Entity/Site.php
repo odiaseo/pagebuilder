@@ -20,7 +20,7 @@ class Site
      */
     private $description;
     /**
-     * @ORM\Column(type="string", length=150, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $strapline;
     /**
