@@ -43,6 +43,10 @@ class Site
      */
     private $modules;
     /**
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $languages;
+    /**
      * @var array
      */
     protected $settingList = array();
@@ -53,6 +57,16 @@ class Site
         $this->settings   = new ArrayCollection();
         $this->siteThemes = new ArrayCollection();
         $this->modules    = new ArrayCollection();
+    }
+
+    public function setLanguages($languages)
+    {
+        $this->languages = $languages;
+    }
+
+    public function getLanguages()
+    {
+        return $this->languages;
     }
 
     public function setModules($modules)
