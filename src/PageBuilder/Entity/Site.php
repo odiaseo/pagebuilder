@@ -33,7 +33,7 @@ class Site
      */
     private $licences;
     /**
-     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Setting")
      */
     private $settings;
@@ -46,10 +46,6 @@ class Site
      * @ORM\Column(type="json_array", nullable=true)
      */
     private $languages;
-    /**
-     * @var array
-     */
-    protected $settingList = array();
 
     public function __construct()
     {
@@ -130,28 +126,6 @@ class Site
         return $this->strapline;
     }
 
-    public function getSettingList()
-    {
-
-        if (!$this->settingList and $this->settings) {
-            /** @var $item \PageBuilder\Entity\Setting */
-            foreach ($this->settings as $item) {
-                $code                     = $item->getSettingKey()->getCode();
-                $value                    = $item->getSettingValue() ? : $item->getSettingKey()->getDefaultValue();
-                $this->settingList[$code] = $value;
-            }
-
-            if (!isset($this->settingList['locale'])) {
-                $this->settingList['locale'] = 'en_GB';
-            }
-
-            list($this->settingList['language'], $this->settingList['region']) = explode(
-                '_', $this->settingList['locale']
-            );
-        }
-
-        return $this->settingList;
-    }
 
     public function getDisplayDomain()
     {

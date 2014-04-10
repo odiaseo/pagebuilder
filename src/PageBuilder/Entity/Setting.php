@@ -21,7 +21,7 @@ class Setting
     protected $id;
     /**
      * @var \PageBuilder\Entity\SettingKey
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SettingKey")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SettingKey", fetch="LAZY")
      * @ORM\JoinColumn(name="setting_key_id", referencedColumnName="id", nullable=false)
      */
     protected $settingKey;
