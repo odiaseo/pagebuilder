@@ -138,4 +138,9 @@ class Site
         return $this->domain;
 
     }
+
+    public function getSessionNamespace()
+    {
+        return preg_replace('/[^a-z0-9A-Z]/', '', $this->getDomain());
+    }
 }
