@@ -31,10 +31,8 @@ class LocalSiteFactory
         }
         if ($host) {
             $hostname   = str_replace(array('http://', 'https://', 'www.'), '', $host);
-            $sessionKey = preg_replace('/[^\p{L}\p{N}]+/ui', '', "host{$hostname}");
-
             /** @var $container \ArrayObject */
-            $container = new Container($sessionKey);
+            $container = new Container();
 
             if ($container->offsetExists($containerKey)) {
                 $em   = $serviceLocator->get('doctrine.entitymanager.orm_default');
