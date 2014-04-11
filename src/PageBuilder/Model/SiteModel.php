@@ -9,10 +9,8 @@ class SiteModel
     public function getSettingList($siteId)
     {
         /** @var $site \PageBuilder\Entity\Site */
-        $site = $this->findObject($siteId);
-
-        $locale      = $site->getLocale() ? : 'en_GB';
-        $settingList = \Locale::parseLocale($locale);
+        $site        = $this->findObject($siteId);
+        $settingList = array();
 
         /** @var $setting \PageBuilder\Entity\Setting */
         foreach ($site->getSettings() as $setting) {
@@ -20,6 +18,10 @@ class SiteModel
             $value              = $setting->getSettingValue() ? : $setting->getSettingKey()->getDefaultValue();
             $settingList[$code] = $value;
         }
+
+        $locale                = $site->getLocale() ? : 'en_GB';
+        $settingList           = array_merge($settingList, \Locale::parseLocale($locale));
+        $settingList['locale'] = $locale;
 
         return $settingList;
     }
