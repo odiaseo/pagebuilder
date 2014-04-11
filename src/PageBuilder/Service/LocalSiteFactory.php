@@ -30,14 +30,15 @@ class LocalSiteFactory
             $host = $request->getServer('HTTP_HOST');
         }
         if ($host) {
-            $hostname   = str_replace(array('http://', 'https://', 'www.'), '', $host);
+            $hostname = str_replace(array('http://', 'https://', 'www.'), '', $host);
             /** @var $container \ArrayObject */
             $container = new Container();
 
             if ($container->offsetExists($containerKey)) {
-                $em   = $serviceLocator->get('doctrine.entitymanager.orm_default');
-                $site = $container->offsetGet($containerKey);
-                $site = $em->merge($site);
+                /** @var $siteModel \PageBuilder\Model\SiteModel */
+                $siteModel = $serviceLocator->get('pagebuilder\model\site');
+                $siteId    = $container->offsetGet($containerKey);
+                $site      = $siteModel->findObject($siteId);
             } elseif (!$site = $serviceLocator->get('pagebuilder\model\site')->findOneByDomain($hostname)) {
                 header
                 (
@@ -46,7 +47,8 @@ class LocalSiteFactory
                 echo "Site is not registered";
                 exit;
             } else {
-                $container->offsetSet($containerKey, $site);
+                /** @var $site \PageBuilder\Entity\Site */
+                $container->offsetSet($containerKey, $site->getId());
             }
         } else {
             $site = new Site();
