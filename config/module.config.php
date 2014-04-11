@@ -328,7 +328,7 @@ return array(
             'forceFit'           => true,
             'shrinkToFit'        => true,
             'rownumbers'         => true,
-            'onSelectRow'        => new \Zend\Json\Expr("function (rowId) {
+            'onSelectRow'        => (string) new \Zend\Json\Expr("function (rowId) {
                 var grid = $(this);
                 var gsr = grid.data('lastsel');
                 if (rowId && rowId != gsr) {
@@ -448,22 +448,6 @@ return array(
 
             /** model specific */
             'specific' => array(
-                /*'page'       => array(
-                    'layout-manager' => array(
-                        'id'         => 'layman',
-                        'class'      => 'btn btn-mini',
-                        'title'      => 'Layout Manager',
-                        'icon'       => 'icon-th-large',
-                        'position'   => 'bottom',
-                        'onLoad'     => '',
-                        'callback'   => new \Zend\Json\Expr("function(){  synergyDataGrid.pageBuilder.manageLayout(this) ;  }"),
-                        'attributes' => array(
-                            'data-endpoint'     => '/pagebuilder/layout/page',
-                            'data-entity'       => 'pages',
-                            'data-template-url' => '/js/app/templates/layout-manager.html'
-                        )
-                    )
-                ),*/
                 'pageThemes' => array(
                     'layout-manager' => array(
                         'id'         => 'layman',
@@ -472,7 +456,7 @@ return array(
                         'icon'       => 'icon-th-large',
                         'position'   => 'bottom',
                         'onLoad'     => '',
-                        'callback'   => new \Zend\Json\Expr("function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }"),
+                        'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
                         'attributes' => array(
                             'data-endpoint'     => '/pagebuilder/layout/theme',
                             'data-entity'       => 'themes',
@@ -488,7 +472,7 @@ return array(
                         'icon'       => 'icon-list',
                         'position'   => 'bottom',
                         'onLoad'     => '',
-                        'callback'   => new \Zend\Json\Expr("function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }"),
+                        'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
                         'attributes' => array(
                             'data-entity'       => 'templates',
                             'data-endpoint'     => '/pagebuilder/layout/template',
@@ -502,7 +486,7 @@ return array(
                         'icon'       => 'icon-list',
                         'position'   => 'bottom',
                         'onLoad'     => '',
-                        'callback'   => new  \Zend\Json\Expr("function(){ if(synergyDataGrid.pageBuilder) {  synergyDataGrid.pageBuilder.manageSections(this) ; } }"),
+                        'callback'   => "function(){ if(synergyDataGrid.pageBuilder) {  synergyDataGrid.pageBuilder.manageSections(this) ; } }",
                         'attributes' => array(
                             'data-entity'       => 'sections',
                             'data-href'         => '/pagebuilder/template/:id/sections',

@@ -46,6 +46,10 @@ class Site
      * @ORM\Column(type="json_array", nullable=true)
      */
     private $languages;
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $timezone = 'Europe/London';
 
     public function __construct()
     {
@@ -53,6 +57,16 @@ class Site
         $this->settings   = new ArrayCollection();
         $this->siteThemes = new ArrayCollection();
         $this->modules    = new ArrayCollection();
+    }
+
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+    }
+
+    public function getTimezone()
+    {
+        return $this->timezone;
     }
 
     public function setLanguages($languages)
