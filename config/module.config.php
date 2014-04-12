@@ -197,7 +197,7 @@ return array(
         'configuration' => array(
             'orm_default' => array(
                 'driver'           => 'orm_default',
-                'generate_proxies' => true,
+                'generate_proxies' => false,
                 'proxy_dir'        => 'data/DoctrineORMModule/Proxy',
                 'proxy_namespace'  => 'DoctrineORMModule\Proxy',
                 'filters'          => array(
@@ -208,21 +208,18 @@ return array(
         'driver'        => array(
             'pagebuilder\entity\default' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
                 'paths' => array(
                     __DIR__ . '/../src/PageBuilder/Entity'
                 )
             ),
             'pagebuilder\entity\join'    => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
                 'paths' => array(
                     __DIR__ . '/../src/PageBuilder/Entity/Join'
                 )
             ),
             'synergy\common\entities'    => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
                 'paths' => array(
                     'vendor/synergy/common/lib/SynergyCommon/Entity',
                 )
@@ -328,7 +325,7 @@ return array(
             'forceFit'           => true,
             'shrinkToFit'        => true,
             'rownumbers'         => true,
-            'onSelectRow'        => (string) new \Zend\Json\Expr("function (rowId) {
+            'onSelectRow'        => (string)new \Zend\Json\Expr("function (rowId) {
                 var grid = $(this);
                 var gsr = grid.data('lastsel');
                 if (rowId && rowId != gsr) {
