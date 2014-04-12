@@ -16,9 +16,9 @@ class Site
     extends BaseSite
 {
     /**
-     * @ORM\Column(type="boolean", name="is_subdomain")
+     * @ORM\Column(type="boolean", name="is_subdomain", nullable=true)
      */
-    protected $isSubdomain;
+    protected $isSubdomain = 0;
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
