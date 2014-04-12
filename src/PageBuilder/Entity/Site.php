@@ -16,10 +16,6 @@ class Site
     extends BaseSite
 {
     /**
-     * @ORM\Column(type="boolean", name="is_subdomain", nullable=true)
-     */
-    protected $isSubdomain = 0;
-    /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $description;
@@ -47,13 +43,18 @@ class Site
      */
     private $modules;
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist")
      */
-    private $languages;
+    private $subDomains;
+    /**
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    private $parent;
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $timezone = 'Europe/London';
+    private $defaultTimezone = 'Europe/London';
 
     public function __construct()
     {
@@ -61,37 +62,39 @@ class Site
         $this->settings   = new ArrayCollection();
         $this->siteThemes = new ArrayCollection();
         $this->modules    = new ArrayCollection();
+        $this->subDomains = new ArrayCollection();
     }
 
-    public function setIsSubdomain($isSubdomain)
+    public function setParent($parent)
     {
-        $this->isSubdomain = $isSubdomain;
+        $this->parent = $parent;
     }
 
-    public function getIsSubdomain()
+    public function getParent()
     {
-        return $this->isSubdomain;
+        return $this->parent;
     }
 
-    public function setTimezone($timezone)
+    public function setSubDomains($subDomains)
     {
-        $this->timezone = $timezone;
+        $this->subDomains = $subDomains;
     }
 
-    public function getTimezone()
+    public function getSubDomains()
     {
-        return $this->timezone;
+        return $this->subDomains;
     }
 
-    public function setLanguages($languages)
+    public function setDefaultTimezone($timezone)
     {
-        $this->languages = $languages;
+        $this->defaultTimezone = $timezone;
     }
 
-    public function getLanguages()
+    public function getDefaultTimezone()
     {
-        return $this->languages;
+        return $this->defaultTimezone;
     }
+
 
     public function setModules($modules)
     {
