@@ -16,6 +16,10 @@ class Site
     extends BaseSite
 {
     /**
+     * @ORM\Column(type="boolean", name="is_subdomain")
+     */
+    protected $isSubdomain;
+    /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $description;
@@ -57,6 +61,16 @@ class Site
         $this->settings   = new ArrayCollection();
         $this->siteThemes = new ArrayCollection();
         $this->modules    = new ArrayCollection();
+    }
+
+    public function setIsSubdomain($isSubdomain)
+    {
+        $this->isSubdomain = $isSubdomain;
+    }
+
+    public function getIsSubdomain()
+    {
+        return $this->isSubdomain;
     }
 
     public function setTimezone($timezone)
