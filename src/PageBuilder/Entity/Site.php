@@ -70,6 +70,9 @@ class Site
         $this->parent = $parent;
     }
 
+    /**
+     * @return Site
+     */
     public function getParent()
     {
         return $this->parent;
@@ -173,5 +176,24 @@ class Site
     public function getSessionNamespace()
     {
         return preg_replace('/[^a-z0-9A-Z]/', '', $this->getDomain());
+    }
+
+    /**
+     * Get filter query
+     *
+     * @param $targetTableAlias
+     *
+     * @return string
+     */
+    public function getSiteFilterQuery($targetTableAlias)
+    {
+        $parent = $this->getParent();
+        if ($parent && $parentId = $parent->getId()) {
+            return $targetTableAlias . '.site_id = ' . $parentId;
+        } elseif ($id = $this->getId()) {
+            return $targetTableAlias . '.site_id = ' . $id;
+        }
+
+        return '';
     }
 }
