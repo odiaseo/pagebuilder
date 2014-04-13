@@ -16,11 +16,11 @@ class Site
     extends BaseSite
 {
     /**
-     * @ORM\Column(type="string", length=512, nullable=true)
+     * @ORM\Column(type="string", length=120, nullable=true)
      */
     private $description;
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=120, nullable=true)
      */
     private $strapline;
     /**
