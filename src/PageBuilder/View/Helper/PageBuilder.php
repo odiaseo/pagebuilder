@@ -155,73 +155,77 @@ class PageBuilder
     {
         $html = array();
 
-        if ($layout = $this->getLayout()) {
-            $this->_mainContent = $content;
+        try {
+            if ($layout = $this->getLayout()) {
+                $this->_mainContent = $content;
 
-            /** @var $template['tagAttributes'] \PageBuilder\View\TagAttributes */
-            foreach ($layout as $section => $template) {
-                /** @var $templateAttr \PageBuilder\View\TagAttributes */
-                $templateAttr = $template['tagAttributes'];
-                $templateAttr->addClass($section . '-section');
-                list($top, $bottom) = $this->getTopBottomContainers($template['tagAttributes'], $section);
+                /** @var $template['tagAttributes'] \PageBuilder\View\TagAttributes */
+                foreach ($layout as $section => $template) {
+                    /** @var $templateAttr \PageBuilder\View\TagAttributes */
+                    $templateAttr = $template['tagAttributes'];
+                    $templateAttr->addClass($section . '-section');
+                    list($top, $bottom) = $this->getTopBottomContainers($template['tagAttributes'], $section);
 
-                $html [] = $top;
+                    $html [] = $top;
 
-                if (isset($template['items'])) {
+                    if (isset($template['items'])) {
 
-                    foreach ($template['items'] as $row) {
-                        if (isset($row['rowItems'])) {
-                            list($rowTop, $rowBottom) = $this->getTopBottomContainers($row['tagAttributes']);
-                            $html [] = $rowTop;
+                        foreach ($template['items'] as $row) {
+                            if (isset($row['rowItems'])) {
+                                list($rowTop, $rowBottom) = $this->getTopBottomContainers($row['tagAttributes']);
+                                $html [] = $rowTop;
 
-                            foreach ($row['rowItems'] as $col) {
+                                foreach ($row['rowItems'] as $col) {
 
-                                /** @var $colAttr \PageBuilder\View\TagAttributes */
-                                $colAttr = $col['tagAttributes'];
+                                    /** @var $colAttr \PageBuilder\View\TagAttributes */
+                                    $colAttr = $col['tagAttributes'];
 
-                                if (count($row['rowItems']) > 1) {
-                                    $colAttr->setClass($col['class']);
+                                    if (count($row['rowItems']) > 1) {
+                                        $colAttr->setClass($col['class']);
+                                    }
+                                    list($colTop, $colBottom) = $this->getTopBottomContainers($colAttr);
+
+                                    $html [] = $colTop;
+
+                                    /** @var $item \PageBuilder\WidgetData */
+                                    foreach ($col['item'] as $item) {
+                                        list($itemTop, $itemBottom) = $this->getTopBottomContainers(
+                                            $item->getAttributes(), null, count($row['rowItems'])
+                                        );
+                                        $html[] = $itemTop;
+                                        $html[] = str_replace(
+                                            array('{{' . self::MAIN_CONTENT . '}}'), array($content),
+                                            is_string($item->getData()) ? $item->getData() : $item->getData()->render()
+                                        );
+                                        $html[] = $itemBottom;
+                                    }
+
+                                    $html[] = $colBottom;
                                 }
-                                list($colTop, $colBottom) = $this->getTopBottomContainers($colAttr);
-
-                                $html [] = $colTop;
-
-                                /** @var $item \PageBuilder\WidgetData */
-                                foreach ($col['item'] as $item) {
-                                    list($itemTop, $itemBottom) = $this->getTopBottomContainers(
-                                        $item->getAttributes(), null, count($row['rowItems'])
-                                    );
-                                    $html[] = $itemTop;
-                                    $html[] = str_replace(
-                                        array('{{' . self::MAIN_CONTENT . '}}'), array($content),
-                                        is_string($item->getData()) ? $item->getData() : $item->getData()->render()
-                                    );
-                                    $html[] = $itemBottom;
-                                }
-
-                                $html[] = $colBottom;
+                                $html [] = $rowBottom;
                             }
-                            $html [] = $rowBottom;
                         }
+                        $html [] = $bottom;
                     }
-                    $html [] = $bottom;
                 }
-            }
 
-            $html = array_filter($html);
-            $html = implode('', $html);
+                $html = array_filter($html);
+                $html = implode('', $html);
 
-            if ($alias = $this->_options->getFilter()) {
-                $filter = $this->getServiceManager()->get($alias);
+                if ($alias = $this->_options->getFilter()) {
+                    $filter = $this->getServiceManager()->get($alias);
 
-                if ($filter instanceof FilterInterface) {
-                    $html = $filter->filter($html);
+                    if ($filter instanceof FilterInterface) {
+                        $html = $filter->filter($html);
+                    }
                 }
-            }
 
-            return $html;
-        } else {
-            return $content;
+                return $html;
+            } else {
+                return $content;
+            }
+        } catch (\Exception $e) {
+            $this->getServiceManager()->get('logger')->logException($e);
         }
     }
 
