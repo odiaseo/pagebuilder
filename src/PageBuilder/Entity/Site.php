@@ -16,6 +16,10 @@ class Site
     extends BaseSite
 {
     /**
+     * @ORM\Column(type="string", length=75, nullable=true, name="display_title")
+     */
+    private $displayTitle;
+    /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
     private $description;
@@ -63,6 +67,16 @@ class Site
         $this->siteThemes = new ArrayCollection();
         $this->modules    = new ArrayCollection();
         $this->subDomains = new ArrayCollection();
+    }
+
+    public function setDisplayTitle($displayTitle)
+    {
+        $this->displayTitle = $displayTitle;
+    }
+
+    public function getDisplayTitle()
+    {
+        return $this->displayTitle;
     }
 
     public function setParent($parent)
