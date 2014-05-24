@@ -339,7 +339,7 @@ define(
                         var s = $('#' + i + '-section');
                         var attr = s.data(pageBuilder.attributeKey);
                         layout[i] = {
-                            status : s.data('status'),
+                            status: s.data('status'),
                             items: pageBuilder.processSection(s)
                         };
                         layout[i][pageBuilder.attributeKey] = attr || {};
@@ -548,14 +548,18 @@ define(
 
                             var details = pageBuilder['pageDetails'];//div.data('page-details');
                             var sections = $('.section', pageBuilder.canvasClass);
+                            var accordDiv = $('.accordion');
 
                             pageBuilder.initPageLayout(details.page.layout, details['assets'], details['widgets']);
 
-                            $('.accordion').accordion({
-                                heightStyle: 'content',
-                                collapsible: true,
-                                active: 1
-                            });
+                            accordDiv.accordion(
+                                {
+                                    heightStyle: 'content',
+                                    collapsible: true,
+                                    active: 1
+                                }
+                            );
+
 
                             $('.action-btn', pageBuilder.actionToolbar).on('click', function () {
                                 var me = $(this);
@@ -824,6 +828,10 @@ define(
                             });
 
                             $.fancybox.update();
+
+                            accordDiv.parent().height(
+                                $('.template-canvas', '.pagebuilder-fancybox').height()
+                            );
                         },
                         afterShow: function () {
                             //tree
