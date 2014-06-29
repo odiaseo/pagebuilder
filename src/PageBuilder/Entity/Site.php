@@ -55,11 +55,12 @@ class Site
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
+
     /**
-     * @ORM\OneToOne(targetEntity="PageBuilder\Entity\Page",  cascade="persist")
-     * @ORM\Column(type="integer", name="root_id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", cascade="persist")
+     * @ORM\JoinColumn(name="root_id", referencedColumnName="id", nullable=false)
      */
-    private $page;
+    private $rootPage;
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
@@ -75,14 +76,14 @@ class Site
 
     }
 
-    public function setPage($rootPage)
+    public function setRootPage($rootPage)
     {
-        $this->page = $rootPage;
+        $this->rootPage = $rootPage;
     }
 
-    public function getPage()
+    public function getRootPage()
     {
-        return $this->page;
+        return $this->rootPage;
     }
 
 

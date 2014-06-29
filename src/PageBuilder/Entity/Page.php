@@ -39,12 +39,28 @@ class Page
      * @ORM\JoinTable(name="Page_Theme")
      */
     protected $pageThemes;
+    /**
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site")
+     * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=true)
+     */
+    protected $sites;
 
     public function __construct()
     {
         parent::__construct();
         $this->children   = new ArrayCollection();
         $this->pageThemes = new ArrayCollection();
+        $this->sites      = new ArrayCollection();
+    }
+
+    public function setSites($sites)
+    {
+        $this->sites = $sites;
+    }
+
+    public function getSites()
+    {
+        return $this->sites;
     }
 
     public function setChildren($children)
