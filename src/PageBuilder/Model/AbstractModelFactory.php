@@ -45,9 +45,17 @@ class AbstractModelFactory implements AbstractFactoryInterface
      */
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
-        $modelId   = str_replace($this->_configPrefix, '', $requestedName);
-        $modelName = __NAMESPACE__ . '\\' . ucfirst($modelId) . 'Model';
-        $entity    = $serviceLocator->get('pagebuilder\entity\\' . $modelId);
+        $modelId = str_replace($this->_configPrefix, '', $requestedName);
+        $idParts = explode('\\', $modelId);
+
+        if ($idParts[0] == 'join') {
+            $modelName = __NAMESPACE__ . '\\' . ucfirst($idParts[1]) . 'Model';
+            $entity    = $serviceLocator->get('pagebuilder\entity\\' . $modelId);
+        } else {
+            $modelName = __NAMESPACE__ . '\\' . ucfirst($modelId) . 'Model';
+            $entity    = $serviceLocator->get('pagebuilder\entity\\' . $modelId);
+        }
+
 
         /** @var $model \PageBuilder\Model\BaseModel */
         $model = new $modelName();
