@@ -183,7 +183,7 @@ class TagAttributes
 
     public function getOptions()
     {
-        return $this->options;
+        return array_filter($this->options);
     }
 
     public function setContainer2($container2)
