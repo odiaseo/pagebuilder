@@ -50,7 +50,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
 
         if ($idParts[0] == 'join') {
             $modelName = __NAMESPACE__ . '\\' . ucfirst($idParts[1]) . 'Model';
-            $entity    = $serviceLocator->get('pagebuilder\entity\\' . $modelId);
+            $entity    = $serviceLocator->get('pagebuilder\entity\\' . $idParts[1]);
         } else {
             $modelName = __NAMESPACE__ . '\\' . ucfirst($modelId) . 'Model';
             $entity    = $serviceLocator->get('pagebuilder\entity\\' . $modelId);

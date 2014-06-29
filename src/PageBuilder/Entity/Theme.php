@@ -53,11 +53,25 @@ class Theme
      */
     protected $slug;
 
+    /**
+     * @ORM\Column(type="string", nullable=false, length=25)
+     */
+    protected $folder = '';
 
     public function __construct()
     {
         $this->siteThemes = new ArrayCollection();
         $this->pageThemes = new ArrayCollection();
+    }
+
+    public function setFolder($folder)
+    {
+        $this->folder = $folder;
+    }
+
+    public function getFolder()
+    {
+        return $this->folder;
     }
 
     public function setDescription($description)
