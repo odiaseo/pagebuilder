@@ -56,10 +56,10 @@ class Site
      */
     private $parent;
     /**
-     * @ORM\ManyToMany(targetEntity="Page", cascade="persist")
-     * @ORM\JoinTable(name="Site_Page")
+     * @ORM\OneToOne(targetEntity="PageBuilder\Entity\Page",  cascade="persist")
+     * @ORM\Column(type="integer", name="root_id", nullable=false)
      */
-    private $pages;
+    private $rootPage;
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
@@ -72,18 +72,19 @@ class Site
         $this->siteThemes = new ArrayCollection();
         $this->modules    = new ArrayCollection();
         $this->subDomains = new ArrayCollection();
-        $this->pages      = new ArrayCollection();
+
     }
 
-    public function setPages($pages)
+    public function setRootPage($rootPage)
     {
-        $this->pages = $pages;
+        $this->rootPage = $rootPage;
     }
 
-    public function getPages()
+    public function getRootPage()
     {
-        return $this->pages;
+        return $this->rootPage;
     }
+
 
     public function setDisplayTitle($displayTitle)
     {

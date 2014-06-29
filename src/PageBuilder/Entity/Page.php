@@ -40,7 +40,6 @@ class Page
      */
     protected $pageThemes;
 
-
     public function __construct()
     {
         parent::__construct();
