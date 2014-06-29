@@ -48,6 +48,12 @@ class Theme
      */
     protected $pageThemes;
     /**
+     * Place holder for the association
+     *
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Template", mappedBy="theme")
+     */
+    protected $templates;
+    /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string")
      */
@@ -62,6 +68,17 @@ class Theme
     {
         $this->siteThemes = new ArrayCollection();
         $this->pageThemes = new ArrayCollection();
+        $this->templates  = new ArrayCollection();
+    }
+
+    public function setTemplates($templates)
+    {
+        $this->templates = $templates;
+    }
+
+    public function getTemplates()
+    {
+        return $this->templates;
     }
 
     public function setFolder($folder)

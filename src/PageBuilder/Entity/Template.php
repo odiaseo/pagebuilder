@@ -41,11 +41,25 @@ class Template
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $templateSections;
-
+    /**
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="templates")
+     * @ORM\JoinColumn(name="theme_id", referencedColumnName="id")
+     */
+    private $theme;
 
     public function __construct()
     {
         $this->templateSections = new ArrayCollection();
+    }
+
+    public function setTheme($theme)
+    {
+        $this->theme = $theme;
+    }
+
+    public function getTheme()
+    {
+        return $this->theme;
     }
 
 
