@@ -61,6 +61,8 @@ class PageBuilderListener
 
     public function initialiseWidgets(MvcEvent $event)
     {
+        $moduleEnabled = false;
+
         if ($app = $event->getApplication()) {
             /** @var $viewHelperManager \Zend\View\HelperPluginManager */
             $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
@@ -69,9 +71,17 @@ class PageBuilderListener
             $helper = $viewHelperManager->get('buildPage');
 
             /** @var $options \PageBuilder\View\Helper\Config\PageBuilderConfig */
-            $options = $helper->getOptions();
+            $options    = $helper->getOptions();
+            $controller = $event->getRouteMatch()->getParam('controller');
+            list($module,) = explode('\\', $controller);
 
-            if ($options->getEnabled() and $options->getMainNavigation()) {
+            $enabledModules = $options->getModules();
+
+            if (empty($enabledModules) || in_array($module, $enabledModules)) {
+                $moduleEnabled = true;
+            }
+
+            if ($options->getEnabled() && $moduleEnabled && $options->getMainNavigation()) {
 
                 /** @var $navigation \Zend\View\Helper\Navigation */
                 $navigation = $viewHelperManager->get('navigation');

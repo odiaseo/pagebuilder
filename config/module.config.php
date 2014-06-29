@@ -249,7 +249,7 @@ return array(
     'pagebuilder'     => array(
         'enabled'           => false, //change to true to enable
         'modules'           => array(
-            'page-builder'
+            'PageBuilder'
         ),
         'widgets'           => array(
             'paths' => array(
