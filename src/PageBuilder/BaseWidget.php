@@ -9,6 +9,12 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\View\Helper\AbstractHelper;
 
+/**
+ * Class BaseWidget
+ * @method \Zend\View\Model\ViewModel getView()
+ *
+ * @package PageBuilder
+ */
 abstract class BaseWidget extends AbstractHelper implements
     ServiceManagerAwareInterface,
     WidgetInterface
