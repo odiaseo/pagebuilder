@@ -40,8 +40,7 @@ class Page
      */
     protected $pageThemes;
     /**
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site")
-     * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=true)
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="rootPage")
      */
     protected $sites;
 

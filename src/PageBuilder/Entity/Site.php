@@ -57,7 +57,7 @@ class Site
     private $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", cascade="persist", inversedBy="sites")
      * @ORM\JoinColumn(name="root_id", referencedColumnName="id", nullable=false)
      */
     private $rootPage;
