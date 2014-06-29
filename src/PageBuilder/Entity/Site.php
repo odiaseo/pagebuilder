@@ -59,7 +59,7 @@ class Site
      * @ORM\OneToOne(targetEntity="PageBuilder\Entity\Page",  cascade="persist")
      * @ORM\Column(type="integer", name="root_id", nullable=false)
      */
-    private $rootPage;
+    private $page;
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
@@ -75,14 +75,14 @@ class Site
 
     }
 
-    public function setRootPage($rootPage)
+    public function setPage($rootPage)
     {
-        $this->rootPage = $rootPage;
+        $this->page = $rootPage;
     }
 
-    public function getRootPage()
+    public function getPage()
     {
-        return $this->rootPage;
+        return $this->page;
     }
 
 
