@@ -56,6 +56,11 @@ class Site
      */
     private $parent;
     /**
+     * @ORM\ManyToMany(targetEntity="Page", cascade="persist")
+     * @ORM\JoinTable(name="Site_Page")
+     */
+    private $pages;
+    /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $defaultTimezone = 'Europe/London';
@@ -67,6 +72,17 @@ class Site
         $this->siteThemes = new ArrayCollection();
         $this->modules    = new ArrayCollection();
         $this->subDomains = new ArrayCollection();
+        $this->pages      = new ArrayCollection();
+    }
+
+    public function setPages($pages)
+    {
+        $this->pages = $pages;
+    }
+
+    public function getPages()
+    {
+        return $this->pages;
     }
 
     public function setDisplayTitle($displayTitle)
