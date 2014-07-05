@@ -65,6 +65,11 @@ class Site
      * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $defaultTimezone = 'Europe/London';
+    /**
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
+     */
+    protected $defaultTemplate;
 
     public function __construct()
     {
