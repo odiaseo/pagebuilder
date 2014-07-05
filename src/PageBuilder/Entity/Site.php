@@ -81,6 +81,16 @@ class Site
 
     }
 
+    public function setDefaultTemplate($defaultTemplate)
+    {
+        $this->defaultTemplate = $defaultTemplate;
+    }
+
+    public function getDefaultTemplate()
+    {
+        return $this->defaultTemplate;
+    }
+
     public function setRootPage($rootPage)
     {
         $this->rootPage = $rootPage;

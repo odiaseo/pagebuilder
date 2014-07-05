@@ -108,6 +108,13 @@ class PageBuilder
                 }
             }
 
+            /** @var $site \PageBuilder\Entity\Site */
+            //get the sites default template's layout
+            if (!$layout and $site = $this->_serviceManager->get('active_site')) {
+                $templateObj = $site->getDefaultTemplate();
+                $layout      = $templateObj->getLayout();
+            }
+
             foreach ($layout as $index => &$template) {
                 if (array_key_exists('status', $template) and empty($template['status'])) {
                     unset($layout[$index]);
