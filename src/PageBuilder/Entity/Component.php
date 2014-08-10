@@ -36,11 +36,11 @@ class Component
     protected $content;
     /**
      * @Gedmo\Slug(fields={"title"})
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="cssid")
      */
     protected $cssId;
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="css_class")
      */
     protected $cssClass;
 

@@ -13,7 +13,7 @@ use SynergyCommon\Entity\BasePage;
  * @ORM\Entity(repositoryClass="SynergyCommon\Model\NestedSetRepository")
  * @ORM\Table(name="Page")
  * @Gedmo\Tree(type="nested")
- *
+ * @Gedmo\TranslationEntity(class="PageBuilder\Entity\PageTranslation")
  */
 class Page
     extends BasePage
@@ -43,13 +43,22 @@ class Page
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="rootPage")
      */
     protected $sites;
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="PageTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
 
     public function __construct()
     {
         parent::__construct();
-        $this->children   = new ArrayCollection();
-        $this->pageThemes = new ArrayCollection();
-        $this->sites      = new ArrayCollection();
+        $this->children     = new ArrayCollection();
+        $this->pageThemes   = new ArrayCollection();
+        $this->sites        = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     public function setSites($sites)
@@ -70,16 +79,6 @@ class Page
     public function getChildren()
     {
         return $this->children;
-    }
-
-    public function setSite($site)
-    {
-        $this->site = $site;
-    }
-
-    public function getSite()
-    {
-        return $this->site;
     }
 
     public function setPageThemes($pageThemes)
