@@ -4,11 +4,12 @@ namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\QueryException;
+use SynergyCommon\Model\NestedSetRepository;
 
 /**
  * Class PageModel
  *
- * @method \SynergyCommon\Model\NestedSetRepository getRepository()
+ * @method NestedSetRepository getRepository()
  * @package PageBuilder\Model
  */
 class PageModel
