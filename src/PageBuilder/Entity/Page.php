@@ -61,6 +61,15 @@ class Page
         $this->translations = new ArrayCollection();
     }
 
+
+    public function addTranslation(PageTranslation $t)
+    {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
     public function setSites($sites)
     {
         $this->sites = $sites;
