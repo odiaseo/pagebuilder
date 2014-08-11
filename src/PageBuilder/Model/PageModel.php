@@ -83,7 +83,7 @@ class PageModel
         $menu = array(
             'id'        => $node['id'],
             'title'     => $node['title'],
-            'label'     => $node['title'],
+            'label'     => empty($node['label']) ? $node['title'] : $node['label'],
             'route'     => $node['routeName'],
             'resource'  => self::getResourceString($node['routeName'], $node['slug']),
             'privilege' => $node['slug'],
