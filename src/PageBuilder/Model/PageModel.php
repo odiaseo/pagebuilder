@@ -1,20 +1,20 @@
 <?php
 namespace PageBuilder\Model;
 
-
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\Query\QueryException;
 use SynergyCommon\Model\NestedSetRepository;
+use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
 /**
  * Class PageModel
- *
  * @method NestedSetRepository getRepository()
+ *
  * @package PageBuilder\Model
  */
-class PageModel
-    extends BaseModel
+class PageModel extends BaseModel
 {
+    use LocaleAwareTrait;
+
     /**
      * Returns the navigation menus
      *
@@ -93,7 +93,6 @@ class PageModel
             'params'    => $params
         );
 
-
         if (!empty($node['uri'])) {
             $menu['uri']    = $node['uri'];
             $menu['target'] = '_blank';
@@ -112,7 +111,6 @@ class PageModel
     {
         return $this->getRepository()->getBreadcrumbPath($slug);
     }
-
 
     public function getDetails($pageId)
     {
@@ -169,10 +167,8 @@ class PageModel
 
         $result = $query->execute(null, $mode);
 
-
         return $result;
     }
-
 
     public function getPageDetails($pageId)
     {
@@ -199,10 +195,8 @@ class PageModel
 
         $result = $query->execute();
 
-
         return $result;
     }
-
 
     public static function getResourceString($routeName, $uniqueId)
     {
@@ -217,5 +211,4 @@ class PageModel
 
         return $this->toHierarchy($menus);
     }
-
 }
