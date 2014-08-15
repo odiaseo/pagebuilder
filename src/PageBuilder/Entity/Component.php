@@ -4,17 +4,14 @@ namespace PageBuilder\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-
 /**
  * Component
  *
  * @ORM\Entity
  * @ORM\Table(name="Component")
- *
+ * @Gedmo\TranslationEntity(class="PageBuilder\Entity\ComponentTranslation")
  */
-class Component
-    extends BaseEntity
-
+class Component extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -31,6 +28,7 @@ class Component
      */
     protected $description;
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="text", nullable=false)
      */
     protected $content;
@@ -53,7 +51,6 @@ class Component
     {
         return $this->content;
     }
-
 
     public function setCssClass($cssClass)
     {
@@ -105,4 +102,11 @@ class Component
         return $this->title;
     }
 
+    public function addTranslation(ComponentTranslation $t)
+    {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
 }
