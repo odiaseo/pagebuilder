@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -41,6 +42,20 @@ class Component extends BaseEntity
      * @ORM\Column(type="string", nullable=true, name="css_class")
      */
     protected $cssClass;
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="ComponentTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
+
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
     public function setContent($content)
     {
