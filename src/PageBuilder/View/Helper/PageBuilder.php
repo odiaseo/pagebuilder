@@ -278,7 +278,7 @@ class PageBuilder
                 $componentModel = $this->getServiceManager()->get('pagebuilder\model\component');
 
                 /** @var $component \PageBuilder\Entity\Component */
-                if ($component = $componentModel->findOneTranslatedBy($id)) {
+                if ($component = $componentModel->findOneTranslatedBy(array('id' => $id))) {
                     $data     = $component->getContent();
                     $comId    = "data-id='{$itemType}-{$id}'";
                     $cssClass = trim("{$itemType} {$component->getCssClass()}");
