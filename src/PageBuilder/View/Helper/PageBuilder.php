@@ -29,6 +29,7 @@ class PageBuilder
     extends AbstractHelper
     implements ServiceLocatorAwareInterface
 {
+    const SHARE_KEY      = 'shared';
     const MAIN_CONTENT   = 'main';
     const FLASH_MESSAGES = 'flash';
 
@@ -256,9 +257,14 @@ class PageBuilder
                     $widgetName = $id . WidgetFactory::WIDGET_SUFFIX;
                     $options    = $attr->getOptions();
 
-                    if (isset($options['shared']) and !$options['shared']) {
+                    if (!$this->isShared($options)) {
                         $this->getServiceManager()->setShared($widgetName, false);
                     }
+
+                    if (array_key_exists('shared', $options) and empty($options['shared'])) {
+                        $this->getServiceManager()->setShared($widgetName, false);
+                    }
+
                     $data = $this->getServiceManager()->get($widgetName);
                     $attr->addClass($data->getId());
                     $data->setAttributes($attr);
@@ -454,4 +460,23 @@ class PageBuilder
         return $this->_options;
     }
 
+    private function isShared($options)
+    {
+        if (!array_key_exists(self::SHARE_KEY, $options)) {
+            return true;
+        }
+
+        if (is_bool($options[self::SHARE_KEY])) {
+            return $options[self::SHARE_KEY];
+        }
+        if (is_numeric($options[self::SHARE_KEY])) {
+            return (int)$options[self::SHARE_KEY] ? true : false;
+        }
+
+        if ($options[self::SHARE_KEY] == 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
