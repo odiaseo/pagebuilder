@@ -62,6 +62,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
 
         $model->setEntityInstance($entity);
         $model->setEntity(get_class($entity));
+        $model->setLogger($serviceLocator->get('logger'));
         $model->setEntityManager($serviceLocator->get('doctrine.entitymanager.' . $model->getOrm()));
 
         return $model;
