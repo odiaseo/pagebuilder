@@ -4,6 +4,7 @@ namespace PageBuilder\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SynergyCommon\Entity\AbstractEntity;
 
 /**
  * Component
@@ -12,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="Component")
  * @Gedmo\TranslationEntity(class="PageBuilder\Entity\ComponentTranslation")
  */
-class Component extends BaseEntity
+class Component extends AbstractEntity
 {
     /**
      * @ORM\Id
