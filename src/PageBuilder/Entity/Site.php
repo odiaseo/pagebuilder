@@ -12,8 +12,7 @@ use SynergyCommon\Entity\BaseSite;
  * @ORM\Entity
  * @ORM\Table(name="Site")
  */
-class Site
-    extends BaseSite
+class Site extends BaseSite
 {
     /**
      * @ORM\Column(type="string", length=75, nullable=true, name="display_title")
@@ -62,7 +61,7 @@ class Site
      */
     private $rootPage;
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=25, nullable=true, name="default_timezone")
      */
     private $defaultTimezone = 'Europe/London';
     /**
