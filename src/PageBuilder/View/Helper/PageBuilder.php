@@ -470,7 +470,8 @@ class PageBuilder
             return $options[self::SHARE_KEY];
         }
         if (is_numeric($options[self::SHARE_KEY])) {
-            return (int)$options[self::SHARE_KEY] ? true : false;
+            $shared = $options[self::SHARE_KEY] * 1;
+            return ($shared <= 0) ? false : true;
         }
 
         if ($options[self::SHARE_KEY] == 'true') {
