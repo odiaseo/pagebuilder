@@ -61,6 +61,11 @@ class Site extends BaseSite
      */
     private $rootPage;
     /**
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade="persist", inversedBy="sites")
+     * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id", nullable=false)
+     */
+    private $siteType;
+    /**
      * @ORM\Column(type="string", length=25, nullable=true, name="default_timezone")
      */
     private $defaultTimezone = 'Europe/London';
@@ -78,6 +83,16 @@ class Site extends BaseSite
         $this->modules    = new ArrayCollection();
         $this->subDomains = new ArrayCollection();
 
+    }
+
+    public function setSiteType($siteType)
+    {
+        $this->siteType = $siteType;
+    }
+
+    public function getSiteType()
+    {
+        return $this->siteType;
     }
 
     public function setDefaultTemplate($defaultTemplate)
