@@ -20,7 +20,7 @@ class ThemeModel extends BaseModel
             ->getQuery();
 
         try {
-            return $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
+            return $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT) ? : array();
         } catch (\Exception $e) {
             return false;
         }
