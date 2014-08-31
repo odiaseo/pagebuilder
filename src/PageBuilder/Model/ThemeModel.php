@@ -2,7 +2,6 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\NoResultException;
 
 class ThemeModel extends BaseModel
 {
@@ -16,12 +15,13 @@ class ThemeModel extends BaseModel
             ->innerJoin('t.siteThemes', 's')
             ->where('s.siteId = :id')
             ->andWhere('s.isActive = 1')
+            ->setMaxResults(1)
             ->setParameter(':id', $siteId)
             ->getQuery();
 
         try {
-            return $query->getSingleResult(AbstractQuery::HYDRATE_OBJECT);
-        } catch (NoResultException $e) {
+            return $query->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
+        } catch (\Exception $e) {
             return false;
         }
     }
