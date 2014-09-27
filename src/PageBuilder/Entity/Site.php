@@ -66,10 +66,6 @@ class Site extends BaseSite
      */
     private $siteType;
     /**
-     * @ORM\Column(type="smallint", name="style_version")
-     */
-    private $styleVersion = 2;
-    /**
      * @ORM\Column(type="string", length=25, nullable=true, name="default_timezone")
      */
     private $defaultTimezone = 'Europe/London';
@@ -87,16 +83,6 @@ class Site extends BaseSite
         $this->modules    = new ArrayCollection();
         $this->subDomains = new ArrayCollection();
 
-    }
-
-    public function setStyleVersion($styleVersion)
-    {
-        $this->styleVersion = $styleVersion;
-    }
-
-    public function getStyleVersion()
-    {
-        return $this->styleVersion;
     }
 
     public function setSiteType($siteType)

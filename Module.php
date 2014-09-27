@@ -154,10 +154,10 @@ class Module
                             }
                         }
 
-                        /** @var $site \PageBuilder\Entity\Site */
-                        $site                               = $serviceManager->get('active_site');
+                        /** @var $theme \PageBuilder\Entity\Theme */
+                        $theme                              = $serviceManager->get('active_theme');
                         $builderConfig                      = $config['pagebuilder'];
-                        $builderConfig['bootstrap_version'] = $site->getStyleVersion();
+                        $builderConfig['bootstrap_version'] = $theme->getBootstrapVersion();
                         $options                            = new PageBuilderConfig($builderConfig);
                         $options->setOutputFormatters($formatters);
 

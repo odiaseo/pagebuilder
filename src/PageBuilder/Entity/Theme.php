@@ -75,6 +75,16 @@ class Theme
         $this->templates  = new ArrayCollection();
     }
 
+    public function setBootstrapVersion($bootstrapVersion)
+    {
+        $this->bootstrapVersion = $bootstrapVersion;
+    }
+
+    public function getBootstrapVersion()
+    {
+        return $this->bootstrapVersion;
+    }
+
     public function setTemplates($templates)
     {
         $this->templates = $templates;
