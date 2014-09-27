@@ -279,7 +279,7 @@ class PageBuilder
 
                 /** @var $component \PageBuilder\Entity\Component */
                 if ($component = $componentModel->findOneTranslatedBy(array('id' => $id))) {
-                    $data     = $component->getContent();
+                    $data     = $this->transform($component->getContent());
                     $comId    = "data-id='{$itemType}-{$id}'";
                     $cssClass = trim("{$itemType} {$component->getCssClass()}");
                     $attr->addClass($cssClass)
@@ -487,6 +487,7 @@ class PageBuilder
         }
     }
 
+
     /**
      * @param $class
      *
@@ -498,7 +499,9 @@ class PageBuilder
             foreach ($this->_options->getCssClassmap() as $search => $replace) {
                 $pattern = '/' . $search . '/i';
                 if (preg_match($pattern, $class, $matches)) {
-                    return preg_replace($matches[1], $replace, $class);
+                    $done = str_replace($search, $replace, $class);
+
+                    return $done;
                 }
             }
         }

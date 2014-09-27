@@ -153,7 +153,12 @@ class Module
                                 continue;
                             }
                         }
-                        $options = new PageBuilderConfig($config['pagebuilder']);
+
+                        /** @var $site \PageBuilder\Entity\Site */
+                        $site                               = $serviceManager->get('active_site');
+                        $builderConfig                      = $config['pagebuilder'];
+                        $builderConfig['bootstrap_version'] = $site->getStyleVersion();
+                        $options                            = new PageBuilderConfig($builderConfig);
                         $options->setOutputFormatters($formatters);
 
                         $helper->setOptions($options);
