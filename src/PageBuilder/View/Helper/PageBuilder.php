@@ -398,7 +398,7 @@ class PageBuilder
 
             $variables = array(
                 trim($wrapper),
-                trim($attr->formatClass()),
+                $this->transform(trim($attr->formatClass())),
                 trim($attr->formatId()),
                 trim($attr->formatAttr()),
                 trim($microData)
@@ -410,12 +410,12 @@ class PageBuilder
         }
 
         if ($containerClass = $attr->getContainer()) {
-            $top .= '<div class="' . $containerClass . '">';
+            $top .= '<div class="' . $this->transform($containerClass) . '">';
             $bottom .= '</div>';
 
 
             if ($container2 = $attr->getContainer2()) {
-                $top .= '<div class="' . $container2 . '">';
+                $top .= '<div class="' . $this->transform($container2) . '">';
                 $bottom .= '</div>';
             }
         }
@@ -460,6 +460,11 @@ class PageBuilder
         return $this->_options;
     }
 
+    /**
+     * @param $options
+     *
+     * @return bool
+     */
     private function isShared($options)
     {
         if (!array_key_exists(self::SHARE_KEY, $options)) {
@@ -471,6 +476,7 @@ class PageBuilder
         }
         if (is_numeric($options[self::SHARE_KEY])) {
             $shared = $options[self::SHARE_KEY] * 1;
+
             return ($shared <= 0) ? false : true;
         }
 
@@ -479,5 +485,24 @@ class PageBuilder
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $class
+     *
+     * @return mixed
+     */
+    protected function transform($class)
+    {
+        if ($this->_options->getBootstrapVersion() > 2) {
+            foreach ($this->_options->getCssClassmap() as $search => $replace) {
+                $pattern = '/' . $search . '/i';
+                if (preg_match($pattern, $class, $matches)) {
+                    return preg_replace($matches[1], $replace, $class);
+                }
+            }
+        }
+
+        return $class;
     }
 }

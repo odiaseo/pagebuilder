@@ -28,6 +28,10 @@ class Theme
      */
     protected $title;
     /**
+     * @ORM\Column(type="smallint")
+     */
+    protected $bootstrapVersion = 2;
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $description = '';

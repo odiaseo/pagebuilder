@@ -6,6 +6,11 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\View\Helper\AbstractHelper;
 
+/**
+ * Class MicroData
+ *
+ * @package PageBuilder\View\Helper
+ */
 class MicroData extends AbstractHelper implements ServiceManagerAwareInterface
 {
 

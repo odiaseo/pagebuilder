@@ -3,8 +3,12 @@ namespace PageBuilder\View\Helper\Config;
 
 use Zend\Stdlib\AbstractOptions;
 
-class PageBuilderConfig
-    extends AbstractOptions
+/**
+ * Class PageBuilderConfig
+ *
+ * @package PageBuilder\View\Helper\Config
+ */
+class PageBuilderConfig extends AbstractOptions
 {
     /**
      * Filter to filter the HTML should be servicemanger alias to a a \Zend\Filter\FilterInterface istance
@@ -66,6 +70,27 @@ class PageBuilderConfig
      * @var array
      */
     protected $modules = array();
+
+    /**
+     * @var int
+     */
+    protected $bootstrapVersion = 2;
+
+    /**
+     * @param int $bootstrapVersion
+     */
+    public function setBootstrapVersion($bootstrapVersion)
+    {
+        $this->bootstrapVersion = $bootstrapVersion;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBootstrapVersion()
+    {
+        return $this->bootstrapVersion;
+    }
 
     /**
      * @param array $modules
