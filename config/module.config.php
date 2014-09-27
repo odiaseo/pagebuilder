@@ -247,6 +247,7 @@ return array(
     ),
 
     'pagebuilder'     => array(
+        'bootstrap_version' => 2,
         'enabled'           => false, //change to true to enable
         'modules'           => array(
             'PageBuilder'
@@ -287,22 +288,10 @@ return array(
             )
         ),
         'css_classmap'      => array(
-            'span1'           => 'span1',
-            'span2'           => 'span2',
-            'span3'           => 'span3',
-            'span4'           => 'span4',
-            'span5'           => 'span5',
-            'span6'           => 'span6',
-            'span7'           => 'span7',
-            'span8'           => 'span8',
-            'span9'           => 'span9',
-            'span10'          => 'span10',
-            'span11'          => 'span11',
-            'span12'          => 'span12',
-            'row'             => 'row',
-            'row-fluid'       => 'row-fluid',
-            'container'       => 'container',
-            'container-fluid' => 'container-fluid'
+            'span'            => 'col-md-',
+            'row-fluid'       => 'row',
+            'icon-'           => 'glyphicon .glyphicon-',
+            'container-fluid' => 'container'
         ),
         'replacements'      => array(
             '[year]' => date('Y')
@@ -499,5 +488,5 @@ return array(
             'directory' => __DIR__ . '/../data/logs',
             'namespace' => 'pagebuilder'
         )
-    )
+    ),
 );
