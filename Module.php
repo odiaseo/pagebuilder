@@ -9,7 +9,6 @@
 
 namespace PageBuilder;
 
-
 use PageBuilder\Event\Listener\PageBuilderListener;
 use PageBuilder\View\Helper\Config\PageBuilderConfig;
 use PageBuilder\View\Helper\PageBuilder;
@@ -28,7 +27,6 @@ class Module
         return array('SynergyDataGrid');
     }
 
-
     public function onBootstrap(MvcEvent $e)
     {
         /** @var $eventManager \Zend\EventManager\EventManager */
@@ -41,7 +39,6 @@ class Module
         $eventManager->attach(new SynergyModuleListener());
         $eventManager->attach(new PageBuilderListener($serviceLocator));
     }
-
 
     public function getConfig()
     {
@@ -155,10 +152,13 @@ class Module
                         }
 
                         /** @var $theme \PageBuilder\Entity\Theme */
-                        $theme                              = $serviceManager->get('active_theme');
-                        $builderConfig                      = $config['pagebuilder'];
-                        $builderConfig['bootstrap_version'] = $theme->getBootstrapVersion();
-                        $options                            = new PageBuilderConfig($builderConfig);
+
+                        $theme         = $serviceManager->get('active_theme');
+                        $builderConfig = $config['pagebuilder'];
+                        if ($theme) {
+                            $builderConfig['bootstrap_version'] = $theme->getBootstrapVersion();
+                        }
+                        $options = new PageBuilderConfig($builderConfig);
                         $options->setOutputFormatters($formatters);
 
                         $helper->setOptions($options);

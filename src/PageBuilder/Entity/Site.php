@@ -61,7 +61,7 @@ class Site extends BaseSite
      */
     private $rootPage;
     /**
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade="persist", inversedBy="sites")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade="persist", inversedBy="sites", fetch="EAGER")
      * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id", nullable=false)
      */
     private $siteType;
