@@ -27,6 +27,7 @@ class LocalSiteFactory
             $host = $request->getServer('HTTP_HOST');
         }
         if ($host) {
+            list($host,) = explode(':', $host);
             $hostname = str_replace(array('http://', 'https://', 'www.'), '', $host);
             if (!$site = $serviceLocator->get('pagebuilder\model\site')->findOneByDomain($hostname)) {
                 header('HTTP/1.1 403 Application Error');
