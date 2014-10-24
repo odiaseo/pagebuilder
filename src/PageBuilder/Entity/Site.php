@@ -115,19 +115,19 @@ class Site extends BaseSite
         return $this->rootPage;
     }
 
-
     public function setDisplayTitle($displayTitle)
     {
         $this->displayTitle = $displayTitle;
     }
 
-	public function getDisplayTitle( $localise = true ) {
-		if ( $localise and $this->getLocale() ) {
-			return $this->displayTitle . ' ' . \Locale::getDisplayRegion( $this->getLocale() );
-		}
+    public function getDisplayTitle($localise = false)
+    {
+        if ($localise and $this->getLocale()) {
+            return $this->displayTitle . ' ' . \Locale::getDisplayRegion($this->getLocale());
+        }
 
-		return $this->displayTitle;
-	}
+        return $this->displayTitle;
+    }
 
     public function setParent($parent)
     {
@@ -162,7 +162,6 @@ class Site extends BaseSite
         return $this->defaultTimezone;
     }
 
-
     public function setModules($modules)
     {
         $this->modules = $modules;
@@ -172,7 +171,6 @@ class Site extends BaseSite
     {
         return $this->modules;
     }
-
 
     public function setSiteThemes($siteThemes)
     {
@@ -223,7 +221,6 @@ class Site extends BaseSite
     {
         return $this->strapline;
     }
-
 
     public function getDisplayDomain()
     {

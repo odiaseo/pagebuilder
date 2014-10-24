@@ -5,13 +5,11 @@ use Zend\Stdlib\AbstractOptions;
 
 /**
  * Display page header information about offer rows
- *
  * Class PageSummary
  *
  * @package Application\DataModel
  */
-class PageMetaData
-    extends AbstractOptions
+class PageMetaData extends AbstractOptions
 {
     public $title = '';
     public $description = '';
@@ -78,7 +76,6 @@ class PageMetaData
     {
         return $this->settings;
     }
-
 
     public function setType($type)
     {
@@ -233,6 +230,4 @@ class PageMetaData
     {
         return $this->thumbnail;
     }
-
-
 }
