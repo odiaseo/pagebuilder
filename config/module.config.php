@@ -144,7 +144,6 @@ return array(
 			'pagebuilder\menu'           => 'PageBuilder\Navigation\NavigationFactory',
 			'pagebuilder\service\layout' => 'PageBuilder\Service\LayoutService',
 			'pagebuilder\widget\factory' => 'PageBuilder\WidgetFactory',
-			'translator'                 => 'MvcTranslator',
 		),
 		'abstract_factories' => array(
 			'PageBuilder\WidgetFactory',
