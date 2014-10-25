@@ -10,7 +10,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * Brand
  *
  * @ORM\Entity
- * @ORM\Table(name="SiteType")
+ * @ORM\Table(name="Site_Type")
  *
  */
 class SiteType extends AbstractEntity
