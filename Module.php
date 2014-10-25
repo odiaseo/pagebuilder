@@ -158,6 +158,11 @@ class Module
                         if ($theme) {
                             $builderConfig['bootstrap_version'] = $theme->getBootstrapVersion();
                         }
+
+                        if (is_string($builderConfig['replacements'])) {
+                            $builderConfig['replacements'] = $serviceManager->get($builderConfig['replacements']);
+                        }
+
                         $options = new PageBuilderConfig($builderConfig);
                         $options->setOutputFormatters($formatters);
 

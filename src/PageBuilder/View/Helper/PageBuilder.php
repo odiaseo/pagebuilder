@@ -1,9 +1,6 @@
 <?php
 namespace PageBuilder\View\Helper;
 
-use Gedmo\Sluggable\Util\Urlizer;
-use PageBuilder\BaseWidget;
-use PageBuilder\Entity\Page;
 use PageBuilder\Exception\RuntimeException;
 use PageBuilder\FormatterInterface;
 use PageBuilder\View\TagAttributes;
@@ -17,7 +14,6 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Helper\Navigation;
-
 
 /**
  * Class PageBuilder
@@ -97,7 +93,7 @@ class PageBuilder
             /** @var $page \PageBuilder\Entity\Page */
             if (!$layout and $templateObj = $page->getTemplate()) {
                 //Use customized page template if set, otherwise use global template
-                $layout = $templateObj->getLayout() ? : array();
+                $layout = $templateObj->getLayout() ?: array();
             }
 
             /** @var $parent \PageBuilder\Entity\Page */
@@ -167,7 +163,7 @@ class PageBuilder
             if ($layout = $this->getLayout()) {
                 $this->_mainContent = $content;
 
-                /** @var $template['tagAttributes'] \PageBuilder\View\TagAttributes */
+                /** @var $template ['tagAttributes'] \PageBuilder\View\TagAttributes */
                 foreach ($layout as $section => $template) {
                     /** @var $templateAttr \PageBuilder\View\TagAttributes */
                     $templateAttr = $template['tagAttributes'];
@@ -307,8 +303,8 @@ class PageBuilder
 
         return new WidgetData(
             array(
-                 'data'       => $data,
-                 'attributes' => $attr,
+                'data'       => $data,
+                'attributes' => $attr,
             )
         );
     }
@@ -371,7 +367,6 @@ class PageBuilder
 
     /**
      * @param TagAttributes $attr
-     *
      * @param TagAttributes $attr
      * @param string        $section
      *
@@ -412,7 +407,6 @@ class PageBuilder
         if ($containerClass = $attr->getContainer()) {
             $top .= '<div class="' . $this->transform($containerClass) . '">';
             $bottom .= '</div>';
-
 
             if ($container2 = $attr->getContainer2()) {
                 $top .= '<div class="' . $this->transform($container2) . '">';
@@ -486,7 +480,6 @@ class PageBuilder
             return false;
         }
     }
-
 
     /**
      * @param $class

@@ -14,6 +14,7 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @method \Zend\Http\PhpEnvironment\Response getResponse()
  * @method \Zend\Http\PhpEnvironment\Request   getRequest()
  * @method translate()
+ * @method translator()
  * @package Application\Controller
  */
 class BaseActionController
