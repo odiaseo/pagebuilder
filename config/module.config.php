@@ -234,10 +234,10 @@ return array(
 		'eventmanager'  => array(
 			'orm_default' => array(
 				'subscribers' => array(
-					'Gedmo\Tree\TreeListener',
 					'Gedmo\Translatable\TranslatableListener',
-					'Gedmo\Timestampable\TimestampableListener',
 					'Gedmo\Sluggable\SluggableListener',
+					'Gedmo\Tree\TreeListener',
+					'Gedmo\Timestampable\TimestampableListener',
 					'SynergyCommon\Event\Listener\SiteAwareListener'
 				)
 			),
