@@ -26,10 +26,6 @@ class Component extends AbstractEntity
      */
     protected $title;
     /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $description;
-    /**
      * @Gedmo\Translatable
      * @ORM\Column(type="text", nullable=false)
      */
@@ -51,7 +47,6 @@ class Component extends AbstractEntity
      * )
      */
     protected $translations;
-
 
     public function __construct()
     {
@@ -86,16 +81,6 @@ class Component extends AbstractEntity
     public function getCssId()
     {
         return $this->cssId;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     public function setId($id)

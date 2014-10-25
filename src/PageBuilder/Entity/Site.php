@@ -120,13 +120,14 @@ class Site extends BaseSite
         $this->displayTitle = $displayTitle;
     }
 
-    public function getDisplayTitle($localise = false)
+    public function getDisplayTitle()
     {
-        if ($localise and $this->getLocale()) {
-            return $this->displayTitle . ' ' . \Locale::getDisplayRegion($this->getLocale());
-        }
-
         return $this->displayTitle;
+    }
+
+    public function getLocalisedTitle()
+    {
+        return $this->displayTitle . ' ' . \Locale::getDisplayRegion($this->getLocale());
     }
 
     public function setParent($parent)
