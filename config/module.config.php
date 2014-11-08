@@ -165,6 +165,9 @@ return array(
 			'PageBuilder\Util\Widget'            => 'PageBuilder\Util\Widget',
 			//Services
 			'PageBuilder\Service\LayoutService'  => 'PageBuilder\Service\LayoutService'
+		),
+		'factories'          => array(
+			'PageBuilder\DataProvider\GridDefault' => 'PageBuilder\DataProvider\GridDefault'
 		)
 	),
 	'view_manager'    => array(
@@ -391,6 +394,7 @@ return array(
 			'root',
 			'siteTheme'
 		),
+		'default_values'            => 'PageBuilder\DataProvider\GridDefault',
 		'column_model'              => array(
 			'slug'             => array(
 				'hidden'    => true,
@@ -491,57 +495,57 @@ return array(
 				'type' => 'DELETE'
 			)
 		),
-		'toolbar_buttons'           => array( /* Custom toolbar buttons */
-
-		                                      /** model specific */
-		                                      'specific' => array(
-			                                      'pageThemes' => array(
-				                                      'layout-manager' => array(
-					                                      'id'         => 'layman',
-					                                      'class'      => 'btn btn-mini',
-					                                      'title'      => 'Layout Manager',
-					                                      'icon'       => 'icon-th-large',
-					                                      'position'   => 'bottom',
-					                                      'onLoad'     => '',
-					                                      'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
-					                                      'attributes' => array(
-						                                      'data-endpoint'     => '/pagebuilder/layout/theme',
-						                                      'data-entity'       => 'themes',
-						                                      'data-template-url' => '/js/app/templates/layout-manager.html'
-					                                      )
-				                                      )
-			                                      ),
-			                                      'template'   => array(
-				                                      'layout-manager'  => array(
-					                                      'id'         => 'tempman',
-					                                      'class'      => 'btn btn-mini',
-					                                      'title'      => 'Template Manager',
-					                                      'icon'       => 'icon-list',
-					                                      'position'   => 'bottom',
-					                                      'onLoad'     => '',
-					                                      'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
-					                                      'attributes' => array(
-						                                      'data-entity'       => 'templates',
-						                                      'data-endpoint'     => '/pagebuilder/layout/template',
-						                                      'data-template-url' => '/js/app/templates/layout-manager.html'
-					                                      )
-				                                      ),
-				                                      'section-manager' => array(
-					                                      'id'         => 'sectionman',
-					                                      'class'      => 'btn btn-mini',
-					                                      'title'      => 'Sections',
-					                                      'icon'       => 'icon-list',
-					                                      'position'   => 'bottom',
-					                                      'onLoad'     => '',
-					                                      'callback'   => "function(){ if(synergyDataGrid.pageBuilder) {  synergyDataGrid.pageBuilder.manageSections(this) ; } }",
-					                                      'attributes' => array(
-						                                      'data-entity'       => 'sections',
-						                                      'data-href'         => '/pagebuilder/template/:id/sections',
-						                                      'data-template-url' => '/js/app/templates/sections.html'
-					                                      )
-				                                      ),
-			                                      ),
-		                                      )
+		'toolbar_buttons'           => array(
+			/* Custom toolbar buttons */
+			/** model specific */
+			'specific' => array(
+				'pageThemes' => array(
+					'layout-manager' => array(
+						'id'         => 'layman',
+						'class'      => 'btn btn-mini',
+						'title'      => 'Layout Manager',
+						'icon'       => 'icon-th-large',
+						'position'   => 'bottom',
+						'onLoad'     => '',
+						'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
+						'attributes' => array(
+							'data-endpoint'     => '/pagebuilder/layout/theme',
+							'data-entity'       => 'themes',
+							'data-template-url' => '/js/app/templates/layout-manager.html'
+						)
+					)
+				),
+				'template'   => array(
+					'layout-manager'  => array(
+						'id'         => 'tempman',
+						'class'      => 'btn btn-mini',
+						'title'      => 'Template Manager',
+						'icon'       => 'icon-list',
+						'position'   => 'bottom',
+						'onLoad'     => '',
+						'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
+						'attributes' => array(
+							'data-entity'       => 'templates',
+							'data-endpoint'     => '/pagebuilder/layout/template',
+							'data-template-url' => '/js/app/templates/layout-manager.html'
+						)
+					),
+					'section-manager' => array(
+						'id'         => 'sectionman',
+						'class'      => 'btn btn-mini',
+						'title'      => 'Sections',
+						'icon'       => 'icon-list',
+						'position'   => 'bottom',
+						'onLoad'     => '',
+						'callback'   => "function(){ if(synergyDataGrid.pageBuilder) {  synergyDataGrid.pageBuilder.manageSections(this) ; } }",
+						'attributes' => array(
+							'data-entity'       => 'sections',
+							'data-href'         => '/pagebuilder/template/:id/sections',
+							'data-template-url' => '/js/app/templates/sections.html'
+						)
+					),
+				),
+			)
 		),
 	),
 	'synergy'         => array(

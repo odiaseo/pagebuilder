@@ -6,133 +6,129 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 
 class Widget
-    implements ServiceManagerAwareInterface
-{
+	implements ServiceManagerAwareInterface {
 
-    public static $registry = array();
+	public static $registry = array();
 
-    /** @var array */
-    protected $_widgetList;
+	/** @var array */
+	protected $_widgetList;
 
-    /** @var \Zend\ServiceManager\ServiceManager */
-    protected $_serviceManager;
+	/** @var \Zend\ServiceManager\ServiceManager */
+	protected $_serviceManager;
 
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->_serviceManager = $serviceManager;
-    }
+	public function setServiceManager( ServiceManager $serviceManager ) {
+		$this->_serviceManager = $serviceManager;
+	}
 
-    /**
-     * Gets lists of available widgets
-     *
-     * @return array
-     */
-    public function getWidgetList()
-    {
-        if (!$this->_widgetList) {
-            $r            = array();
-            $config       = $this->_serviceManager->get('config');
-            $dirLocations = (array)$config['pagebuilder']['widgets']['paths'];
+	/**
+	 * Gets lists of available widgets
+	 *
+	 * @return array
+	 */
+	public function getWidgetList() {
+		if ( ! $this->_widgetList ) {
+			$r            = array();
+			$config       = $this->_serviceManager->get( 'config' );
+			$dirLocations = (array) $config['pagebuilder']['widgets']['paths'];
 
 
-            foreach ($dirLocations as $namespace => $dirLocation) {
-                $iterator = new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($dirLocation, \FilesystemIterator::SKIP_DOTS),
-                    \RecursiveIteratorIterator::CHILD_FIRST
-                );
+			foreach ( $dirLocations as $namespace => $dirLocation ) {
+				$iterator = new \RecursiveIteratorIterator(
+					new \RecursiveDirectoryIterator( $dirLocation, \FilesystemIterator::SKIP_DOTS ),
+					\RecursiveIteratorIterator::CHILD_FIRST
+				);
 
-                /** @var $splFileInfo \SplFileInfo */
-                foreach ($iterator as $splFileInfo) {
-
-                    if ($splFileInfo->isFile()) {
-                        $widgetId  = substr(basename($splFileInfo->getFilename()), 0, -4);
-                        $className = substr(
-                            $namespace . str_replace(
-                                '/', "\\", str_replace($dirLocation, '', $splFileInfo->getPathname())
-                            ),
-                            0, -4
-                        );
-
-
-                        $reflection = new \ReflectionClass($className);
+				/** @var $splFileInfo \SplFileInfo */
+				foreach ( $iterator as $splFileInfo ) {
+					$ext = substr( basename( $splFileInfo->getFilename() ), - 4 );;
+					if ( $splFileInfo->isFile() && $ext == '.php' ) {
+						$widgetId  = substr( basename( $splFileInfo->getFilename() ), 0, - 4 );
+						$className = substr(
+							$namespace . str_replace(
+								'/', "\\", str_replace( $dirLocation, '', $splFileInfo->getPathname() )
+							),
+							0, - 4
+						);
 
 
-                        if ($reflection->isInstantiable()
-                            && $reflection->implementsInterface('PageBuilder\WidgetInterface')
-                        ) {
-                            $attributes = $reflection->getDefaultProperties();
-                            $id         = !empty($attributes['id']) ? preg_replace('/[^a-z]/i', '', $attributes['id'])
-                                : $widgetId;
-                            $id         = strtolower($id);
-                            $category   = basename(dirname($splFileInfo->getPathname()));
+						$reflection = new \ReflectionClass( $className );
 
-                            $data = array(
-                                'id'          => $id,
-                                'class'       => $className,
-                                'category'    => ($category == 'Widget') ? 'General' : $category,
-                                'title'       => $attributes['name'] ? : $widgetId,
-                                'description' => $attributes['description'] ? : 'No description found',
-                                'options'     => $attributes['options']
-                            );
 
-                            $path                = array($id => $data);
-                            self::$registry[$id] = $data;
+						if ( $reflection->isInstantiable()
+						     && $reflection->implementsInterface( 'PageBuilder\WidgetInterface' )
+						) {
+							$attributes = $reflection->getDefaultProperties();
+							$id         = ! empty( $attributes['id'] ) ? preg_replace( '/[^a-z]/i', '',
+								$attributes['id'] )
+								: $widgetId;
+							$id         = strtolower( $id );
+							$category   = basename( dirname( $splFileInfo->getPathname() ) );
 
-                        } else {
-                            continue;
-                        }
+							$data = array(
+								'id'          => $id,
+								'class'       => $className,
+								'category'    => ( $category == 'Widget' ) ? 'General' : $category,
+								'title'       => $attributes['name'] ?: $widgetId,
+								'description' => $attributes['description'] ?: 'No description found',
+								'options'     => $attributes['options']
+							);
 
-                    } else {
-                        $dirName = $splFileInfo->getFilename();
-                        $path    = array($dirName => array());
-                    }
+							$path                  = array( $id => $data );
+							self::$registry[ $id ] = $data;
 
-                    for ($depth = $iterator->getDepth() - 1; $depth >= 0; $depth--) {
-                        $dirName = $iterator->getSubIterator($depth)->current()->getFilename();
-                        $path    = array($dirName => $path);
-                    }
+						} else {
+							continue;
+						}
 
-                    uasort(
-                        $path, function ($a, $b) {
-                            return strcmp($a['title'], $b['title']);
-                        }
-                    );
+					} else {
+						$dirName = $splFileInfo->getFilename();
+						$path    = array( $dirName => array() );
+					}
 
-                    $r = array_merge_recursive($r, $path);
-                }
-            }
-            $this->_widgetList = $r;
-        }
+					for ( $depth = $iterator->getDepth() - 1; $depth >= 0; $depth -- ) {
+						$dirName = $iterator->getSubIterator( $depth )->current()->getFilename();
+						$path    = array( $dirName => $path );
+					}
 
-        return $this->_widgetList;
-    }
+					uasort(
+						$path, function ( $a, $b ) {
+							return strcmp( $a['title'], $b['title'] );
+						}
+					);
 
-    /**
-     *  Checks if a widget exists
-     *
-     * @param $name
-     *
-     * @return bool
-     */
-    public function widgetExist($name)
-    {
-        $name = strtolower($name);
+					$r = array_merge_recursive( $r, $path );
+				}
+			}
+			$this->_widgetList = $r;
+		}
 
-        if (empty(self::$registry)) {
-            $this->getWidgetList();
-        }
+		return $this->_widgetList;
+	}
 
-        if (isset(self::$registry[$name])) {
-            return self::$registry[$name];
-        } else {
-            return false;
-        }
-    }
+	/**
+	 *  Checks if a widget exists
+	 *
+	 * @param $name
+	 *
+	 * @return bool
+	 */
+	public function widgetExist( $name ) {
+		$name = strtolower( $name );
 
-    public static function getRegistry()
-    {
-        return self::$registry;
-    }
+		if ( empty( self::$registry ) ) {
+			$this->getWidgetList();
+		}
+
+		if ( isset( self::$registry[ $name ] ) ) {
+			return self::$registry[ $name ];
+		} else {
+			return false;
+		}
+	}
+
+	public static function getRegistry() {
+		return self::$registry;
+	}
 
 
 }
