@@ -157,7 +157,7 @@ class PageBuilder
 	}
 
 	public function __invoke( $content = '' ) {
-		$html = array();
+		$html = array('<a id="top"></a>');
 
 		try {
 			if ( $layout = $this->getLayout() ) {
