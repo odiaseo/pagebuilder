@@ -37,7 +37,11 @@ class Theme
 	/**
 	 * @ORM\Column(name="wrapper_class",type="string", length=30)
 	 */
-	protected $wrapperClass = 0;
+	protected $wrapperClass;
+	/**
+	 * @ORM\Column(name="wrapper_class",type="string", length=30)
+	 */
+	protected $bodyClass;
 	/**
 	 * @ORM\Column(name="background_image",type="string", nullable=true)
 	 */
@@ -187,5 +191,19 @@ class Theme
 	 */
 	public function setWrapperClass( $isWrapped ) {
 		$this->wrapperClass = $isWrapped;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getBodyClass() {
+		return $this->bodyClass;
+	}
+
+	/**
+	 * @param mixed $bodyClass
+	 */
+	public function setBodyClass( $bodyClass ) {
+		$this->bodyClass = $bodyClass;
 	}
 }
