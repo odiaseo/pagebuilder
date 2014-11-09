@@ -89,7 +89,7 @@ define(
                 // this function is used in layout.manager.html
                 var $this = $(elm);
                 if ($this.length > 1)
-                    return $.map($this,function (el) {
+                    return $.map($this, function (el) {
                         return $(el).outerHTML();
                     }).join('');
                 return $this.clone().wrap('<div/>').parent().html();
@@ -146,10 +146,17 @@ define(
                 }
 
                 span = $(span);
-                $(span).each(function () {
-                    var e = $(this);
-                    e.data('class', e.attr('class'));
-                });
+                $(span).each(
+                    function () {
+                        var e = $(this);
+                        var d = new Date();
+                        e.data('class', e.attr('class'));
+                        e.prop('id', 'col_' + d.getTime());
+                        e.append('<div class="column-attr"><button class="attr-trigger btn btn-mini"><i class="icon icon-edit"></i></button></div>');
+                        var tgr = e.find('.attr-trigger');
+                        pageBuilder.initPopover(e, tgr, 'Column Attributes');
+                    }
+                )
 
                 var li = $('<li class="asset ui-state-disabled">Empty</li>').data('id', 0);
                 var ul = $('<ul class="page-assets"/>').append(li);
@@ -183,7 +190,7 @@ define(
 
                 row.append(handle);
                 var tgr = $('.edit-row', row);
-                var param = rowData || {class: cls };
+                var param = rowData || {class: cls};
 
                 row.data(pageBuilder.attributeKey, param);
                 pageBuilder.initPopover(row, tgr, 'Row Attributes');
@@ -196,7 +203,11 @@ define(
                 trigger = $(trigger);
                 trigger.popover(
                     {
-                        placement: 'left',
+                        placement: function (pop, elm) {
+                            var elm = $(elm);
+                            var li = elm.closest('li.asset');
+                            return (li.length > 0) ? 'right' : 'left';
+                        },
                         title: title,
                         html: true,
                         content: function () {
@@ -225,7 +236,7 @@ define(
                                 options: opt,
                                 id: container.attr('id')
                             };
-                            return  pageBuilder.compiledTemplate(param);
+                            return pageBuilder.compiledTemplate(param);
                         },
                         trigger: 'click'
                     }
@@ -233,8 +244,8 @@ define(
 
                 trigger.on('click', function () {
                     var me = $(this);
-                    me.closest('.fancybox-inner').css('overflow', 'visible');
                     var pop = me.siblings('.popover');
+                    pageBuilder.fixPopOverflow(me, 'visible');
 
                     pop.find('.tags')
                         .each(function () {
@@ -253,6 +264,7 @@ define(
                     $('#pop-cancel', pop).on('click', function (e) {
                         e.preventDefault();
                         me.popover('hide');
+                        pageBuilder.fixPopOverflow(me, 'hidden');
                     });
 
                     $('#pop-ok', pop).on('click', function (e) {
@@ -275,6 +287,7 @@ define(
                         container.data(pageBuilder.attributeKey, attr);
                         pageBuilder.notify('Tag attribute', 'Item attribute updated', 'success');
                         me.popover('hide');
+                        pageBuilder.fixPopOverflow(me, 'hidden');
                     });
 
                     var attr = container.data(pageBuilder.attributeKey);
@@ -282,6 +295,11 @@ define(
                     pageBuilder.populatePopover(attr, pop);
                     pop.find('select').select2();
                 });
+            },
+
+            fixPopOverflow: function (me, type) {
+                me.closest('.fancybox-inner').css('overflow', type);
+                $.fancybox.update();
             },
             processAssets: function (ul) {
                 var tmp = $('#item-buttons-template', $(layoutTemp)).html();
@@ -386,10 +404,14 @@ define(
                     items[k][pageBuilder.attributeKey] = attr || {};
                 }
 
-                return {
+                var retn = {
                     'class': cls,
                     'item': items
                 };
+
+                retn[pageBuilder.attributeKey] = elm.data(pageBuilder.attributeKey) || {};
+
+                return retn;
             },
             rowSelected: function (elm) {
                 elm = $(elm);
@@ -533,351 +555,330 @@ define(
                             }
                         },
                         afterLoad: function () {
-                            //div.data('page-details', this.content);
-                            pageBuilder['pageDetails'] = this.content;
-                            if (this.content.error == true) {
+                            var err = $(this.content).hasClass('fancybox-error');
+                            if (this.content.error == true || err) {
                                 this.title = 'An Error Occurred';
-                                this.content = this.content.message;
+                                if (this.content.message) {
+                                    this.content = this.content.message;
+                                }
+                                pageBuilder['pageDetails'] = {};
+                                pageBuilder.error = true;
                             } else {
+                                pageBuilder['pageDetails'] = this.content;
                                 this.title = this.content.title;
                                 this.content.pageBuilder = pageBuilder;
                                 this.content = compiledTemplate(this.content);
+                                pageBuilder.error = false;
+                                div.fancybox({'modal': true});
                             }
                         },
                         beforeShow: function () {
 
-                            var details = pageBuilder['pageDetails'];//div.data('page-details');
-                            var sections = $('.section', pageBuilder.canvasClass);
-                            var accordDiv = $('.accordion');
+                            if (pageBuilder.error === false) {
+                                var details = pageBuilder['pageDetails'];//div.data('page-details');
+                                var sections = $('.section', pageBuilder.canvasClass);
 
-                            pageBuilder.initPageLayout(details.page.layout, details['assets'], details['widgets']);
+                                pageBuilder.initPageLayout(details.page.layout, details['assets'], details['widgets']);
 
-                            accordDiv.accordion(
-                                {
+                                $('.accordion').accordion({
                                     heightStyle: 'content',
                                     collapsible: true,
                                     active: 1
-                                }
-                            );
+                                });
 
+                                $('.action-btn', pageBuilder.actionToolbar).on('click', function () {
+                                    var me = $(this);
+                                    var attr = me.data('type');
+                                    var color = me.data('color');
+                                    var sel = $('.ui-selected');
 
-                            $('.action-btn', pageBuilder.actionToolbar).on('click', function () {
-                                var me = $(this);
-                                var attr = me.data('type');
-                                var color = me.data('color');
-                                var sel = $('.ui-selected');
+                                    if (sel.length > 0) {
+                                        if (!me.hasClass('custom-btn')) {
+                                            pageBuilder.addRowItem(attr, sel);
+                                            $.fancybox.update();
+                                        } else {
+                                            var opt = {
+                                                min: 1,
+                                                max: 11
 
-                                if (sel.length > 0) {
-                                    if (!me.hasClass('custom-btn')) {
-                                        pageBuilder.addRowItem(attr, sel);
-                                        $.fancybox.update();
-                                    } else {
-                                        var opt = {
-                                            min: 1,
-                                            max: 11
+                                            };
 
-                                        };
+                                            var txt = $('#span-template').html();
+                                            $('.custom-btn').popover(
+                                                {
+                                                    placement: 'top',
+                                                    title: 'Custom Rows',
+                                                    content: txt,
+                                                    html: true,
+                                                    trigger: 'manual'
+                                                }
+                                            ).popover('show');
 
-                                        var txt = $('#span-template').html();
-                                        $('.custom-btn').popover(
-                                            {
-                                                placement: 'top',
-                                                title: 'Custom Rows',
-                                                content: txt,
-                                                html: true,
-                                                trigger: 'manual'
-                                            }
-                                        ).popover('show');
+                                            $('input', '#custom-selector').spinner(opt);
+                                            $('#add', '#custom-selector').on('click', function () {
+                                                var ac = $('<label><input type="text" name="span[]" value="1"/>');
+                                                var pop = $('.popover.in');
+                                                $('.btn-group', '#custom-selector').before(ac);
+                                                $('input', ac).spinner(opt);
+                                                var t = pop.css('top').replace('px', '') - 30;
+                                                pop.css('top', t + 'px');
 
-                                        $('input', '#custom-selector').spinner(opt);
-                                        $('#add', '#custom-selector').on('click', function () {
-                                            var ac = $('<label><input type="text" name="span[]" value="1"/>');
-                                            var pop = $('.popover.in');
-                                            $('.btn-group', '#custom-selector').before(ac);
-                                            $('input', ac).spinner(opt);
-                                            var t = pop.css('top').replace('px', '') - 30;
-                                            pop.css('top', t + 'px');
+                                                return false;
+                                            });
 
-                                            return false;
-                                        });
-
-                                        $('#cancel', '#custom-selector').on('click', function () {
-                                            $('.custom-btn').popover('hide');
-                                            return false;
-                                        });
-
-                                        $('#ok', '#custom-selector').on('click', function () {
-                                            var data = pageBuilder.checkSum();
-                                            if (data === false) {
-                                                msg = "Row columns must add up to 12";
-                                                pageBuilder.notify('Layout Manager', msg, 'error', true);
-                                            } else {
-                                                pageBuilder.addRowItem(attr, sel, null, data);
+                                            $('#cancel', '#custom-selector').on('click', function () {
                                                 $('.custom-btn').popover('hide');
-                                                $.fancybox.update();
-                                            }
-                                            return false;
-                                        });
-                                    }
+                                                return false;
+                                            });
 
-                                } else {
-                                    var msg = 'No section was selected. Please select a section e.g. Header by clicking the section to add a row';
-                                    pageBuilder.notify('Layout Manager', msg, 'error');
-                                }
-                            });
-
-                            $(pageBuilder.canvasClass).selectable(
-                                {
-                                    filter: ".section",
-                                    cancel: ".handle,btn,li,.badge-edit,.template-item"
-                                }
-                            );
-
-                            sections.sortable(
-                                {
-                                    containment: pageBuilder.canvasClass,
-                                    connectWith: '.section',
-                                    handle: '.move-row',
-                                    update: function () {
-                                        $.fancybox.update();
-                                    }
-                                }
-                            );
-
-                            sections.each(function () {
-                                var me = $(this);
-                                var cn = $('.badge-edit', me);
-                                var trg = $('.attr-trigger', cn);
-                                var title = $('.status', me).text() + ' Attributes';
-                                pageBuilder.initPopover(me, trg, title);
-                            });
-
-                            $(pageBuilder.canvasClass).on("load click", ".row , .remove-row, .move-row, .item-delete",
-                                function (e) {
-                                    if (confirm('You about about to delete this item. Click OK to continue')) {
-                                        var elm = $(e.target);
-                                        if (e.type == 'click') {
-                                            e.preventDefault();
-                                            if (elm.hasClass('item-delete')) {
-                                                var li = elm.closest('li');
-                                                var ul = li.parent();
-                                                li.remove();
-
-                                                pageBuilder.processAssets(ul);
-                                            } else if (elm.hasClass('remove-row')) {
-                                                e.stopPropagation();
-                                                elm.closest('.' + pageBuilder.defaultRowClass).remove();
-                                                pageBuilder.updateSectionCount();
-                                            }
-
+                                            $('#ok', '#custom-selector').on('click', function () {
+                                                var data = pageBuilder.checkSum();
+                                                if (data === false) {
+                                                    msg = "Row columns must add up to 12";
+                                                    pageBuilder.notify('Layout Manager', msg, 'error', true);
+                                                } else {
+                                                    pageBuilder.addRowItem(attr, sel, null, data);
+                                                    $('.custom-btn').popover('hide');
+                                                    $.fancybox.update();
+                                                }
+                                                return false;
+                                            });
                                         }
-                                        else if (e.type == 'load') {
-                                            if (elm.hasClass(pageBuilder.defaultRowClass)) {
-                                                elm.sortable();
-                                            }
-                                        }
+
                                     } else {
-                                        return false;
+                                        var msg = 'No section was selected. Please select a section e.g. Header by clicking the section to add a row';
+                                        pageBuilder.notify('Layout Manager', msg, 'error');
                                     }
-                                }
-                            );
+                                });
 
-                            $(".popup .label", '.page-details').on('click', function (e) {
-                                e.preventDefault();
-                                var popup = $(this).parent('.popup');
-                                if (popup.hasClass('active')) {
-                                    popup.removeClass('active');
-                                } else {
-                                    popup.siblings().removeClass('active');
-                                    popup.addClass('active');
-                                }
-
-                                return false;
-                            });
-
-                            var assetList = $('.asset-list').not('#templates');
-                            assetList.sortable(
-                                {
-                                    connectWith: '.page-assets',
-                                    helper: 'clone',
-                                    revert: true,
-                                    items: 'li.asset',
-                                    tolerance: "pointer",
-                                    stop: function () {
-                                        var bdy = $('body');
-                                        var data = bdy.data('temp-sort');
-                                        var ok = bdy.data('sort-ok');
-
-                                        if (data && ok === true) {
-                                            if (data.prev === false) {
-                                                $(data.parent).prepend(data.clone);
-                                            } else {
-                                                $(data.prev).after(data.clone);
-                                            }
-                                            data.clone.show();
-                                        }
-                                        bdy.data('temp-sort', false);
-                                        assetList.sortable("refresh");
-                                    },
-                                    start: function (e, ui) {
-                                        //store details to rebuild the list if sort was ok
-                                        var bdy = $('body');
-                                        var prev = ui.item.prev();
-                                        if (!prev.length) {
-                                            prev = false;
-                                        }
-                                        var param = {
-                                            prev: prev,
-                                            clone: ui.item.clone(),
-                                            parent: ui.item.parent()
-                                        };
-                                        bdy.data('temp-sort', param);
-                                        bdy.data('sort-ok', false);
-                                    }
-                                }
-                            );
-
-                            $('#save', pageBuilder.actionToolbar).on('click', function (e) {
-                                e.preventDefault();
-
-                                window.synergyEnableWait = false;
-
-                                var elm = $(this);
-                                //var asTemplate = !!(elm.attr('id') == 'save-template');
-                                var url = elm.data('url');
-                                var details = pageBuilder['pageDetails'];//div.data('page-details');
-
-                                var param = {
-                                    id: elm.data('page-id'),
-                                    themeId: $('#themeId', '.page-details').val(),
-                                    //page-theme-id is set in layout-manager.html template
-                                    pageTheme: elm.data('page-theme-id'),
-                                    layout: pageBuilder.getLayout(details['sections'])
-                                };
-
-                                $.ajax(url,
+                                $(pageBuilder.canvasClass).selectable(
                                     {
-                                        type: 'PUT',
-                                        data: param,
-                                        success: function (data) {
-                                            if (data.error) {
-                                                pageBuilder.notify('Page Layout', data.message, 'error');
-                                            } else {
-                                                pageBuilder.notify('Page Layout', data.message);
-                                            }
+                                        filter: ".section",
+                                        cancel: ".handle,btn,li,.badge-edit,.template-item"
+                                    }
+                                );
+
+                                sections.sortable(
+                                    {
+                                        containment: pageBuilder.canvasClass,
+                                        connectWith: '.section',
+                                        handle: '.move-row',
+                                        update: function () {
+                                            $.fancybox.update();
                                         }
                                     }
                                 );
 
-                                return false
-                            });
+                                sections.each(function () {
+                                    var me = $(this);
+                                    var cn = $('.badge-edit', me);
+                                    var trg = $('.attr-trigger', cn);
+                                    var title = $('.status', me).text() + ' Attributes';
+                                    pageBuilder.initPopover(me, trg, title);
+                                });
 
-                            $('.template-clone, #reset-layout').on('click', function (e) {
-                                e.preventDefault();
+                                $(pageBuilder.canvasClass).on("load click", ".row , .remove-row, .move-row, .item-delete",
+                                    function (e) {
+                                        if (confirm('You about about to delete this item. Click OK to continue')) {
+                                            var elm = $(e.target);
+                                            if (e.type == 'click') {
+                                                e.preventDefault();
+                                                if (elm.hasClass('item-delete')) {
+                                                    var li = elm.closest('li');
+                                                    var ul = li.parent();
+                                                    li.remove();
 
-                                var elm = $(this);
-                                var id = elm.data('layout-id');
-                                var details = pageBuilder['pageDetails'];//div.data('page-details');
+                                                    pageBuilder.processAssets(ul);
+                                                } else if (elm.hasClass('remove-row')) {
+                                                    e.stopPropagation();
+                                                    elm.closest('.' + pageBuilder.defaultRowClass).remove();
+                                                    pageBuilder.updateSectionCount();
+                                                }
 
-                                if (id == 0) {
-
-                                    if (confirm('You about about to reset this template. Click OK to continue')) {
-
-                                        var save = $('#save', pageBuilder.actionToolbar);
-                                        pageBuilder.resetPageLayout();
-                                        var url = save.data('url');
-                                        var param = {
-                                            id: save.data('page-id'),
-                                            themeId: save.data('page-theme-id'),
-                                            layout: {}
-                                        };
-
-                                        $.ajax(url,
-                                            {
-                                                type: 'PUT',
-                                                data: param,
-                                                success: function (data) {
-                                                    if (data.error) {
-                                                        pageBuilder.notify('Page Layout', data.error, 'error');
-                                                    } else {
-                                                        pageBuilder.notify('Page Layout', 'Layout reset successfully');
-                                                    }
+                                            }
+                                            else if (e.type == 'load') {
+                                                if (elm.hasClass(pageBuilder.defaultRowClass)) {
+                                                    elm.sortable();
                                                 }
                                             }
-                                        );
-
-                                    } else {
-                                        return false;
+                                        } else {
+                                            return false;
+                                        }
                                     }
-                                } else {
-                                    if (confirm('You about about to clone this template. This will overwrite the current layout. Click OK to continue')) {
-                                        pageBuilder.initPageLayout(details.templates.items[id].layout, details['assets'], details['widgets']);
-                                        pageBuilder.notify('Page layout', 'template cloned successfully');
-                                    } else {
-                                        return false;
-                                    }
-                                }
+                                );
 
-                                pageBuilder.updateSectionCount();
+                                $(".popup .label", '.page-details').on('click', function (e) {
+                                    e.preventDefault();
+                                    var popup = $(this).parent('.popup');
+                                    if (popup.hasClass('active')) {
+                                        popup.removeClass('active');
+                                    } else {
+                                        popup.siblings().removeClass('active');
+                                        popup.addClass('active');
+                                    }
+
+                                    return false;
+                                });
+
+                                var assetList = $('.asset-list').not('#templates');
+                                assetList.sortable(
+                                    {
+                                        connectWith: '.page-assets',
+                                        helper: 'clone',
+                                        revert: true,
+                                        items: 'li.asset',
+                                        tolerance: "pointer",
+                                        stop: function () {
+                                            var bdy = $('body');
+                                            var data = bdy.data('temp-sort');
+                                            var ok = bdy.data('sort-ok');
+
+                                            if (data && ok === true) {
+                                                if (data.prev === false) {
+                                                    $(data.parent).prepend(data.clone);
+                                                } else {
+                                                    $(data.prev).after(data.clone);
+                                                }
+                                                data.clone.show();
+                                            }
+                                            bdy.data('temp-sort', false);
+                                            assetList.sortable("refresh");
+                                        },
+                                        start: function (e, ui) {
+                                            //store details to rebuild the list if sort was ok
+                                            var bdy = $('body');
+                                            var prev = ui.item.prev();
+                                            if (!prev.length) {
+                                                prev = false;
+                                            }
+                                            var param = {
+                                                prev: prev,
+                                                clone: ui.item.clone(),
+                                                parent: ui.item.parent()
+                                            };
+                                            bdy.data('temp-sort', param);
+                                            bdy.data('sort-ok', false);
+                                        }
+                                    }
+                                );
+
+                                $('#save', pageBuilder.actionToolbar).on('click', function (e) {
+                                    e.preventDefault();
+
+                                    window.synergyEnableWait = false;
+
+                                    var elm = $(this);
+                                    //var asTemplate = !!(elm.attr('id') == 'save-template');
+                                    var url = elm.data('url');
+                                    var details = pageBuilder['pageDetails'];//div.data('page-details');
+
+                                    var param = {
+                                        id: elm.data('page-id'),
+                                        themeId: $('#themeId', '.page-details').val(),
+                                        //page-theme-id is set in layout-manager.html template
+                                        pageTheme: elm.data('page-theme-id'),
+                                        layout: pageBuilder.getLayout(details['sections'])
+                                    };
+
+                                    $.ajax(url,
+                                        {
+                                            type: 'PUT',
+                                            data: param,
+                                            success: function (data) {
+                                                if (data.error) {
+                                                    pageBuilder.notify('Page Layout', data.message, 'error');
+                                                } else {
+                                                    pageBuilder.notify('Page Layout', data.message);
+                                                }
+                                            }
+                                        }
+                                    );
+
+                                    return false
+                                });
+
+                                $('.template-clone, #reset-layout').on('click', function (e) {
+                                    e.preventDefault();
+
+                                    var elm = $(this);
+                                    var id = elm.data('layout-id');
+                                    var details = pageBuilder['pageDetails'];//div.data('page-details');
+
+                                    if (id == 0) {
+
+                                        if (confirm('You about about to reset this template. Click OK to continue')) {
+
+                                            var save = $('#save', pageBuilder.actionToolbar);
+                                            pageBuilder.resetPageLayout();
+                                            var url = save.data('url');
+                                            var param = {
+                                                id: save.data('page-id'),
+                                                themeId: save.data('page-theme-id'),
+                                                layout: {}
+                                            };
+
+                                            $.ajax(url,
+                                                {
+                                                    type: 'PUT',
+                                                    data: param,
+                                                    success: function (data) {
+                                                        if (data.error) {
+                                                            pageBuilder.notify('Page Layout', data.error, 'error');
+                                                        } else {
+                                                            pageBuilder.notify('Page Layout', 'Layout reset successfully');
+                                                        }
+                                                    }
+                                                }
+                                            );
+
+                                        } else {
+                                            return false;
+                                        }
+                                    } else {
+                                        if (confirm('You about about to clone this template. This will overwrite the current layout. Click OK to continue')) {
+                                            pageBuilder.initPageLayout(details.templates.items[id].layout, details['assets'], details['widgets']);
+                                            pageBuilder.notify('Page layout', 'template cloned successfully');
+                                        } else {
+                                            return false;
+                                        }
+                                    }
+
+                                    pageBuilder.updateSectionCount();
+                                    $.fancybox.update();
+
+                                });
+
+                                $('#close', pageBuilder.actionToolbar).on('click', function () {
+                                    $.fancybox.close();
+                                });
+
                                 $.fancybox.update();
-
-                            });
-
-                            $('#close', pageBuilder.actionToolbar).on('click', function () {
-                                $.fancybox.close();
-                            });
-
-                            $.fancybox.update();
-
-                            accordDiv.parent().height(
-                                $('.template-canvas', '.pagebuilder-fancybox').height()
-                            );
+                            }
                         },
                         afterShow: function () {
-                            //tree
-                            $('.tree', '.page-details').each(function () {
-                                    //   $(this).jstree();
-                                }
-                            );
+                            if (pageBuilder.error === false) {
+                                var inner = $('.fancybox-inner');
+                                inner.css('overflow', 'hidden');
 
-                            var all = $('.att-trigger');
-                            all.popover(
-                                {
-                                    placement: 'left',
-                                    title: 'Tag Attributes',
-                                    content: function () {
-                                        return  $('#attribute-template').html();
-                                    },
-                                    html: true,
-                                    trigger: 'click'
-                                }
-                            );
+                                var canvasHeight = inner.height() - 100;
+                                inner.find('.template-canvas').height(canvasHeight);
 
-                            var tags = $('.tags', '#attribute-template');
-                            if (tags.length) {
-                                tags.tagsInput();
+                                var tags = $('.tags', '#attribute-template');
+                                if (tags.length) {
+                                    tags.tagsInput();
+                                }
+                                var btn = $('.close-attr', '#attribute-template');
+                                btn.on('click', function (e) {
+                                    $(this).closest('.att-trigger').popover('hide');
+                                    e.preventDefault();
+                                    return false;
+                                });
+
+                                $('label.status').on('click', function () {
+                                    $(this).siblings('.template-row').slideToggle();
+                                    $.fancybox.update();
+                                });
                             }
-                            var btn = $('.close-attr', '#attribute-template');
-                            btn.on('click', function (e) {
-                                $(this).closest('.att-trigger').popover('hide');
-                                e.preventDefault();
-                                return false;
-                            });
-
-                            $('label.status').on('click', function () {
-                                $(this).siblings('.template-row').slideToggle();
-                                $.fancybox.update();
-                            });
-
-                            //initialise tooltips
-                            /*$('[rel="tooltip"]').tooltip(
-                             {
-                             delay: {
-                             show: 500,
-                             hide: 50
-                             }
-                             }
-                             );*/
                         },
                         autoCenter: true,
                         autoResize: true,
@@ -946,6 +947,8 @@ define(
                                 if (data[i].rowItems) {
                                     var cols = row.find('[class^="span"]');
                                     for (var k = 0; k < cols.length; k++) {
+                                        var colAttr = _.has(data[i].rowItems[k], pageBuilder.attributeKey) ? data[i].rowItems[k][pageBuilder.attributeKey] : {};
+                                        $(cols[k]).data(pageBuilder.attributeKey, colAttr);
                                         if (data[i].rowItems[k]) {
                                             var ul = $(cols[k]).find('ul');
                                             if (data[i].rowItems[k].item) {
