@@ -35,9 +35,9 @@ class Theme
 	 */
 	protected $description = '';
 	/**
-	 * @ORM\Column(name="is_wrapped",type="boolean")
+	 * @ORM\Column(name="wrapper_class",type="string", length=30)
 	 */
-	protected $isWrapped = 0;
+	protected $wrapperClass = 0;
 	/**
 	 * @ORM\Column(name="background_image",type="string", nullable=true)
 	 */
@@ -178,14 +178,14 @@ class Theme
 	/**
 	 * @return mixed
 	 */
-	public function getIsWrapped() {
-		return $this->isWrapped;
+	public function getWrapperClass() {
+		return $this->wrapperClass;
 	}
 
 	/**
 	 * @param mixed $isWrapped
 	 */
-	public function setIsWrapped( $isWrapped ) {
-		$this->isWrapped = $isWrapped;
+	public function setWrapperClass( $isWrapped ) {
+		$this->wrapperClass = $isWrapped;
 	}
 }
