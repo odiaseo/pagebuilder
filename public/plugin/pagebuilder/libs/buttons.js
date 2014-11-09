@@ -201,6 +201,7 @@ define(
             initPopover: function (container, trigger, title) {
                 title = title || 'Asset Tag Attributes';
                 trigger = $(trigger);
+
                 trigger.popover(
                     {
                         placement: function (pop, elm) {
@@ -245,7 +246,7 @@ define(
                 trigger.on('click', function () {
                     var me = $(this);
                     var pop = me.siblings('.popover');
-                    pageBuilder.fixPopOverflow(me, 'visible');
+                    pageBuilder.fixPopOverflow(pop, me);
 
                     pop.find('.tags')
                         .each(function () {
@@ -264,7 +265,7 @@ define(
                     $('#pop-cancel', pop).on('click', function (e) {
                         e.preventDefault();
                         me.popover('hide');
-                        pageBuilder.fixPopOverflow(me, 'hidden');
+                        pageBuilder.fixPopOverflow(pop, me);
                     });
 
                     $('#pop-ok', pop).on('click', function (e) {
@@ -287,7 +288,7 @@ define(
                         container.data(pageBuilder.attributeKey, attr);
                         pageBuilder.notify('Tag attribute', 'Item attribute updated', 'success');
                         me.popover('hide');
-                        pageBuilder.fixPopOverflow(me, 'hidden');
+                        pageBuilder.fixPopOverflow(pop, me);
                     });
 
                     var attr = container.data(pageBuilder.attributeKey);
@@ -297,9 +298,21 @@ define(
                 });
             },
 
-            fixPopOverflow: function (me, type) {
-                me.closest('.fancybox-inner').css('overflow', type);
-                $.fancybox.update();
+            fixPopOverflow: function (me, btn) {
+                var top = Math.ceil(me.offset().top);
+                var limit = Math.ceil($('.template-canvas', '#pagebuilder-fancybox').offset().top);
+
+                if (top < limit) {
+                    me.css('top', 0);
+                }
+
+                if (btn.hasClass('btn-inverse')) {
+                    btn.removeClass('btn-inverse');
+                    $('i', btn).removeClass('icon-white');
+                } else {
+                    btn.addClass('btn-inverse');
+                    $('i', btn).addClass('icon-white');
+                }
             },
             processAssets: function (ul) {
                 var tmp = $('#item-buttons-template', $(layoutTemp)).html();
