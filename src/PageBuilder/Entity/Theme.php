@@ -39,7 +39,7 @@ class Theme
 	 */
 	protected $wrapperClass;
 	/**
-	 * @ORM\Column(name="wrapper_class",type="string", length=30)
+	 * @ORM\Column(name="body_class",type="string", length=30)
 	 */
 	protected $bodyClass;
 	/**
