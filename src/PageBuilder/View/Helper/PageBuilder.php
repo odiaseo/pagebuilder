@@ -157,7 +157,7 @@ class PageBuilder
 	}
 
 	public function __invoke( $content = '' ) {
-		$html = array('<a id="top"></a>');
+		$html = array( '<a id="top"></a>' );
 
 		try {
 			if ( $layout = $this->getLayout() ) {
@@ -217,7 +217,7 @@ class PageBuilder
 				$html = array_filter( $html );
 				$html = implode( '', $html );
 
-				if ( $wrapperClass = $this->activeTheme->getWrapperClass() ) {
+				if ( $this->activeTheme && $wrapperClass = $this->activeTheme->getWrapperClass() ) {
 					$html = sprintf( '<div class="%s">%s</div>', $wrapperClass, $html );
 				}
 
