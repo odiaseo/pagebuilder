@@ -35,11 +35,11 @@ class Theme
 	 */
 	protected $description = '';
 	/**
-	 * @ORM\Column(name="wrapper_class",type="string", length=30)
+	 * @ORM\Column(name="wrapper_class",type="string", length=30, nullable=true)
 	 */
 	protected $wrapperClass;
 	/**
-	 * @ORM\Column(name="body_class",type="string", length=30)
+	 * @ORM\Column(name="body_class",type="string", length=30, nullable=true)
 	 */
 	protected $bodyClass;
 	/**
