@@ -43,6 +43,10 @@ class Theme
 	 */
 	protected $bodyClass;
 	/**
+	 * @ORM\Column(name="colour_scheme",type="string", length=150, nullable=true)
+	 */
+	protected $colourScheme;
+	/**
 	 * @ORM\Column(name="background_image",type="string", nullable=true)
 	 */
 	protected $backgroundImage;
@@ -205,5 +209,19 @@ class Theme
 	 */
 	public function setBodyClass( $bodyClass ) {
 		$this->bodyClass = $bodyClass;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getColourScheme() {
+		return $this->colourScheme;
+	}
+
+	/**
+	 * @param mixed $colourScheme
+	 */
+	public function setColourScheme( $colourScheme ) {
+		$this->colourScheme = $colourScheme;
 	}
 }
