@@ -90,6 +90,9 @@ class Site extends BaseSite
         $this->siteType = $siteType;
     }
 
+    /**
+     * @return SiteType
+     */
     public function getSiteType()
     {
         return $this->siteType;

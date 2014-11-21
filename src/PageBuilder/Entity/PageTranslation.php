@@ -12,8 +12,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
  *     })}
  * )
  */
-class PageTranslation
-    extends AbstractPersonalTranslation
+class PageTranslation extends AbstractPersonalTranslation
 {
     /**
      * @ORM\ManyToOne(targetEntity="Page", inversedBy="translations")
