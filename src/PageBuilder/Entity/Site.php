@@ -228,14 +228,11 @@ class Site extends BaseSite
 
     public function getDisplayDomain()
     {
-        if ($this->domain && strpos($this->domain, '.') !== 2) {
-            return 'http://www.' . rtrim($this->domain, '/');
-        } elseif ($this->domain) {
+        if ($this->getIsSubdomain()) {
             return 'http://' . rtrim($this->domain, '/');
+        } else {
+            return 'http://www.' . rtrim($this->domain, '/');
         }
-
-        return $this->domain;
-
     }
 
     public function getSessionNamespace()
