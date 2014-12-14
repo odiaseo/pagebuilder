@@ -12,8 +12,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
  *     })}
  * )
  */
-class PageTranslation
-    extends AbstractPersonalTranslation
+class PageTranslation extends AbstractPersonalTranslation
 {
     /**
      * @ORM\ManyToOne(targetEntity="Page", inversedBy="translations")
@@ -28,7 +27,7 @@ class PageTranslation
      * @param string $field
      * @param string $value
      */
-    public function __construct($locale, $field, $value)
+    public function __construct($locale = null, $field = null, $value = null)
     {
         $this->setLocale($locale);
         $this->setField($field);

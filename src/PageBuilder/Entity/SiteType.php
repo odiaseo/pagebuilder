@@ -11,7 +11,6 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Site_Type")
- *
  */
 class SiteType extends AbstractEntity
 {
@@ -22,7 +21,7 @@ class SiteType extends AbstractEntity
      */
     protected $id;
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=50)
      */
     protected $title;
     /**
@@ -30,13 +29,69 @@ class SiteType extends AbstractEntity
      */
     protected $description;
     /**
+     * @ORM\Column(type="string", nullable=true, name="facebook_page")
+     */
+    protected $facebookPage;
+    /**
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="siteType")
      */
     protected $sites;
+    /**
+     * @ORM\Column(type="string", length=50, name="app_id")
+     */
+    protected $appId;
 
     public function __construct()
     {
         $this->sites = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookPage()
+    {
+        return $this->facebookPage;
+    }
+
+    /**
+     * @param mixed $facebookPage
+     */
+    public function setFacebookPage($facebookPage)
+    {
+        $this->facebookPage = $facebookPage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSites()
+    {
+        return $this->sites;
+    }
+
+    /**
+     * @param mixed $sites
+     */
+    public function setSites($sites)
+    {
+        $this->sites = $sites;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAppId()
+    {
+        return $this->appId;
+    }
+
+    /**
+     * @param mixed $appId
+     */
+    public function setAppId($appId)
+    {
+        $this->appId = $appId;
     }
 
     public function setDescription($description)
