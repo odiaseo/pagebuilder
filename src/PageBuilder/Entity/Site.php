@@ -258,4 +258,19 @@ class Site extends BaseSite
 
         return '';
     }
+
+    /**
+     * @return array
+     */
+    public function getAllowedSites()
+    {
+        $ids = [];
+        if ($this->getSubDomains()->count()) {
+            $subDomains = $this->getSubDomains();
+            foreach ($subDomains as $subSite) {
+                $ids[] = $subSite->getId();
+            }
+        }
+        return $ids;
+    }
 }
