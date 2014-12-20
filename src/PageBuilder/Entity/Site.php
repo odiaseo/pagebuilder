@@ -264,12 +264,16 @@ class Site extends BaseSite
      */
     public function getAllowedSites()
     {
-        $ids = [];
+        $ids[] = $this->getId();
         if ($this->getSubDomains()->count()) {
             $subDomains = $this->getSubDomains();
             foreach ($subDomains as $subSite) {
                 $ids[] = $subSite->getId();
             }
+        }
+
+        if ($this->getParent()) {
+            $ids[] = $this->getParent()->getId();
         }
         return $ids;
     }
