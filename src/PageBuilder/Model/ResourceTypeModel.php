@@ -1,5 +1,5 @@
 <?php
-namespace PageModel\Model;
+namespace PageBuilder\Model;
 
 use SynergyCommon\Model\AbstractModel;
 
