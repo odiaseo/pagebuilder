@@ -104,8 +104,7 @@ class PageModel extends BaseModel {
 	}
 
 	public function getDetails( $pageId ) {
-		$page = $this->getRepository()->find( $pageId );
-
+		$page              = $this->findObject( $pageId );
 		$details           = $page->toArray();
 		$details['layout'] = is_object( $page->template ) ? $page->template->layout : '';
 
@@ -114,7 +113,7 @@ class PageModel extends BaseModel {
 	}
 
 	public function updateTemplateId( $pageId, $templateId ) {
-		$page             = $this->getRepository()->find( $pageId );
+		$page             = $this->findObject( $pageId );
 		$page->templateId = $templateId;
 		$res              = $this->save( $page );
 
@@ -157,7 +156,7 @@ class PageModel extends BaseModel {
 	}
 
 	public function getPageDetails( $pageId ) {
-		$page = $this->getRepository()->find( $pageId );
+		$page = $this->findObject( $pageId );
 
 		$details           = $page->toArray();
 		$details['layout'] = is_object( $page->template ) ? $page->template->layout : '';
