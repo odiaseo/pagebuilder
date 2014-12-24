@@ -30,7 +30,7 @@ class LocalSiteFactory
 			$hostname = str_replace( array( 'http://', 'https://', 'www.' ), '', $host );
 			/** @var SiteModel $model */
 			$model = $serviceLocator->get( 'pagebuilder\model\site' );
-			if ( ! $site = $model->findOneBy( array( 'domain' => $hostname ) ) ) {
+			if ( ! $site = $model->findSiteBy( array( 'domain' => $hostname ) ) ) {
 				header( 'HTTP/1.1 403 Application Error' );
 				echo "Site is not registered";
 				exit;

@@ -1,17 +1,22 @@
 <?php
 namespace PageBuilder\Model;
 
+use Doctrine\ORM\QueryBuilder;
+use PageBuilder\Entity\Site;
+
 /**
  * Class SiteModel
  *
  * @package PageBuilder\Model
  */
 class SiteModel extends BaseModel {
-	public function getSettingList( $siteId ) {
-		/** @var $site \PageBuilder\Entity\Site */
-		$site        = $this->findObject( $siteId );
+	/**
+	 * @param $site
+	 *
+	 * @return array
+	 */
+	public function getSettingList( Site $site ) {
 		$settingList = array();
-
 		/** @var $setting \PageBuilder\Entity\Setting */
 		foreach ( $site->getSettings() as $setting ) {
 			$code                 = $setting->getSettingKey()->getCode();
@@ -26,7 +31,23 @@ class SiteModel extends BaseModel {
 		return $settingList;
 	}
 
-	public function findSiteByDomain( $domain ) {
 
+	/**
+	 * @param array $params
+	 *
+	 * @return mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+	public function findSiteBy( array $params ) {
+		/** @var $query QueryBuilder */
+		$qb    = $this->getFindByQueryBuilder( $params, null, 'e' );
+		$query = $qb->addSelect( array( 'x, y, z' ) )
+		            ->innerJoin( 'e.siteType', 'x' )
+		            ->innerJoin( 'e.rootPage', 'y' )
+		            ->leftJoin( 'e.settings', 'z' )
+		            ->leftJoin( 'e.subDomains', 'b' )
+		            ->setMaxResults( 1 );
+
+		return $query->getQuery()->getOneOrNullResult();
 	}
 }
