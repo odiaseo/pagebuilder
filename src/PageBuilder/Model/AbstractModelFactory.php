@@ -60,12 +60,12 @@ class AbstractModelFactory implements AbstractFactoryInterface {
 			$enabled = false;
 		}
 		/** @var $model \PageBuilder\Model\BaseModel */
-		$model = new $modelName();
-
 		/** @var EntityManager $entityManager */
+		$model = new $modelName();
 		$entityManager = $serviceLocator->get( 'doctrine.entitymanager.' . $model->getOrm() );
 		$cachedManager = new CachedEntityManager( $entityManager, $enabled );
 
+		$model->setCachedEnabled( $enabled );
 		$model->setEntityInstance( $entity );
 		$model->setEntity( get_class( $entity ) );
 		$model->setLogger( $serviceLocator->get( 'logger' ) );
