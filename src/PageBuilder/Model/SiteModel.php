@@ -41,9 +41,10 @@ class SiteModel extends BaseModel {
 	public function findSiteBy( array $params ) {
 		/** @var $query QueryBuilder */
 		$qb    = $this->getFindByQueryBuilder( $params, null, 'e' );
-		$query = $qb->addSelect( array( 'x, y' ) )
+		$query = $qb->addSelect( array( 'x, y, z' ) )
 		            ->innerJoin( 'e.siteType', 'x' )
 		            ->innerJoin( 'e.rootPage', 'y' )
+		            ->innerJoin( 'e.defaultTemplate', 'z' )
 		            ->setMaxResults( 1 );
 
 		return $query->getQuery()->getOneOrNullResult();

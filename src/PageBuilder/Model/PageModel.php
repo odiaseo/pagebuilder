@@ -2,6 +2,7 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
+use PageBuilder\Entity\Page;
 use SynergyCommon\Model\NestedSetRepository;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
@@ -177,6 +178,27 @@ class PageModel extends BaseModel {
 		            ->getQuery();
 
 		$result = $query->execute();
+
+		return $result;
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return Page
+	 */
+	public function getMainPageById( $id ) {
+		/** @var $query \Doctrine\ORM\Query */
+		$qb    = $this->getEntityManager()->createQueryBuilder();
+		$query = $qb->select( 'e, t, p' )
+		            ->from( $this->_entity, 'e' )
+		            ->leftJoin( 'e.template', 't' )
+		            ->leftJoin( 'e.parent', 'p' )
+		            ->where( 'e.id = :id' )
+		            ->setParameter( ':id', $id )
+		            ->getQuery();
+
+		$result = $query->getOneOrNullResult();
 
 		return $result;
 	}

@@ -75,26 +75,22 @@ class PageBuilderListener
 			if ( $options->getEnabled() && $moduleEnabled && $options->getMainNavigation() ) {
 
 				/** @var $navigation \Zend\View\Helper\Navigation */
-				$navigation = $viewHelperManager->get( 'navigation' );
-
 				/** @var $menuTree \Zend\View\Helper\Navigation */
-				$menuTree  = $navigation( $options->getMainNavigation() );
-				$container = $menuTree->getContainer();
-
+				$navigation = $viewHelperManager->get( 'navigation' );
+				$menuTree   = $navigation( $options->getMainNavigation() );
+				$container  = $menuTree->getContainer();
 				$activeMenu = $navigation->findActive( $container );
 
 				if ( $activeMenu ) {
-					/** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
-					$activeTheme = $this->_serviceManager->get( 'active_theme' ) ?: null;
-
 					/** @var $model \pageBuilder\Model\PageModel */
-					$model = $this->_serviceManager->get( 'pagebuilder\model\page' );
-
-					/** @var $menu \SynergyCommon\Entity\BasePage */
-					$menu = $model->findObject( $activeMenu['page']->id );
-
+					/** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
 					/** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
+
+					$activeTheme = $this->_serviceManager->get( 'active_theme' ) ?: null;
+					$model       = $this->_serviceManager->get( 'pagebuilder\model\page' );
+					$menu        = $model->getMainPageById( $activeMenu['page']->id );
 					$pageBuilder = $viewHelperManager->get( 'buildPage' );
+
 					$pageBuilder->init( $menu, $menuTree, $activeTheme );
 				}
 			}

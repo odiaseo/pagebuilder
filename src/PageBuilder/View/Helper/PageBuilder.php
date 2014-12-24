@@ -3,6 +3,8 @@ namespace PageBuilder\View\Helper;
 
 use PageBuilder\Exception\RuntimeException;
 use PageBuilder\FormatterInterface;
+use PageBuilder\Model\PageThemeModel;
+use PageBuilder\Service\LayoutService;
 use PageBuilder\View\TagAttributes;
 use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
@@ -21,9 +23,7 @@ use Zend\View\Helper\Navigation;
  *
  * @package PageBuilder\View\Helper
  */
-class PageBuilder
-	extends AbstractHelper
-	implements ServiceLocatorAwareInterface {
+class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface {
 	const SHARE_KEY = 'shared';
 	const MAIN_CONTENT = 'main';
 	const FLASH_MESSAGES = 'flash';
@@ -63,55 +63,28 @@ class PageBuilder
 	 *
 	 * @param BasePage       $page
 	 * @param Navigation     $menuTree
-	 * @param AbstractEntity $activeTheme
+	 * @param AbstractEntity $activeSiteTheme
 	 *
 	 * @return $this
 	 */
-	public function init( BasePage $page, Navigation $menuTree = null, AbstractEntity $activeTheme = null ) {
+	public function init( BasePage $page, Navigation $menuTree = null, AbstractEntity $activeSiteTheme = null ) {
+
 		if ( $this->getOptions()->getEnabled() ) {
+			/** @var PageThemeModel $themeModel */
+			/** @var LayoutService $layoutService */
+			$themeModel    = $this->getServiceManager()->get( 'pagebuilder\model\page-theme' );
+			$layoutService = $this->getServiceManager()->get( 'pagebuilder\service\layout' );
+			$siteTheme     = $activeSiteTheme ? (string) $activeSiteTheme : 'default';
+			$activeTheme   = $themeModel->getActivePageThemeForSite( $page->getId(), $siteTheme );
+
+			if ( $activeTheme ) {
+				$layout = $activeTheme->getLayout();
+			} else {
+				$layout = $layoutService->resolvePageLayout( $page, $siteTheme );
+			}
 
 			$this->_menuTree   = $menuTree;
 			$this->activeTheme = $activeTheme;
-			$siteTheme         = $activeTheme ? (string) $activeTheme : 'default';
-
-			$layout = null;
-			/** @var $theme \PageBuilder\Entity\Join\PageTheme */
-
-			if ( method_exists( $page, 'getPageThemes' ) ) {
-				foreach ( $page->getPageThemes() as $theme ) {
-					if ( $theme->getIsActive() && $theme->getThemeId() && $theme->getThemeId()->getSlug() == $siteTheme
-					) {
-						$this->_activeTheme = $theme;
-						$layout             = $theme->getLayout();
-						break;
-					}
-				}
-			}
-
-			//try to get the layout from the page template
-			/** @var $templateObj \PageBuilder\Entity\Template */
-
-			/** @var $page \PageBuilder\Entity\Page */
-			if ( ! $layout and $templateObj = $page->getTemplate() ) {
-				//Use customized page template if set, otherwise use global template
-				$layout = $templateObj->getLayout() ?: array();
-			}
-
-			/** @var $parent \PageBuilder\Entity\Page */
-			//try to ge the layout from the parent if it exists
-			if ( ! $layout and $parent = $page->getParent() ) {
-				/** @var $temp \PageBuilder\Entity\Template */
-				if ( $temp = $parent->getTemplate() ) {
-					$layout = $temp->getLayout();
-				}
-			}
-
-			/** @var $site \PageBuilder\Entity\Site */
-			//get the sites default template's layout
-			if ( ! $layout and $site = $this->getServiceManager()->get( 'active_site' ) ) {
-				$templateObj = $site->getDefaultTemplate();
-				$layout      = $templateObj->getLayout();
-			}
 
 			foreach ( $layout as $index => &$template ) {
 				if ( array_key_exists( 'status', $template ) and empty( $template['status'] ) ) {
