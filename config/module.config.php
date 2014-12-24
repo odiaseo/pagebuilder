@@ -159,6 +159,7 @@ return array(
 			'pagebuilder\entity\site'            => 'PageBuilder\Entity\Site',
 			'pagebuilder\entity\template'        => 'PageBuilder\Entity\Template',
 			'pagebuilder\entity\theme'           => 'PageBuilder\Entity\Theme',
+			'pagebuilder\entity\setting'         => 'PageBuilder\Entity\Setting',
 			'pagebuilder\entity\pageTheme'       => 'PageBuilder\Entity\Join\PageTheme',
 			'pagebuilder\entity\siteTheme'       => 'PageBuilder\Entity\Join\SiteTheme',
 			'pagebuilder\entity\templateSection' => 'PageBuilder\Entity\Join\TemplateSection',
