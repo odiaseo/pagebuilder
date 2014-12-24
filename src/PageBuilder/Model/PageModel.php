@@ -189,9 +189,7 @@ class PageModel extends BaseModel {
 		/** @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
 		$repo  = $this->getRepository(); //  $em->getRepository($navService->getEntity());
 		$query = $repo->getNodesHierarchyQuery();
-		if ( $this->isCachedEnabled() ) {
-			$query->useResultCache( true );
-		}
+		$query = $this->setCacheFlag( $query );
 		$menus = $query->getArrayResult();
 
 		return $this->toHierarchy( $menus );
@@ -207,10 +205,7 @@ class PageModel extends BaseModel {
 		/** @var $repo \SynergyCommon\Model\NestedSetRepository */
 		$repo  = $this->getRepository();
 		$query = $this->addHints( $repo->getNodesHierarchyQuery( $rootPage ) );
-
-		if ( $this->isCachedEnabled() ) {
-			$query->useResultCache( true );
-		}
+		$query = $this->setCacheFlag( $query );
 
 		return $query->execute( array(), $mode );
 	}
