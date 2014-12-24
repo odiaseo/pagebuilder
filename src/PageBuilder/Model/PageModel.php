@@ -188,8 +188,30 @@ class PageModel extends BaseModel {
 	public function getPages() {
 		/** @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
 		$repo  = $this->getRepository(); //  $em->getRepository($navService->getEntity());
-		$menus = $repo->getNodesHierarchy();
+		$query = $repo->getNodesHierarchyQuery();
+		if ( $this->isCachedEnabled() ) {
+			$query->useResultCache( true );
+		}
+		$menus = $query->getArrayResult();
 
 		return $this->toHierarchy( $menus );
+	}
+
+	/**
+	 * @param null $rootPage
+	 * @param int  $mode
+	 *
+	 * @return mixed
+	 */
+	public function getEntityNavigation( $rootPage = null, $mode = AbstractQuery::HYDRATE_ARRAY ) {
+		/** @var $repo \SynergyCommon\Model\NestedSetRepository */
+		$repo  = $this->getRepository();
+		$query = $this->addHints( $repo->getNodesHierarchyQuery( $rootPage ) );
+
+		if ( $this->isCachedEnabled() ) {
+			$query->useResultCache( true );
+		}
+
+		return $query->execute( array(), $mode );
 	}
 }
