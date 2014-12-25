@@ -221,7 +221,7 @@ return array(
 			'synergy\common\entities'    => array(
 				'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
 				'paths' => array(
-					'vendor/synergy/synergycommon/src/SynergyCommon/Entity',
+					'vendor/synergy/common/src/SynergyCommon/Entity',
 				)
 			),
 			'orm_default'                => array(
