@@ -1,5 +1,5 @@
 <?php
-namespace PageBuilderTest\Test;
+namespace PageBuilderTest\Servicee;
 
 use PageBuilderTest\BaseTestClass;
 

@@ -12,25 +12,23 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
  *     })}
  * )
  */
-class ComponentTranslation extends AbstractPersonalTranslation
-{
-    /**
-     * @ORM\ManyToOne(targetEntity="Component", inversedBy="translations")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    protected $object;
+class ComponentTranslation extends AbstractPersonalTranslation {
+	/**
+	 * @ORM\ManyToOne(targetEntity="Component", inversedBy="translations")
+	 * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
+	 */
+	protected $object;
 
-    /**
-     * Convenient constructor
-     *
-     * @param string $locale
-     * @param string $field
-     * @param string $value
-     */
-    public function __construct($locale = null, $field = null, $value = null)
-    {
-        $this->setLocale($locale);
-        $this->setField($field);
-        $this->setContent($value);
-    }
+	/**
+	 * Convenient constructor
+	 *
+	 * @param string $locale
+	 * @param string $field
+	 * @param string $value
+	 */
+	public function __construct( $locale = null, $field = null, $value = null ) {
+		$this->setLocale( $locale );
+		$this->setField( $field );
+		$this->setContent( $value );
+	}
 }

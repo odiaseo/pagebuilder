@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\Model;
 
+use Doctrine\ORM\AbstractQuery;
 use SynergyCommon\Model\AbstractModel;
 
 /**
@@ -13,10 +14,11 @@ class ResourceModel extends AbstractModel {
 	 * List Generic Resources
 	 *
 	 * @param int $limit
+	 * @param int $mode
 	 *
 	 * @return mixed
 	 */
-	public function getGenericResources( $limit = 10 ) {
+	public function getGenericResources( $limit = 10, $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		$query = $this->getEntityManager()
 		              ->createQueryBuilder()
 		              ->select( 'e' )
@@ -25,6 +27,6 @@ class ResourceModel extends AbstractModel {
 		              ->setMaxResults( $limit )
 		              ->getQuery();
 
-		return $query->execute();
+		return $query->execute( $mode );
 	}
 }

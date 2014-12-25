@@ -2,7 +2,6 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
-use PageBuilder\Entity\Page;
 use SynergyCommon\Model\NestedSetRepository;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
@@ -166,7 +165,12 @@ class PageModel extends BaseModel {
 
 	}
 
-	public function getActivePages() {
+	/**
+	 * @param int $mode
+	 *
+	 * @return array
+	 */
+	public function getActivePages( $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		$qb = $this->getEntityManager()->createQueryBuilder();
 
 		/** @var $query \Doctrine\ORM\Query */
@@ -177,17 +181,19 @@ class PageModel extends BaseModel {
 		            ->andWhere( 'e.level > 0' )
 		            ->getQuery();
 
-		$result = $query->execute();
+		$result = $query->getResult( $mode );
 
 		return $result;
 	}
 
 	/**
-	 * @param $id
+	 * @param     $id
+	 * @param int $mode
 	 *
-	 * @return Page
+	 * @return mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
-	public function getMainPageById( $id ) {
+	public function getMainPageById( $id, $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		/** @var $query \Doctrine\ORM\Query */
 		$qb    = $this->getEntityManager()->createQueryBuilder();
 		$query = $qb->select( 'e, t, p' )
@@ -198,7 +204,7 @@ class PageModel extends BaseModel {
 		            ->setParameter( ':id', $id )
 		            ->getQuery();
 
-		$result = $query->getOneOrNullResult();
+		$result = $query->getOneOrNullResult( $mode );
 
 		return $result;
 	}

@@ -1,6 +1,5 @@
 <?php
 namespace PageBuilder\Exception;
 
-class RuntimeException extends \RuntimeException
-{
+class RuntimeException extends \RuntimeException {
 }

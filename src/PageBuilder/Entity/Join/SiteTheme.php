@@ -14,67 +14,58 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  */
 class SiteTheme
-    extends AbstractEntity
-{
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer");
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-    /**
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="siteThemes")
-     * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=false)
-     */
-    protected $themeId;
-    /**
-     * @ORM\Column(type="boolean", name="is_active")
-     */
-    protected $isActive = 0;
-    /**
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="siteThemes")
-     * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
-     */
-    protected $siteId;
+	extends AbstractEntity {
+	/**
+	 * @ORM\Id
+	 * @ORM\Column(type="integer");
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	protected $id;
+	/**
+	 * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="siteThemes")
+	 * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=false)
+	 */
+	protected $themeId;
+	/**
+	 * @ORM\Column(type="boolean", name="is_active")
+	 */
+	protected $isActive = 0;
+	/**
+	 * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="siteThemes")
+	 * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
+	 */
+	protected $siteId;
 
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
+	public function setId( $id ) {
+		$this->id = $id;
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId() {
+		return $this->id;
+	}
 
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-    }
+	public function setIsActive( $isActive ) {
+		$this->isActive = $isActive;
+	}
 
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
+	public function getIsActive() {
+		return $this->isActive;
+	}
 
-    public function setSiteId($siteId)
-    {
-        $this->siteId = $siteId;
-    }
+	public function setSiteId( $siteId ) {
+		$this->siteId = $siteId;
+	}
 
-    public function getSiteId()
-    {
-        return $this->siteId;
-    }
+	public function getSiteId() {
+		return $this->siteId;
+	}
 
-    public function setThemeId($themeId)
-    {
-        $this->themeId = $themeId;
-    }
+	public function setThemeId( $themeId ) {
+		$this->themeId = $themeId;
+	}
 
-    public function getThemeId()
-    {
-        return $this->themeId;
-    }
+	public function getThemeId() {
+		return $this->themeId;
+	}
 
 }

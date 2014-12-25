@@ -2,10 +2,20 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
-use PageBuilder\Entity\Join\PageTheme;
 
+/**
+ * Class PageThemeModel
+ *
+ * @package PageBuilder\Model
+ */
 class PageThemeModel extends BaseModel {
-	public function getPageThemeById( $id ) {
+	/**
+	 * @param $id
+	 *
+	 * @return mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+	public function getPageThemeById( $id, $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		$qb = $this->getEntityManager()->createQueryBuilder();
 		/** @var $query \Doctrine\ORM\Query */
 
@@ -17,10 +27,17 @@ class PageThemeModel extends BaseModel {
 		            ->setParameter( 'id', $id )
 		            ->getQuery();
 
-		return $query->getOneOrNullResult( AbstractQuery::HYDRATE_OBJECT );
+		return $query->getOneOrNullResult( $mode );
 	}
 
-	public function getPageThemeByThemeId( $id ) {
+	/**
+	 * @param     $id
+	 * @param int $mode
+	 *
+	 * @return mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+	public function getPageThemeByThemeId( $id, $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		$qb = $this->getEntityManager()->createQueryBuilder();
 		/** @var $query \Doctrine\ORM\Query */
 
@@ -31,17 +48,18 @@ class PageThemeModel extends BaseModel {
 		            ->setParameter( 'id', $id )
 		            ->getQuery();
 
-		return $query->getOneOrNullResult( AbstractQuery::HYDRATE_OBJECT );
+		return $query->getOneOrNullResult( $mode );
 	}
 
 	/**
-	 * @param $pageId
-	 * @param $siteTheme
+	 * @param     $pageId
+	 * @param     $siteTheme
+	 * @param int $mode
 	 *
-	 * @return PageTheme
+	 * @return mixed
 	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
-	public function getActivePageThemeForSite( $pageId, $siteTheme ) {
+	public function getActivePageThemeForSite( $pageId, $siteTheme, $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		/** @var $query \Doctrine\ORM\Query */
 		$qb    = $this->getEntityManager()->createQueryBuilder();
 		$query = $qb->select( 'e, t' )
@@ -58,7 +76,7 @@ class PageThemeModel extends BaseModel {
 			            )
 		            )->getQuery();
 
-		$result = $query->getOneOrNullResult();
+		$result = $query->getOneOrNullResult( $mode );
 
 		return $result;
 	}

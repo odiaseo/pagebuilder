@@ -17,39 +17,36 @@ use Zend\View\Model\ViewModel;
  *
  * @package PageBuilder\Controller
  */
-class IndexController extends AbstractActionController
-{
+class IndexController extends AbstractActionController {
 
-    public function indexAction()
-    {
-        return new ViewModel();
-    }
+	public function indexAction() {
+		return new ViewModel();
+	}
 
-    public function adminAction()
-    {
-        $gridList = $listItems = array();
+	public function adminAction() {
+		$gridList = $listItems = array();
 
-        /** @var $gridService \SynergyDataGrid\Service\GridService */
-        $gridService = $this->getServiceLocator()->get('synergy\service\grid');
+		/** @var $gridService \SynergyDataGrid\Service\GridService */
+		$gridService = $this->getServiceLocator()->get( 'synergy\service\grid' );
 
-        $entityCacheFile = $gridService->getEntityCacheFile();
-        $entities        = include "$entityCacheFile";
-        ksort($entities);
+		$entityCacheFile = $gridService->getEntityCacheFile();
+		$entities        = include "$entityCacheFile";
+		ksort( $entities );
 
-        foreach ($entities as $item => $className) {
-            if (strpos($item, '-') === false) {
-                $gridList[$item] = $this->getServiceLocator()->get('jqgrid')->setGridIdentity(
-                    $className, $item, null, false
-                );
-                $listItems[]     = $item;
-            }
-        }
+		foreach ( $entities as $item => $className ) {
+			if ( strpos( $item, '-' ) === false ) {
+				$gridList[ $item ] = $this->getServiceLocator()->get( 'jqgrid' )->setGridIdentity(
+					$className, $item, null, false
+				);
+				$listItems[]       = $item;
+			}
+		}
 
-        $return = array(
-            'entities' => $listItems,
-            'grids'    => $gridList
-        );
+		$return = array(
+			'entities' => $listItems,
+			'grids'    => $gridList
+		);
 
-        return new ViewModel($return);
-    }
+		return new ViewModel( $return );
+	}
 }

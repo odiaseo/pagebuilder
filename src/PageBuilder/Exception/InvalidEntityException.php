@@ -1,6 +1,5 @@
 <?php
 namespace PageBuilder\Exception;
 
-class InvalidEntityException extends \InvalidArgumentException
-{
+class InvalidEntityException extends \InvalidArgumentException {
 }
