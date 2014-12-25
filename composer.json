@@ -32,8 +32,8 @@
         "doctrine/doctrine-orm-module": ">=0.5",
         "doctrine/doctrine-module": ">=0.7",
         "gedmo/doctrine-extensions": ">=v2.2.0",
-        "synergy/synergydatagrid": "1.*",
-        "synergy/common": "2.*"
+        "synergy/synergydatagrid": "1.0.x-dev",
+        "synergy/common": "1.0.x-dev"
     },
     "autoload": {
         "psr-0": {
