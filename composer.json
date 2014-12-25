@@ -33,7 +33,7 @@
         "doctrine/doctrine-module": ">=0.7",
         "gedmo/doctrine-extensions": ">=v2.2.0",
         "synergy/synergydatagrid": "dev-master",
-        "synergy/synergycommon": "dev-master"
+        "synergy/common": "2.*"
     },
     "autoload": {
         "psr-0": {
