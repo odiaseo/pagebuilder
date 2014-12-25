@@ -72,7 +72,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 		if ( $this->getOptions()->getEnabled() ) {
 			/** @var PageThemeModel $themeModel */
 			/** @var LayoutService $layoutService */
-			$themeModel    = $this->getServiceManager()->get( 'pagebuilder\model\page-theme' );
+			$themeModel    = $this->getServiceManager()->get( 'pagebuilder\model\pageTheme' );
 			$layoutService = $this->getServiceManager()->get( 'pagebuilder\service\layout' );
 			$siteTheme     = $activeSiteTheme ? (string) $activeSiteTheme : 'default';
 			$activeTheme   = $themeModel->getActivePageThemeForSite( $page->getId(), $siteTheme );
