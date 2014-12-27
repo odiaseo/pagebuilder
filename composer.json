@@ -42,7 +42,7 @@
         },
         "classmap": [
             "./Module.php",
-            "./tests/PageBuilderTest/Module.php"
+            "./tests/module/PageBuilderTest/Module.php"
         ]
     },
     "extra": {

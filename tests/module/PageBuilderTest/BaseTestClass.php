@@ -35,7 +35,7 @@ class BaseTestClass extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_serviceManager = \Bootstrap::getServiceManager();
+        $this->_serviceManager = Bootstrap::getServiceManager();
 
 
         $this->controller = new PageController();

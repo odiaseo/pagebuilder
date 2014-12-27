@@ -55,10 +55,10 @@ class Bootstrap {
 
 		$zf2ModulePaths[] = './';
 
-		$config              = include __DIR__ . '/../../config/application.config.php';
+		$config              = include __DIR__ . '/../config/application.config.php';
 		$config['modules'][] = 'PageBuilderTest';
 
-		include __DIR__ . '/../../init_autoloader.php';
+		include __DIR__ . '/../init_autoloader.php';
 
 		/** @var \Zend\Mvc\Application $app */
 		$app = Application::init( $config );
@@ -79,7 +79,7 @@ class Bootstrap {
 	 */
 	protected static function findParentPath( $path ) {
 		$dir    = __DIR__;
-		$srcDir = realpath( $dir . '/../../' );
+		$srcDir = realpath( $dir . '/../' );
 
 		return $srcDir . '/' . $path;
 	}

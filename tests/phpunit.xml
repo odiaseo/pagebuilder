@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="PageBuilderTest/Bootstrap.php" colors="true" backupGlobals="false" backupStaticAttributes="false">
+<phpunit bootstrap="Bootstrap.php" colors="true" backupGlobals="false" backupStaticAttributes="false">
 
     <testsuites>
         <testsuite name="Synergy Page Builder Test Suite">
-            <directory suffix="Test.php">PageBuilderTest</directory>
+            <directory suffix="Test.php">module/PageBuilderTest</directory>
         </testsuite>
     </testsuites>
     <php>

@@ -18,13 +18,13 @@ class Module
     {
 
 
-        if (file_exists(__DIR__ . '/../test.local.php')) {
-            $config = include __DIR__ . '/../test.local.php';
+        if (file_exists(__DIR__ . '/../../test.local.php')) {
+            $config = include __DIR__ . '/../../test.local.php';
         } else {
             $config = array();
         }
 
-        $serviceConfig = include __DIR__ . '/../test.global.php';
+        $serviceConfig = include __DIR__ . '/../../test.global.php';
 
         $merged = array_merge($serviceConfig, $config);
         return $merged;
