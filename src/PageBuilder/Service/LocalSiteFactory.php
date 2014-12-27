@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\Service;
 
+use PageBuilder\Entity\Site;
 use PageBuilder\Model\SiteModel;
 use SynergyCommon\Exception\MissingArgumentException;
 use Zend\Console\Request;
@@ -13,13 +14,15 @@ class LocalSiteFactory implements FactoryInterface {
 
 	public function createService( ServiceLocatorInterface $serviceLocator ) {
 
-		$host = null;
+		$host      = null;
+		$isConsole = false;
 		/** @var  $serviceLocator \Zend\Servicemanager\ServiceManager */
 		$request = $serviceLocator->get( 'application' )->getRequest();
 
 		if ( $request instanceof Request ) {
 			/** @var $event \Zend\Mvc\MvcEvent */
-			$event = $serviceLocator->get( 'application' )->getMvcEvent();
+			$isConsole = true;
+			$event     = $serviceLocator->get( 'application' )->getMvcEvent();
 			/** @var $rm \Zend\Mvc\Router\RouteMatch */
 			if ( $rm = $event->getRouteMatch() ) {
 				$host = $rm->getParam( 'host', $rm->getParam( self::CLIENT_DOMAIN_KEY, null ) );
@@ -39,11 +42,12 @@ class LocalSiteFactory implements FactoryInterface {
 				echo "Site is not registered";
 				exit;
 			}
+		} elseif ( $isConsole ) {
+			$site = new Site();
 		} else {
 			throw new MissingArgumentException( 'Host not found' );
 		}
 
 		return $site;
-
 	}
 }
