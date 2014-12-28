@@ -198,7 +198,7 @@ class PageModel extends BaseModel {
 		$qb    = $this->getEntityManager()->createQueryBuilder();
 		$query = $qb->select( 'e, t' )
 		            ->from( $this->_entity, 'e' )
-		            ->innerJoin( 'e.template', 't' )
+		            ->leftJoin( 'e.template', 't' )
 		            ->where( 'e.id = :id' )
 		            ->setParameter( ':id', $id )
 		            ->getQuery();
