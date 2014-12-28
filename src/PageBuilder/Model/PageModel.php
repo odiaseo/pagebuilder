@@ -2,6 +2,8 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
+use SynergyCommon\Doctrine\CacheAwareQueryTrait;
+use SynergyCommon\Doctrine\QueryBuilder;
 use SynergyCommon\Model\NestedSetRepository;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
@@ -193,17 +195,22 @@ class PageModel extends BaseModel {
 	 * @return mixed
 	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
-	public function getMainPageById( $id, $mode = AbstractQuery::HYDRATE_OBJECT ) {
-		/** @var $query \Doctrine\ORM\Query */
+	public function getMainPageById( $id, $mode = AbstractQuery::HYDRATE_ARRAY ) {
+		/** @var $query QueryBuilder  | CacheAwareQueryTrait */
 		$qb    = $this->getEntityManager()->createQueryBuilder();
-		$query = $qb->select( 'e, t' )
+		$query = $qb->select( 'e.id, t.layout', 'p.id as parentId' )
 		            ->from( $this->_entity, 'e' )
 		            ->leftJoin( 'e.template', 't' )
+		            ->leftJoin( 'e.parent', 'p' )
 		            ->where( 'e.id = :id' )
-		            ->setParameter( ':id', $id )
-		            ->getQuery();
+		            ->setParameters(
+			            array(
+				            ':id' => $id,
+			            )
+		            );
 
-		$result = $query->getOneOrNullResult( $mode );
+		$query->setEnableHydrationCache( true );
+		$result = $query->getQuery()->getOneOrNullResult( $mode );
 
 		return $result;
 	}

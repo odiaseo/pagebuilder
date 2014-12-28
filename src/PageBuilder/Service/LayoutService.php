@@ -4,7 +4,6 @@ namespace PageBuilder\Service;
 use PageBuilder\Entity\Join\PageTheme;
 use PageBuilder\Model\PageModel;
 use PageBuilder\View\Helper\PageBuilder;
-use SynergyCommon\Entity\BasePage;
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 
@@ -394,30 +393,33 @@ class LayoutService implements ServiceManagerAwareInterface {
 	}
 
 	/**
-	 * @param BasePage $page
+	 * @param int $pageId
 	 *
 	 * @return array
 	 */
-	public function resolvePageLayout( BasePage $page ) {
+	public function resolvePageLayout( $pageId ) {
 		/** @var $site \PageBuilder\Entity\Site */
 		/** @var $parent \PageBuilder\Entity\Page */
 		/** @var $page \PageBuilder\Entity\Page */
 		/** @var $templateObj \PageBuilder\Entity\Template */
 		/** @var PageModel $pageModel */
 
-		$layout = array();
+		$layout    = array();
+		$pageModel = $this->_serviceManager->get( 'pagebuilder\model\page' );
+		$page      = $pageModel->getMainPageById( $pageId );
 
-		if ( $templateObj = $page->getTemplate() ) {
-			if ( $layout = $templateObj->getLayout() ) {
-				return $layout;
+		if ( $page['layout'] ) {
+			return $page['layout'];
+		} elseif ( $page['parentId'] ) {
+			$parentPage = $pageModel->getMainPageById( $page['parentId'] );
+			if ( $parentPage['layout'] ) {
+				return $parentPage['layout'];
 			}
 		}
 
-		//try to ge the layout from the parent if it exists
-		if ( $parent = $page->getParent() ) {
-			$pageModel  = $this->_serviceManager->get( 'pagebuilder\model\page' );
-			$parentPage = $pageModel->getMainPageById( $page->getParent()->getId() );
-			if ( $templateObj = $parentPage->getTemplate() and $layout = $templateObj->getLayout() ) {
+
+		if ( $templateObj = $page->getTemplate() ) {
+			if ( $layout = $templateObj->getLayout() ) {
 				return $layout;
 			}
 		}

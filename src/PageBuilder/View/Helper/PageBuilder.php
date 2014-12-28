@@ -85,8 +85,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 			}
 
 			if ( empty( $layout ) ) {
-				$page              = $pageModel->getMainPageById( $pageId );
-				$layout            = $layoutService->resolvePageLayout( $page );
+				$layout            = $layoutService->resolvePageLayout( $pageId );
 				$this->activeTheme = $activeSiteTheme;
 			}
 
