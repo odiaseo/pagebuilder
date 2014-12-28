@@ -2,6 +2,7 @@
 namespace PageBuilder\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use SynergyCommon\Entity\BaseEntity as CommonEntity;
 
 /**
  * Setting
@@ -10,8 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="Setting")
  *
  */
-class Setting
-	extends BaseEntity {
+class Setting extends CommonEntity {
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer");
@@ -28,6 +28,20 @@ class Setting
 	 * @ORM\Column(type="text", name="setting_value")
 	 */
 	protected $settingValue = '';
+	/**
+	 * @var Site
+	 * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
+	 * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
+	 */
+	protected $dataSource;
+
+	public function setDataSource( $site ) {
+		$this->dataSource = $site;
+	}
+
+	public function getDataSource() {
+		return $this->dataSource;
+	}
 
 	public function setId( $id ) {
 		$this->id = $id;

@@ -7,13 +7,12 @@ use SynergyCommon\Entity\BaseEntity as CommonEntity;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class BaseEntity
-	extends CommonEntity {
+abstract class BaseEntity extends CommonEntity {
 	/**
 	 * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
 	 * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
 	 */
-	private $site;
+	protected $site;
 
 	public function setSite( $site ) {
 		$this->site = $site;
@@ -22,5 +21,4 @@ abstract class BaseEntity
 	public function getSite() {
 		return $this->site;
 	}
-
 }

@@ -38,9 +38,9 @@ class SettingKey
 	 */
 	private $inputType = 'text';
 	/**
-	 * @ORM\Column(type="string", name="data_source", nullable=true)
+	 * @ORM\Column(type="string", name="data_type", nullable=true)
 	 */
-	private $dataSource;
+	private $dataType;
 	/**
 	 * @ORM\Column(type="text", name="help_info")
 	 */
@@ -54,12 +54,12 @@ class SettingKey
 		return $this->code;
 	}
 
-	public function setDataSource( $dataSource ) {
-		$this->dataSource = $dataSource;
+	public function setDataType( $dataSource ) {
+		$this->dataType = $dataSource;
 	}
 
-	public function getDataSource() {
-		return $this->dataSource;
+	public function getDataType() {
+		return $this->dataType;
 	}
 
 	public function setDefaultValue( $defaultValue ) {

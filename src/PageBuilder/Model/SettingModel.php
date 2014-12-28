@@ -39,7 +39,7 @@ class SettingModel extends BaseModel {
 	 */
 	public function getSettingBySiteId( $siteId ) {
 		/** @var $query QueryBuilder */
-		$qb = $this->getFindByQueryBuilder( array( 'site' => $siteId ), null, 'e' );
+		$qb = $this->getFindByQueryBuilder( array( 'dataSource' => $siteId ), null, 'e' );
 		$qb->addSelect( 'k' )
 		   ->innerJoin( 'e.settingKey', 'k' );
 
