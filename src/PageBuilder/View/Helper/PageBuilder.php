@@ -9,7 +9,6 @@ use PageBuilder\View\TagAttributes;
 use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
 use SynergyCommon\Entity\AbstractEntity;
-use SynergyCommon\Entity\BasePage;
 use Zend\Filter\FilterInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -61,13 +60,13 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 	 * Get the active site theme and find a layout for the the current page that matches the site theme
 	 * If not layout is found, use the template assigned to the page if set
 	 *
-	 * @param BasePage       $page
+	 * @param     int        $pageId
 	 * @param Navigation     $menuTree
 	 * @param AbstractEntity $activeSiteTheme
 	 *
 	 * @return $this
 	 */
-	public function init( BasePage $page, Navigation $menuTree = null, AbstractEntity $activeSiteTheme = null ) {
+	public function init( $pageId, Navigation $menuTree = null, AbstractEntity $activeSiteTheme = null ) {
 
 		if ( $this->getOptions()->getEnabled() ) {
 			/** @var PageThemeModel $themeModel */
@@ -75,7 +74,8 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 			$themeModel    = $this->getServiceManager()->get( 'pagebuilder\model\pageTheme' );
 			$layoutService = $this->getServiceManager()->get( 'pagebuilder\service\layout' );
 			$siteTheme     = $activeSiteTheme ? (string) $activeSiteTheme : 'default';
-			$activeTheme   = $themeModel->getActivePageThemeForSite( $page->getId(), $siteTheme );
+			$activeTheme   = $themeModel->getActivePageThemeForSite( $pageId, $siteTheme );
+			$page          = $activeTheme->getPageId();
 
 			if ( $activeTheme ) {
 				$layout = $activeTheme->getLayout();

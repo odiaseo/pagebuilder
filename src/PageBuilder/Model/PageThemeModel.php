@@ -2,6 +2,7 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
+use PageBuilder\Entity\Join\PageTheme;
 
 /**
  * Class PageThemeModel
@@ -56,15 +57,16 @@ class PageThemeModel extends BaseModel {
 	 * @param     $siteTheme
 	 * @param int $mode
 	 *
-	 * @return mixed
+	 * @return PageTheme
 	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
 	public function getActivePageThemeForSite( $pageId, $siteTheme, $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		/** @var $query \Doctrine\ORM\Query */
 		$qb    = $this->getEntityManager()->createQueryBuilder();
-		$query = $qb->select( 'e, t' )
+		$query = $qb->select( 'e, t, p' )
 		            ->from( $this->_entity, 'e' )
 		            ->innerJoin( 'e.themeId', 't' )
+		            ->innerJoin( 'e.pageId', 'p' )
 		            ->where( 'e.pageId = :pageId' )
 		            ->andWhere( 't.slug = :siteTheme' )
 		            ->andWhere( 'e.isActive = :active' )

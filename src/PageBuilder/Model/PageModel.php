@@ -196,10 +196,8 @@ class PageModel extends BaseModel {
 	public function getMainPageById( $id, $mode = AbstractQuery::HYDRATE_OBJECT ) {
 		/** @var $query \Doctrine\ORM\Query */
 		$qb    = $this->getEntityManager()->createQueryBuilder();
-		$query = $qb->select( 'e, t, p' )
+		$query = $qb->select( 'e' )
 		            ->from( $this->_entity, 'e' )
-		            ->leftJoin( 'e.template', 't' )
-		            ->leftJoin( 'e.parent', 'p' )
 		            ->where( 'e.id = :id' )
 		            ->setParameter( ':id', $id )
 		            ->getQuery();

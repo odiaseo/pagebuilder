@@ -47,7 +47,7 @@ class PageBuilderListener
 			/** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
 			$pageBuilder = $viewHelperManager->get( 'buildPage' );
 			$activeTheme = $this->_serviceManager->get( 'active_theme' ) ?: null;
-			$pageBuilder->init( $errorPage, null, $activeTheme );
+			$pageBuilder->init( $errorPage->getId(), null, $activeTheme );
 		}
 	}
 
@@ -88,10 +88,10 @@ class PageBuilderListener
 
 					$activeTheme = $this->_serviceManager->get( 'active_theme' ) ?: null;
 					$model       = $this->_serviceManager->get( 'pagebuilder\model\page' );
-					$menu        = $model->getMainPageById( $activeMenu['page']->id );
+					//$menu        = $model->getMainPageById( $activeMenu['page']->id );
 					$pageBuilder = $viewHelperManager->get( 'buildPage' );
 
-					$pageBuilder->init( $menu, $menuTree, $activeTheme );
+					$pageBuilder->init( $activeMenu['page']->id, $menuTree, $activeTheme );
 				}
 			}
 		}
