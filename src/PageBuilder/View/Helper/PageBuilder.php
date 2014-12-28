@@ -3,6 +3,7 @@ namespace PageBuilder\View\Helper;
 
 use PageBuilder\Exception\RuntimeException;
 use PageBuilder\FormatterInterface;
+use PageBuilder\Model\PageModel;
 use PageBuilder\Model\PageThemeModel;
 use PageBuilder\Service\LayoutService;
 use PageBuilder\View\TagAttributes;
@@ -32,7 +33,6 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 	const LAYOUT_WIDGET = 'widget';
 	const LAYOUT_BREADCRUMB = 'breadcrumb';
 
-	private $_activeTheme;
 	private $_mainContent;
 	private $_menuTree;
 	private $_layout = array();
@@ -70,21 +70,24 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 
 		if ( $this->getOptions()->getEnabled() ) {
 			/** @var PageThemeModel $themeModel */
+			/** @var PageModel $pageModel */
 			/** @var LayoutService $layoutService */
-			$themeModel    = $this->getServiceManager()->get( 'pagebuilder\model\pageTheme' );
-			$layoutService = $this->getServiceManager()->get( 'pagebuilder\service\layout' );
-			$siteTheme     = $activeSiteTheme ? (string) $activeSiteTheme : 'default';
-			$activeTheme   = $themeModel->getActivePageThemeForSite( $pageId, $siteTheme );
-			$page          = $activeTheme->getPageId();
+			$themeModel      = $this->getServiceManager()->get( 'pagebuilder\model\pageTheme' );
+			$pageModel       = $this->getServiceManager()->get( 'pagebuilder\model\page' );
+			$layoutService   = $this->getServiceManager()->get( 'pagebuilder\service\layout' );
+			$siteThemeId     = $activeSiteTheme ? $activeSiteTheme->getId() : 'default';
+			$activeTheme     = $themeModel->getActivePageThemeForSite( $pageId, $siteThemeId );
+			$this->_menuTree = $menuTree;
 
 			if ( $activeTheme ) {
-				$layout = $activeTheme->getLayout();
+				$layout            = $activeTheme->getLayout();
+				$this->activeTheme = $activeTheme;
 			} else {
-				$layout = $layoutService->resolvePageLayout( $page, $siteTheme );
+				$page              = $pageModel->getMainPageById( $pageId );
+				$layout            = $layoutService->resolvePageLayout( $page );
+				$this->activeTheme = $activeSiteTheme;
 			}
 
-			$this->_menuTree   = $menuTree;
-			$this->activeTheme = $activeTheme;
 
 			foreach ( $layout as $index => &$template ) {
 				if ( array_key_exists( 'status', $template ) and empty( $template['status'] ) ) {

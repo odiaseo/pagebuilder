@@ -87,8 +87,6 @@ class PageBuilderListener
 					/** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
 
 					$activeTheme = $this->_serviceManager->get( 'active_theme' ) ?: null;
-					$model       = $this->_serviceManager->get( 'pagebuilder\model\page' );
-					//$menu        = $model->getMainPageById( $activeMenu['page']->id );
 					$pageBuilder = $viewHelperManager->get( 'buildPage' );
 
 					$pageBuilder->init( $activeMenu['page']->id, $menuTree, $activeTheme );

@@ -395,11 +395,10 @@ class LayoutService implements ServiceManagerAwareInterface {
 
 	/**
 	 * @param BasePage $page
-	 * @param          $siteTheme
 	 *
 	 * @return array
 	 */
-	public function resolvePageLayout( BasePage $page, $siteTheme ) {
+	public function resolvePageLayout( BasePage $page ) {
 		/** @var $site \PageBuilder\Entity\Site */
 		/** @var $parent \PageBuilder\Entity\Page */
 		/** @var $page \PageBuilder\Entity\Page */
