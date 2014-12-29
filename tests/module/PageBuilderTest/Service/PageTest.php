@@ -2,7 +2,6 @@
 namespace PageBuilderTest\Servicee;
 
 use PageBuilderTest\BaseTestClass;
-use Zend\Mvc\Router\Console\RouteMatch;
 
 /**
  * @backupGlobals disabled
@@ -17,13 +16,12 @@ class PageTest extends BaseTestClass {
 	}
 
 	public function testPageBuilder() {
-		/** @var \Zend\Mvc\MvcEvent $mvcEvent */
-		$mvcEvent   = $this->_serviceManager->get( 'application' )->getMvcEvent();
-		$routeMatch = new RouteMatch( array( 'host' => 'builder-dev.com' ) );
-		$mvcEvent->setRouteMatch( $routeMatch );
-
 		$pageService = $this->_serviceManager->get( 'viewhelpermanager' )->get( 'buildpage' );
 		$this->assertInstanceOf( 'PageBuilder\View\Helper\PageBuilder', $pageService );
 	}
 
+	public function testGridInstance() {
+		$grid = $this->_serviceManager->get( 'jqgrid' );
+		$this->assertInstanceOf( 'SynergyDataGrid\Grid\GridType\DoctrineORMGrid', $grid );
+	}
 }
