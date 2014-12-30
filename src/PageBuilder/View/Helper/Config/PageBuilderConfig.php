@@ -75,6 +75,23 @@ class PageBuilderConfig extends AbstractOptions {
 	 */
 	protected $bootstrapVersion = 2;
 
+	/** @var  string */
+	protected $globalDomain;
+
+	/**
+	 * @return string
+	 */
+	public function getGlobalDomain() {
+		return $this->globalDomain;
+	}
+
+	/**
+	 * @param string $globalDomain
+	 */
+	public function setGlobalDomain( $globalDomain ) {
+		$this->globalDomain = $globalDomain;
+	}
+	
 	/**
 	 * @param int $bootstrapVersion
 	 */
