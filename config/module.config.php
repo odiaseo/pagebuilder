@@ -235,6 +235,7 @@ return array(
 		),
 	),
 	'pagebuilder'     => array(
+		'global_domain'     => 'rhemastudio.com',
 		'bootstrap_version' => 2,
 		'enabled'           => false, //change to true to enable
 		'modules'           => array(

@@ -18,11 +18,11 @@ class LocalSiteFactory implements FactoryInterface {
 		$isConsole = false;
 		/** @var  $serviceLocator \Zend\Servicemanager\ServiceManager */
 		$request = $serviceLocator->get( 'application' )->getRequest();
+		$event   = $serviceLocator->get( 'application' )->getMvcEvent();
 
 		if ( $request instanceof Request ) {
 			/** @var $event \Zend\Mvc\MvcEvent */
 			$isConsole = true;
-			$event     = $serviceLocator->get( 'application' )->getMvcEvent();
 			/** @var $rm \Zend\Mvc\Router\RouteMatch */
 			if ( $rm = $event->getRouteMatch() ) {
 				$host = $rm->getParam( 'host', $rm->getParam( self::CLIENT_DOMAIN_KEY, null ) );
@@ -33,14 +33,25 @@ class LocalSiteFactory implements FactoryInterface {
 		}
 
 		if ( $host ) {
-			list( $host, ) = explode( ':', $host );
-			$hostname = str_replace( array( 'http://', 'https://', 'www.' ), '', $host );
 			/** @var SiteModel $model */
-			$model = $serviceLocator->get( 'pagebuilder\model\site' );
+			$config = $serviceLocator->get( 'config' );
+			list( $host, ) = explode( ':', $host );
+			$globalDomain = $this->cleanDomain( $config['pagebuilder']['global_domain'] );
+			$hostname     = $this->cleanDomain( $host );
+			$model        = $serviceLocator->get( 'pagebuilder\model\site' );
+
 			if ( ! $site = $model->findSiteBy( array( 'domain' => $hostname ) ) ) {
-				header( 'HTTP/1.1 403 Application Error' );
-				echo "Site is not registered";
-				exit;
+				$message = "Site is not registered";
+				$serviceLocator->get( 'logger' )->warn( $host . ' - domain was requested but not found' );
+				if ( ! $isConsole and $host != $globalDomain ) {
+					$destination = sprintf( 'http://www.%s?nfh=%s', $globalDomain, $host );
+					header( 'HTTP/1.1 401 Domain not found' );
+					header( 'Location: ' . $destination );
+				} else {
+					header( 'HTTP/1.1 403 Application Error' );
+					echo $message;
+				}
+				exit();
 			}
 		} elseif ( $isConsole ) {
 			$site = new Site();
@@ -49,5 +60,14 @@ class LocalSiteFactory implements FactoryInterface {
 		}
 
 		return $site;
+	}
+
+	/**
+	 * @param $domain
+	 *
+	 * @return mixed
+	 */
+	protected function cleanDomain( $domain ) {
+		return str_replace( array( 'http://', 'https://', 'www.' ), '', $domain );
 	}
 }
