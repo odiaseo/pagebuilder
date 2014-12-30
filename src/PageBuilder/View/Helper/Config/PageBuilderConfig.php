@@ -91,7 +91,7 @@ class PageBuilderConfig extends AbstractOptions {
 	public function setGlobalDomain( $globalDomain ) {
 		$this->globalDomain = $globalDomain;
 	}
-	
+
 	/**
 	 * @param int $bootstrapVersion
 	 */

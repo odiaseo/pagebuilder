@@ -42,8 +42,10 @@ class AbstractModelFactory implements AbstractFactoryInterface {
 	 * @return mixed
 	 */
 	public function createServiceWithName( ServiceLocatorInterface $serviceLocator, $name, $requestedName ) {
+		/** @var $authService \Zend\Authentication\AuthenticationService */
 		$modelId = str_replace( $this->_configPrefix, '', $requestedName );
 		$idParts = explode( '\\', $modelId );
+		$config  = $serviceLocator->get( 'config' );
 
 		if ( $idParts[0] == 'join' ) {
 			$modelName = __NAMESPACE__ . '\\' . ucfirst( $idParts[1] ) . 'Model';
@@ -52,9 +54,15 @@ class AbstractModelFactory implements AbstractFactoryInterface {
 			$modelName = __NAMESPACE__ . '\\' . ucfirst( $modelId ) . 'Model';
 			$entity    = $serviceLocator->get( 'pagebuilder\entity\\' . $modelId );
 		}
-
-		$config = $serviceLocator->get( 'config' );
-		if ( isset( $config['enable_result_cache'] ) ) {
+		if ( $serviceLocator->has( 'zfcuser_auth_service' ) ) {
+			$authService = $serviceLocator->get( 'zfcuser_auth_service' );
+			$identity    = $authService->hasIdentity();
+		} else {
+			$identity = false;
+		}
+		if ( $identity ) {
+			$enabled = false;
+		} elseif ( isset( $config['enable_result_cache'] ) ) {
 			$enabled = $config['enable_result_cache'];
 		} else {
 			$enabled = false;
