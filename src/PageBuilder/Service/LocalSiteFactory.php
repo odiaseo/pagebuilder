@@ -7,10 +7,12 @@ use SynergyCommon\Exception\MissingArgumentException;
 use Zend\Console\Request;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Session\Container;
 
 class LocalSiteFactory implements FactoryInterface {
 
 	const CLIENT_DOMAIN_KEY = 'client_domain';
+	const SESSION_LOCALE_KEY = 'active_locale';
 
 	public function createService( ServiceLocatorInterface $serviceLocator ) {
 
@@ -57,6 +59,16 @@ class LocalSiteFactory implements FactoryInterface {
 			$site = new Site();
 		} else {
 			throw new MissingArgumentException( 'Host not found' );
+		}
+
+		$container = new Container();
+		$container->offsetSet( self::SESSION_LOCALE_KEY, $site->getLocale() );
+		//Set locale
+		\setlocale( LC_ALL, $site->getLocale() );
+
+		//Set timezone
+		if ( $timezone = $site->getDefaultTimezone() ) {
+			\date_default_timezone_set( $timezone );
 		}
 
 		return $site;
