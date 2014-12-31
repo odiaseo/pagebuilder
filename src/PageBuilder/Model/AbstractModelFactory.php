@@ -45,7 +45,6 @@ class AbstractModelFactory implements AbstractFactoryInterface {
 		/** @var $authService \Zend\Authentication\AuthenticationService */
 		$modelId = str_replace( $this->_configPrefix, '', $requestedName );
 		$idParts = explode( '\\', $modelId );
-		$config  = $serviceLocator->get( 'config' );
 
 		if ( $idParts[0] == 'join' ) {
 			$modelName = __NAMESPACE__ . '\\' . ucfirst( $idParts[1] ) . 'Model';
@@ -54,26 +53,16 @@ class AbstractModelFactory implements AbstractFactoryInterface {
 			$modelName = __NAMESPACE__ . '\\' . ucfirst( $modelId ) . 'Model';
 			$entity    = $serviceLocator->get( 'pagebuilder\entity\\' . $modelId );
 		}
-		if ( $serviceLocator->has( 'zfcuser_auth_service' ) ) {
-			$authService = $serviceLocator->get( 'zfcuser_auth_service' );
-			$identity    = $authService->hasIdentity();
-		} else {
-			$identity = false;
-		}
-		if ( $identity ) {
-			$enabled = false;
-		} elseif ( isset( $config['enable_result_cache'] ) ) {
-			$enabled = $config['enable_result_cache'];
-		} else {
-			$enabled = false;
-		}
+
+		$cacheStatus = $serviceLocator->get( 'synergy\cache\status' );
+
 		/** @var $model \PageBuilder\Model\BaseModel */
 		/** @var EntityManager $entityManager */
 		$model         = new $modelName();
 		$entityManager = $serviceLocator->get( 'doctrine.entitymanager.' . $model->getOrm() );
-		$cachedManager = new CachedEntityManager( $entityManager, $enabled );
+		$cachedManager = new CachedEntityManager( $entityManager, $cacheStatus->enabled );
 
-		$model->setEnableResultCache( $enabled );
+		$model->setEnableResultCache( $cacheStatus->enabled );
 		$model->setEntityInstance( $entity );
 		$model->setEntity( get_class( $entity ) );
 		$model->setLogger( $serviceLocator->get( 'logger' ) );
