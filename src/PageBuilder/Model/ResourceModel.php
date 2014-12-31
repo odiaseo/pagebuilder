@@ -2,14 +2,13 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
-use SynergyCommon\Model\AbstractModel;
 
 /**
  * Class ResourceModel
  *
  * @package PageModel\Model
  */
-class ResourceModel extends AbstractModel {
+class ResourceModel extends BaseModel {
 	/**
 	 * List Generic Resources
 	 *

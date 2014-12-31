@@ -28,7 +28,7 @@ trait ModelDependencyTrait {
 			$model->setIdentity( $authService->getIdentity() );
 		} else {
 			$identity = false;
-		}
+	}
 
 		if ( is_string( $entity ) ) {
 			$model->setEntity( $entity );

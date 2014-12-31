@@ -8,6 +8,6 @@ use SynergyCommon\Model\AbstractModel;
  *
  * @package AffiliateManager\Model
  */
-class ResourceTypeModel extends AbstractModel {
+class ResourceTypeModel extends BaseModel {
 
 }
