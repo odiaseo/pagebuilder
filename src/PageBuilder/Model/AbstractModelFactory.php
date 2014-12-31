@@ -2,13 +2,17 @@
 namespace PageBuilder\Model;
 
 
-use Doctrine\ORM\EntityManager;
-use SynergyCommon\Doctrine\CachedEntityManager;
+use SynergyCommon\Entity\AbstractEntity;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class AbstractModelFactory
+ *
+ * @package PageBuilder\Model
+ */
 class AbstractModelFactory implements AbstractFactoryInterface {
-
+	use ModelDependencyTrait;
 	protected $_configPrefix;
 
 	public function __construct() {
@@ -51,23 +55,12 @@ class AbstractModelFactory implements AbstractFactoryInterface {
 			$entity    = $serviceLocator->get( 'pagebuilder\entity\\' . $idParts[1] );
 		} else {
 			$modelName = __NAMESPACE__ . '\\' . ucfirst( $modelId ) . 'Model';
-			$entity    = $serviceLocator->get( 'pagebuilder\entity\\' . $modelId );
+			/** @var AbstractEntity $entity */
+			$entity = $serviceLocator->get( 'pagebuilder\entity\\' . $modelId );
 		}
+		/** @var BaseModel $model */
+		$model = new $modelName();
 
-		$cacheStatus = $serviceLocator->get( 'synergy\cache\status' );
-
-		/** @var $model \PageBuilder\Model\BaseModel */
-		/** @var EntityManager $entityManager */
-		$model         = new $modelName();
-		$entityManager = $serviceLocator->get( 'doctrine.entitymanager.' . $model->getOrm() );
-		$cachedManager = new CachedEntityManager( $entityManager, $cacheStatus->enabled );
-
-		$model->setEnableResultCache( $cacheStatus->enabled );
-		$model->setEntityInstance( $entity );
-		$model->setEntity( get_class( $entity ) );
-		$model->setLogger( $serviceLocator->get( 'logger' ) );
-		$model->setEntityManager( $cachedManager );
-
-		return $model;
+		return $this->setDependency( $serviceLocator, $model, $entity );
 	}
 }
