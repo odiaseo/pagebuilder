@@ -63,11 +63,11 @@ class Resource extends CommonEntity {
 
 		switch ( $type ) {
 			case 'video':
-				$html = sprintf( "<iframe src='%s' frameborder='0' allowfullscreen ></iframe>",
+				$html = sprintf( "<iframe src='%s' frameborder='0' allowfullscreen class='resource-video'></iframe>",
 					$this->getResourceUrl() );
 				break;
 			case 'link':
-				$html = sprintf( '<a href="%s" target="_blank" rel="nofollow">Click Here</a>',
+				$html = sprintf( '<a href="%s" target="_blank" rel="nofollow" class="resource-link">Click Here</a>',
 					$this->getResourceUrl() );
 				break;
 			default:

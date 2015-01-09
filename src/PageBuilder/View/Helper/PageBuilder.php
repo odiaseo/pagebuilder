@@ -194,7 +194,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 				$html = implode( '', $html );
 
 				if ( $this->activeTheme && $wrapperClass = $this->activeTheme->getWrapperClass() ) {
-					$html = sprintf( '<div class="%s">%s</div>', $wrapperClass, $html );
+					$html = sprintf( '<div class="%s" id="pageTop">%s</div>', $wrapperClass, $html );
 				}
 
 				if ( $alias = $this->_options->getFilter() ) {
