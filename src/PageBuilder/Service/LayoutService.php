@@ -425,7 +425,7 @@ class LayoutService implements ServiceManagerAwareInterface {
 		}
 
 		//get the sites default template's layout
-		if ( $site = $this->_serviceManager->get( 'active_site' ) ) {
+		if ( $site = $this->_serviceManager->get('active\site') ) {
 			if ( $templateObj = $site->getDefaultTemplate() ) {
 				return $templateObj->getLayout();
 			}

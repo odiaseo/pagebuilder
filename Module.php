@@ -67,7 +67,7 @@ class Module
                 'widget_service'    => 'PageBuilder\Service\WidgetService',
                 'pagebuilder\menu'  => 'PageBuilder\Navigation\NavigationFactory',
                 'util\widget'       => 'PageBuilder\Util\Widget',
-                'active_site'       => 'PageBuilder\Service\LocalSiteFactory',
+                'active\site'       => 'PageBuilder\Service\LocalSiteFactory',
             ),
             'initializers' => array(
                 'widget' => function ($widget, $sm) {
@@ -104,7 +104,7 @@ class Module
                 'PageBuilder\WidgetDataFactory'            => 'PageBuilder\WidgetDataFactory',
                 'active_theme'                             => function ($sm) {
                     /** @var  $sm \Zend\Servicemanager\ServiceManager */
-                    $site  = $sm->get('active_site');
+                    $site  = $sm->get('active\site');
                     $theme = $sm->get('pagebuilder\model\theme')->getActiveTheme($site->getId());
 
                     return $theme;

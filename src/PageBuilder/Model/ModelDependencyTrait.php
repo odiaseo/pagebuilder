@@ -39,7 +39,7 @@ trait ModelDependencyTrait {
 		}
 
 		if ( $model instanceof LocaleAwareInterface ) {
-			$site = $serviceLocator->get( 'active_site' );
+			$site = $serviceLocator->get('active\site');
 			if ( $locale = $site->getLocale() ) {
 				$model->setLocale( $locale );
 			}

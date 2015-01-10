@@ -15,7 +15,7 @@ class SettingModel extends BaseModel {
 	 *
 	 * @return array
 	 */
-	public function getSettingList( Site $site ) {
+	public function getSettingList(Site $site ) {
 		$settingList = array();
 		$items       = $this->getSettingBySiteId( $site->getId() );
 		/** @var $setting \PageBuilder\Entity\Setting */

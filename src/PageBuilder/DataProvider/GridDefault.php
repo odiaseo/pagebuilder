@@ -17,7 +17,7 @@ class GridDefault implements FactoryInterface {
 	 */
 	public function createService( ServiceLocatorInterface $serviceLocator ) {
 		/** @var \PageBuilder\Entity\Site $site */
-		$site = $serviceLocator->get( 'active_site' );
+		$site = $serviceLocator->get('active\site');
 		$data = array(
 			'global'   => array(
 				'site'      => $site->getId(),
