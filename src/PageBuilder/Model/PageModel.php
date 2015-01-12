@@ -4,12 +4,11 @@ namespace PageBuilder\Model;
 use Doctrine\ORM\AbstractQuery;
 use SynergyCommon\Doctrine\CacheAwareQueryTrait;
 use SynergyCommon\Doctrine\QueryBuilder;
-use SynergyCommon\Model\NestedSetRepository;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
 /**
  * Class PageModel
- * @method NestedSetRepository getRepository()
+ * @method PageRepository getRepository()
  *
  * @package PageBuilder\Model
  */
