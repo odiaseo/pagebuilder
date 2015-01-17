@@ -12,6 +12,9 @@ use SynergyCommon\Doctrine\QueryBuilder;
  */
 class SiteModel extends BaseModel
 {
+
+    const TYPE_VOUCHER = 1;
+
     /**
      * @param $site
      *
@@ -56,5 +59,63 @@ class SiteModel extends BaseModel
         $site = $query->getQuery()->getOneOrNullResult($mode);
 
         return $site;
+    }
+
+    /**
+     * @param bool $voucherSites
+     *
+     * @return array
+     */
+    public function getActiveVoucherSites($voucherSites = true)
+    {
+        /** @var QueryBuilder $query */
+        $query = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('e.domain, e.isSubDomain, e.locale, e.displayTitle')
+            ->from($this->getEntity(), 'e')
+            ->where('e.isActive = :active');
+
+        if ($voucherSites) {
+            $query->andWhere('e.siteType = :siteType');
+        } else {
+            $query->andWhere('e.siteType <> :siteType');
+
+        }
+        $query->setParameters(
+            array(
+                ':active'   => 1,
+                ':siteType' => self::TYPE_VOUCHER
+            )
+        );
+        $query->setEnableHydrationCache(true);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param int  $modewr
+     * @param null $siteType
+     *
+     * @return array
+     */
+    public function getActiveDomains($mode = AbstractQuery::HYDRATE_OBJECT, $siteType = null)
+    {
+        $query = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('e')
+            ->from($this->getEntity(), 'e')
+            ->where('e.isActive = :active')
+            ->setParameters(
+                array(
+                    ':active' => 1,
+                )
+            );
+
+        if ($siteType) {
+            $query->andWhere('e.siteType = :siteType')
+                ->setParameter(':siteType', $siteType);
+        }
+
+        return $query->getQuery()->getResult($mode);
     }
 }
