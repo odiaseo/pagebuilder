@@ -18,8 +18,12 @@ use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
-class Module
-    implements DependencyIndicatorInterface
+/**
+ * Class Module
+ *
+ * @package PageBuilder
+ */
+class Module implements DependencyIndicatorInterface
 {
 
     public function getModuleDependencies()
@@ -35,8 +39,6 @@ class Module
         $moduleRouteListener->attach($eventManager);
 
         $serviceLocator = $e->getApplication()->getServiceManager();
-
-        $eventManager->attach(new SynergyModuleListener());
         $eventManager->attach(new PageBuilderListener($serviceLocator));
     }
 
