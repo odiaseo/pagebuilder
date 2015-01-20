@@ -40,6 +40,14 @@ class Module implements DependencyIndicatorInterface
 
         $serviceLocator = $e->getApplication()->getServiceManager();
         $eventManager->attach(new PageBuilderListener($serviceLocator));
+
+        /** @var $serviceLocator \Zend\ServiceManager\ServiceManager */
+        $serviceLocator = $e->getApplication()->getServiceManager();
+
+        $synergyListener = new SynergyModuleListener();
+        $eventManager->attach($synergyListener);
+        $synergyListener->initSession($e);
+        $synergyListener->bootstrap($eventManager, $serviceLocator);
     }
 
     public function getConfig()
