@@ -256,7 +256,7 @@ class PageModel extends BaseModel
      */
     public function getEntityNavigation($rootPage = null, $mode = AbstractQuery::HYDRATE_ARRAY)
     {
-        /** @var $repo \SynergyCommon\Model\NestedSetRepository */
+        /** @var $repo \SynergyCommon\Model\NestedSetRepository | PageRepository */
         $repo  = $this->getRepository();
         $query = $this->addHints($repo->getNodesHierarchyQuery($rootPage));
         $query = $this->setCacheFlag($query);
