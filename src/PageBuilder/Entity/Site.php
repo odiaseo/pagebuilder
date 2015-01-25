@@ -252,7 +252,7 @@ class Site extends BaseSite
     public function getSiteFilterQuery($targetTableAlias)
     {
         $parent = $this->getParent();
-        if ($parent && $parentId = $parent->getId()) {
+        if ($parent and $parentId = $parent->getId()) {
             return $targetTableAlias . '.site_id = ' . $parentId;
         } elseif ($id = $this->getId()) {
             return $targetTableAlias . '.site_id = ' . $id;

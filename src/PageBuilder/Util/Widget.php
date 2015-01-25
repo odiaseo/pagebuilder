@@ -41,7 +41,7 @@ class Widget
 				/** @var $splFileInfo \SplFileInfo */
 				foreach ( $iterator as $splFileInfo ) {
 					$ext = substr( basename( $splFileInfo->getFilename() ), - 4 );;
-					if ( $splFileInfo->isFile() && $ext == '.php' ) {
+					if ( $splFileInfo->isFile() and $ext == '.php' ) {
 						$widgetId  = substr( basename( $splFileInfo->getFilename() ), 0, - 4 );
 						$className = substr(
 							$namespace . str_replace(
@@ -55,7 +55,7 @@ class Widget
 
 
 						if ( $reflection->isInstantiable()
-						     && $reflection->implementsInterface( 'PageBuilder\WidgetInterface' )
+						     and $reflection->implementsInterface( 'PageBuilder\WidgetInterface' )
 						) {
 							$attributes = $reflection->getDefaultProperties();
 							$id         = ! empty( $attributes['id'] ) ? preg_replace( '/[^a-z]/i', '',

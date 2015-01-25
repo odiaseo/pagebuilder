@@ -72,7 +72,7 @@ class PageBuilderListener
 				$moduleEnabled = true;
 			}
 
-			if ( $options->getEnabled() && $moduleEnabled && $options->getMainNavigation() ) {
+			if ( $options->getEnabled() and $moduleEnabled and $options->getMainNavigation() ) {
 
 				/** @var $navigation \Zend\View\Helper\Navigation */
 				/** @var $menuTree \Zend\View\Helper\Navigation */

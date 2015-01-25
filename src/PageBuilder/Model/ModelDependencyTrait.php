@@ -45,7 +45,7 @@ trait ModelDependencyTrait {
 			}
 		}
 
-		$enabled = ( ! $identity && $cacheStatus->enabled );
+		$enabled = ( ! $identity and $cacheStatus->enabled );
 		$model->setEnableResultCache( $enabled );
 		$model->setLogger( $serviceLocator->get( 'logger' ) );
 		$model->setEntityManager( $cachedManager );
