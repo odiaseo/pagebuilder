@@ -10,6 +10,7 @@
 namespace PageBuilder;
 
 use PageBuilder\Event\Listener\PageBuilderListener;
+use PageBuilder\Util\Widget;
 use PageBuilder\View\Helper\Config\PageBuilderConfig;
 use PageBuilder\View\Helper\PageBuilder;
 use SynergyCommon\Event\Listener\SynergyModuleListener;
@@ -119,6 +120,15 @@ class Module implements DependencyIndicatorInterface
 
                     return $theme;
                 },
+
+                'PageBuilder\Util\Widget'                  => function ($serviceManager) {
+                    $widget = new Widget();
+                    $widget->setServiceManager($serviceManager);
+                    $widget->init();
+
+                    return $widget;
+                }
+
             )
         );
     }

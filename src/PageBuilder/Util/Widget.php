@@ -21,6 +21,8 @@ class Widget implements ServiceManagerAwareInterface
 
     /** @var \Zend\ServiceManager\ServiceManager */
     protected $serviceManager;
+    /** @var array */
+    private $dataStore = [];
 
     public function setServiceManager(ServiceManager $serviceManager)
     {
@@ -28,15 +30,24 @@ class Widget implements ServiceManagerAwareInterface
     }
 
     /**
-     * Gets lists of available widgets
-     *
      * @return array
      */
     public function getWidgetList()
     {
+        return isset($this->dataStore[1]) ? $this->dataStore[1] : [];
+    }
+
+    /**
+     * Gets lists of available widgets
+     *
+     * @return array
+     */
+    public function init()
+    {
         if ($this->isCacheEnabled() and file_exists(self::CACHE_LOCATION)) {
-            return include self::CACHE_LOCATION;
-        } elseif (!$this->widgetList) {
+            $store = include self::CACHE_LOCATION;
+        } else {
+            $store        = [];
             $finalList    = array();
             $config       = $this->serviceManager->get('config');
             $dirLocations = (array)$config['pagebuilder']['widgets']['paths'];
@@ -82,8 +93,8 @@ class Widget implements ServiceManagerAwareInterface
                                 'options'     => $attributes['options']
                             );
 
-                            $path                = array($id => $data);
-                            self::$registry[$id] = $data;
+                            $path          = array($id => $data);
+                            $store[0][$id] = $data;
 
                         } else {
                             continue;
@@ -109,15 +120,16 @@ class Widget implements ServiceManagerAwareInterface
                     $finalList = array_merge_recursive($finalList, $path);
                 }
             }
-            $this->widgetList = $finalList;
+
+            $store[1] = $finalList;
+
+            if ($this->isCacheEnabled()) {
+                $data = '<?php return ' . var_export($store, true) . ' ;';
+                file_put_contents(self::CACHE_LOCATION, $data);
+            }
         }
 
-        if ($this->isCacheEnabled()) {
-            $data = '<?php return ' . var_export($this->widgetList, true) . ' ;';
-            file_put_contents(self::CACHE_LOCATION, $data);
-        }
-
-        return $this->widgetList;
+        $this->dataStore = $store;
     }
 
     /**
@@ -131,20 +143,12 @@ class Widget implements ServiceManagerAwareInterface
     {
         $name = strtolower($name);
 
-        if (empty(self::$registry)) {
-            $this->getWidgetList();
-        }
-
-        if (isset(self::$registry[$name])) {
-            return self::$registry[$name];
-        } else {
-            return false;
-        }
+        return isset($this->dataStore[0][$name]) ? $this->dataStore[0][$name] : false;
     }
 
-    public static function getRegistry()
+    public function getRegistry()
     {
-        return self::$registry;
+        return isset($this->dataStore[0]) ? $this->dataStore[0] : [];
     }
 
     /**
@@ -152,7 +156,7 @@ class Widget implements ServiceManagerAwareInterface
      */
     private function isCacheEnabled()
     {
-        $status = $this->serviceManager->get('cache\status');
+        $status = $this->serviceManager->get('synergy\cache\status');
 
         return $status->enabled;
     }
