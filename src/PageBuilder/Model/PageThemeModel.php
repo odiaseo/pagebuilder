@@ -77,7 +77,6 @@ class PageThemeModel extends BaseModel
             ->innerJoin('e.themeId', 't')
             ->innerJoin('e.pageId', 'p')
             ->where('e.pageId = :pageId')
-            ->andWhere('e.isActive = :active')
             ->setParameters($params);
 
         if (is_numeric($siteThemeId)) {
@@ -86,6 +85,7 @@ class PageThemeModel extends BaseModel
             $query->andWhere('t.slug = :siteThemeId');
         }
 
+        $query->andWhere('e.isActive = :active');
         $query->setMaxResults(1);
         $result = $query->getQuery()->getOneOrNullResult($mode);
 

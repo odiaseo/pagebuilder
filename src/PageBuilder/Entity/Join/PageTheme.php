@@ -9,7 +9,8 @@ use SynergyCommon\Entity\AbstractEntity;
  * Page Themes Join table
  *
  * @ORM\Entity
- * @ORM\Table(name="Page_Theme", uniqueConstraints={@ORM\UniqueConstraint(name="page_theme_idx", columns={"page_id", "theme_id"})})
+ * @ORM\Table(name="Page_Theme",
+ * uniqueConstraints={@ORM\UniqueConstraint(name="page_theme_idx", columns={"page_id", "theme_id", "is_active"})})
  *
  */
 class PageTheme
