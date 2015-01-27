@@ -78,6 +78,7 @@ class Module implements DependencyIndicatorInterface
                 'widget_service'    => 'PageBuilder\Service\WidgetService',
                 'pagebuilder\menu'  => 'PageBuilder\Navigation\NavigationFactory',
                 'util\widget'       => 'PageBuilder\Util\Widget',
+                'session_manager'   => 'Zend\Session\SessionManager',
                 'active\site'       => 'PageBuilder\Service\LocalSiteFactory',
             ),
             'initializers' => array(
@@ -106,14 +107,16 @@ class Module implements DependencyIndicatorInterface
             ),
 
             'factories'    => array(
-                'PageBuilder\Service\LocalSiteFactory'     => 'PageBuilder\Service\LocalSiteFactory',
-                'PageBuilder\Service\PageService'          => 'PageBuilder\Service\PageService',
-                'PageBuilder\Navigation\NavigationFactory' => 'PageBuilder\Navigation\NavigationFactory',
-                'PageBuilder\Service\ComponentService'     => 'PageBuilder\Service\ComponentService',
-                'PageBuilder\Service\WidgetService'        => 'PageBuilder\Service\WidgetService',
-                'PageBuilder\Service\TemplateService'      => 'PageBuilder\Service\TemplateService',
-                'PageBuilder\WidgetDataFactory'            => 'PageBuilder\WidgetDataFactory',
-                'active_theme'                             => function ($sm) {
+                'PageBuilder\Service\LocalSiteFactory'      => 'PageBuilder\Service\LocalSiteFactory',
+                'PageBuilder\Service\PageService'           => 'PageBuilder\Service\PageService',
+                'PageBuilder\Navigation\NavigationFactory'  => 'PageBuilder\Navigation\NavigationFactory',
+                'PageBuilder\Service\ComponentService'      => 'PageBuilder\Service\ComponentService',
+                'PageBuilder\Service\WidgetService'         => 'PageBuilder\Service\WidgetService',
+                'PageBuilder\Service\TemplateService'       => 'PageBuilder\Service\TemplateService',
+                'PageBuilder\WidgetDataFactory'             => 'PageBuilder\WidgetDataFactory',
+                'Zend\Session\SessionManager'               => 'Zend\Session\Service\SessionManagerFactory',
+                'AffiliateManager\Service\LocalSiteFactory' => 'AffiliateManager\Service\LocalSiteFactory',
+                'active_theme'                              => function ($sm) {
                     /** @var  $sm \Zend\Servicemanager\ServiceManager */
                     $site  = $sm->get('active\site');
                     $theme = $sm->get('pagebuilder\model\theme')->getActiveTheme($site->getId());
@@ -121,7 +124,7 @@ class Module implements DependencyIndicatorInterface
                     return $theme;
                 },
 
-                'PageBuilder\Util\Widget'                  => function ($serviceManager) {
+                'PageBuilder\Util\Widget'                   => function ($serviceManager) {
                     $widget = new Widget();
                     $widget->setServiceManager($serviceManager);
                     $widget->init();

@@ -1,7 +1,6 @@
 <?php
 namespace PageBuilder\Service;
 
-use Doctrine\ORM\AbstractQuery;
 use PageBuilder\Entity\Site;
 use PageBuilder\Model\SiteModel;
 use SynergyCommon\Exception\MissingArgumentException;
@@ -44,10 +43,10 @@ class LocalSiteFactory implements FactoryInterface
             $hostname     = $this->cleanDomain($host);
             $model        = $serviceLocator->get('pagebuilder\model\site');
 
-            if ( ! $site = $model->findSiteBy(array('domain' => $hostname))) {
+            if (!$site = $model->findSiteBy(array('domain' => $hostname))) {
                 $message = "Site is not registered";
                 $serviceLocator->get('logger')->warn($host . ' - domain was requested but not found');
-                if ( ! $isConsole and $host != $globalDomain) {
+                if (!$isConsole and $host != $globalDomain) {
                     $destination = sprintf('http://www.%s?nfh=%s', $globalDomain, $host);
                     header('HTTP/1.1 401 Domain not found');
                     header('Location: ' . $destination);
@@ -59,6 +58,7 @@ class LocalSiteFactory implements FactoryInterface
             }
         } elseif ($isConsole) {
             $site = new Site();
+            $site->setId(1);
         } else {
             throw new MissingArgumentException('Host not found');
         }

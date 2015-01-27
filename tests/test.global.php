@@ -5,11 +5,11 @@ return array(
             'orm_default' => array(
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params'      => array(
-                    'host'     => 'localhost',
+                    'host'     => '87.230.13.184',
                     'port'     => '3306',
-                    'user'     => 'root',
-                    'password' => '',
-                    'dbname'   => 'affiliate',
+                    'user'     => 'vaboose_user',
+                    'password' => 'vaboose_user',
+                    'dbname'   => 'vaboose_merged',
                 ),
             ),
         )

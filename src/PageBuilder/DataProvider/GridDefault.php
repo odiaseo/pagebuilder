@@ -9,25 +9,27 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @package PageBuilder\DataProvider
  */
-class GridDefault implements FactoryInterface {
-	/**
-	 * @param ServiceLocatorInterface $serviceLocator
-	 *
-	 * @return array|mixed
-	 */
-	public function createService( ServiceLocatorInterface $serviceLocator ) {
-		/** @var \PageBuilder\Entity\Site $site */
-		$site = $serviceLocator->get('active\site');
-		$data = array(
-			'global'   => array(
-				'site'      => $site->getId(),
-				'siteId'    => $site->getId(),
-				'createdAt' => date( 'Y-m-d H:i:s' ),
-				'timezone'  => 'UTC',
-			),
-			'specific' => array()
-		);
+class GridDefault implements FactoryInterface
+{
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return array|mixed
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        /** @var \PageBuilder\Entity\Site $site */
+        $site = $serviceLocator->get('active\site');
+        $data = array(
+            'global'   => array(
+                'site'      => $site->getId(),
+                'siteId'    => $site->getId(),
+                'createdAt' => date('Y-m-d H:i:s'),
+                'timezone'  => 'UTC',
+            ),
+            'specific' => array()
+        );
 
-		return $data;
-	}
+        return $data;
+    }
 }

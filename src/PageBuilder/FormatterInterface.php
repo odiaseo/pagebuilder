@@ -9,11 +9,12 @@ namespace PageBuilder;
  *
  * @package PageBuilder
  */
-interface FormatterInterface {
-	/**
-	 * @param  string $data
-	 *
-	 * @return string
-	 */
-	public function format( $data );
+interface FormatterInterface
+{
+    /**
+     * @param  string $data
+     *
+     * @return string
+     */
+    public function format($data);
 }

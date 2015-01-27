@@ -8,6 +8,7 @@ use SynergyCommon\ModelTrait\LocaleAwareTrait;
  *
  * @package PageBuilder\Model
  */
-class ComponentModel extends BaseModel {
-	use LocaleAwareTrait;
+class ComponentModel extends BaseModel
+{
+    use LocaleAwareTrait;
 }

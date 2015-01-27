@@ -129,6 +129,7 @@ return array(
             'SynergyCommon\Service\AbstractServiceFactory',
             'SynergyCommon\Entity\AbstractEntityFactory',
         ),
+
         'invokables'         => array(
             'pagebuilder\entity\component'       => 'PageBuilder\Entity\Component',
             'pagebuilder\entity\page'            => 'PageBuilder\Entity\Page',
@@ -145,7 +146,8 @@ return array(
         ),
         'factories'          => array(
             'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
-            'PageBuilder\Config\JqGridConfigFactory' => 'PageBuilder\Config\JqGridConfigFactory'
+            'PageBuilder\Config\JqGridConfigFactory' => 'PageBuilder\Config\JqGridConfigFactory',
+            'Zend\Session\Config\ConfigInterface'    => 'Zend\Session\Service\SessionConfigFactory',
         )
     ),
     'view_manager'    => array(
@@ -353,5 +355,9 @@ return array(
             'directory' => __DIR__ . '/../data/logs',
             'namespace' => 'pagebuilder'
         )
+    ),
+    'session_config'  => array(
+        'phpSaveHandler' => 'memcache',
+        'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
     ),
 );

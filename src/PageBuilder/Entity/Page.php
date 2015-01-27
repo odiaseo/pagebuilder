@@ -74,7 +74,7 @@ class Page extends BasePage
 
     public function addTranslation(PageTranslation $t)
     {
-        if ( ! $this->translations->contains($t)) {
+        if (!$this->translations->contains($t)) {
             $this->translations[] = $t;
             $t->setObject($this);
         }

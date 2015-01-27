@@ -8,25 +8,28 @@ use SynergyCommon\Model\AbstractModel;
  *
  * @package PageBuilder\Model
  */
-class BaseModel extends AbstractModel {
-	/** @var \SynergyCommon\Entity\BaseEntity */
-	protected $_entityInstance;
+class BaseModel extends AbstractModel
+{
+    /** @var \SynergyCommon\Entity\BaseEntity */
+    protected $_entityInstance;
 
-	/**
-	 * @param $entityInstance
-	 *
-	 * @return $this
-	 */
-	public function setEntityInstance( $entityInstance ) {
-		$this->_entityInstance = $entityInstance;
+    /**
+     * @param $entityInstance
+     *
+     * @return $this
+     */
+    public function setEntityInstance($entityInstance)
+    {
+        $this->_entityInstance = $entityInstance;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return \SynergyCommon\Entity\BaseEntity
-	 */
-	public function getEntityInstance() {
-		return $this->_entityInstance;
-	}
+    /**
+     * @return \SynergyCommon\Entity\BaseEntity
+     */
+    public function getEntityInstance()
+    {
+        return $this->_entityInstance;
+    }
 }

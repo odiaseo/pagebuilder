@@ -77,10 +77,10 @@ class Site extends BaseSite
 
     public function __construct()
     {
-        $this->licences = new ArrayCollection();
-        $this->settings = new ArrayCollection();
+        $this->licences   = new ArrayCollection();
+        $this->settings   = new ArrayCollection();
         $this->siteThemes = new ArrayCollection();
-        $this->modules = new ArrayCollection();
+        $this->modules    = new ArrayCollection();
         $this->subDomains = new ArrayCollection();
 
     }

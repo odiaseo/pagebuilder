@@ -13,6 +13,7 @@ use SynergyCommon\Entity\BaseLicence;
  * @ORM\HasLifecycleCallbacks
  */
 class Licence
-	extends BaseLicence {
+    extends BaseLicence
+{
 
 }

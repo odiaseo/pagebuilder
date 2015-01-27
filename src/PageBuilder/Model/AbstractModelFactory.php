@@ -1,7 +1,6 @@
 <?php
 namespace PageBuilder\Model;
 
-
 use SynergyCommon\Entity\AbstractEntity;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -11,56 +10,60 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @package PageBuilder\Model
  */
-class AbstractModelFactory implements AbstractFactoryInterface {
-	use ModelDependencyTrait;
-	protected $_configPrefix;
+class AbstractModelFactory implements AbstractFactoryInterface
+{
+    use ModelDependencyTrait;
+    protected $_configPrefix;
 
-	public function __construct() {
-		$this->_configPrefix = strtolower( __NAMESPACE__ ) . '\\';
-	}
+    public function __construct()
+    {
+        $this->_configPrefix = strtolower(__NAMESPACE__) . '\\';
+    }
 
-	/**
-	 * Determine if we can create a service with name
-	 *
-	 * @param ServiceLocatorInterface $serviceLocator
-	 * @param                         $name
-	 * @param                         $requestedName
-	 *
-	 * @return bool
-	 */
-	public function canCreateServiceWithName( ServiceLocatorInterface $serviceLocator, $name, $requestedName ) {
-		if ( substr( $requestedName, 0, strlen( $this->_configPrefix ) ) != $this->_configPrefix ) {
-			return false;
-		}
+    /**
+     * Determine if we can create a service with name
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param                         $name
+     * @param                         $requestedName
+     *
+     * @return bool
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    {
+        if (substr($requestedName, 0, strlen($this->_configPrefix)) != $this->_configPrefix) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Create service with name
-	 *
-	 * @param ServiceLocatorInterface $serviceLocator
-	 * @param                         $name
-	 * @param                         $requestedName
-	 *
-	 * @return mixed
-	 */
-	public function createServiceWithName( ServiceLocatorInterface $serviceLocator, $name, $requestedName ) {
-		/** @var $authService \Zend\Authentication\AuthenticationService */
-		$modelId = str_replace( $this->_configPrefix, '', $requestedName );
-		$idParts = explode( '\\', $modelId );
+    /**
+     * Create service with name
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param                         $name
+     * @param                         $requestedName
+     *
+     * @return mixed
+     */
+    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    {
+        /** @var $authService \Zend\Authentication\AuthenticationService */
+        $modelId = str_replace($this->_configPrefix, '', $requestedName);
+        $idParts = explode('\\', $modelId);
 
-		if ( $idParts[0] == 'join' ) {
-			$modelName = __NAMESPACE__ . '\\' . ucfirst( $idParts[1] ) . 'Model';
-			$entity    = $serviceLocator->get( 'pagebuilder\entity\\' . $idParts[1] );
-		} else {
-			$modelName = __NAMESPACE__ . '\\' . ucfirst( $modelId ) . 'Model';
-			/** @var AbstractEntity $entity */
-			$entity = $serviceLocator->get( 'pagebuilder\entity\\' . $modelId );
-		}
-		/** @var BaseModel $model */
-		$model = new $modelName();
+        if ($idParts[0] == 'join') {
+            $modelName = __NAMESPACE__ . '\\' . ucfirst($idParts[1]) . 'Model';
+            $entity    = $serviceLocator->get('pagebuilder\entity\\' . $idParts[1]);
+        } else {
+            $modelName = __NAMESPACE__ . '\\' . ucfirst($modelId) . 'Model';
+            /** @var AbstractEntity $entity */
+            $entity = $serviceLocator->get('pagebuilder\entity\\' . $modelId);
+        }
+        /** @var BaseModel $model */
+        $model = new $modelName();
 
-		return $this->setDependency( $serviceLocator, $model, $entity );
-	}
+        return $this->setDependency($serviceLocator, $model, $entity);
+    }
 }

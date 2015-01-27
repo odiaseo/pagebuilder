@@ -75,7 +75,7 @@ class PageModel extends BaseModel
 
         if (in_array($node['privilege'], array('login', 'logout'))) {
             if ($node['privilege'] == 'login') {
-                $node['isVisible'] = ! $hasIdentity;
+                $node['isVisible'] = !$hasIdentity;
             } elseif ($node['privilege'] == 'logout') {
                 $node['isVisible'] = $hasIdentity;
             }
@@ -95,7 +95,7 @@ class PageModel extends BaseModel
             'params'    => $params
         );
 
-        if ( ! empty($node['uri'])) {
+        if (!empty($node['uri'])) {
             $menu['uri']    = $node['uri'];
             $menu['target'] = '_blank';
             unset($menu['route']);

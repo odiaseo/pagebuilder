@@ -9,82 +9,86 @@ use PageBuilder\Entity\Join\PageTheme;
  *
  * @package PageBuilder\Model
  */
-class PageThemeModel extends BaseModel {
-	/**
-	 * @param $id
-	 *
-	 * @return mixed
-	 * @throws \Doctrine\ORM\NonUniqueResultException
-	 */
-	public function getPageThemeById( $id, $mode = AbstractQuery::HYDRATE_OBJECT ) {
-		$qb = $this->getEntityManager()->createQueryBuilder();
-		/** @var $query \Doctrine\ORM\Query */
+class PageThemeModel extends BaseModel
+{
+    /**
+     * @param $id
+     *
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getPageThemeById($id, $mode = AbstractQuery::HYDRATE_OBJECT)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        /** @var $query \Doctrine\ORM\Query */
 
-		$query = $qb->select( 'e, m' )
-		            ->from( $this->_entity, 'e' )
-		            ->innerJoin( 'e.pageId', 'm' )
-		            ->where( 'e.id = :id' )
-		            ->setMaxResults( 1 )
-		            ->setParameter( 'id', $id )
-		            ->getQuery();
+        $query = $qb->select('e, m')
+            ->from($this->_entity, 'e')
+            ->innerJoin('e.pageId', 'm')
+            ->where('e.id = :id')
+            ->setMaxResults(1)
+            ->setParameter('id', $id)
+            ->getQuery();
 
-		return $query->getOneOrNullResult( $mode );
-	}
+        return $query->getOneOrNullResult($mode);
+    }
 
-	/**
-	 * @param     $id
-	 * @param int $mode
-	 *
-	 * @return mixed
-	 * @throws \Doctrine\ORM\NonUniqueResultException
-	 */
-	public function getPageThemeByThemeId( $id, $mode = AbstractQuery::HYDRATE_OBJECT ) {
-		$qb = $this->getEntityManager()->createQueryBuilder();
-		/** @var $query \Doctrine\ORM\Query */
+    /**
+     * @param     $id
+     * @param int $mode
+     *
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getPageThemeByThemeId($id, $mode = AbstractQuery::HYDRATE_OBJECT)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        /** @var $query \Doctrine\ORM\Query */
 
-		$query = $qb->select( 'e' )
-		            ->from( $this->_entity, 'e' )
-		            ->where( 'e.themeId = :id' )
-		            ->setMaxResults( 1 )
-		            ->setParameter( 'id', $id )
-		            ->getQuery();
+        $query = $qb->select('e')
+            ->from($this->_entity, 'e')
+            ->where('e.themeId = :id')
+            ->setMaxResults(1)
+            ->setParameter('id', $id)
+            ->getQuery();
 
-		return $query->getOneOrNullResult( $mode );
-	}
+        return $query->getOneOrNullResult($mode);
+    }
 
-	/**
-	 * @param     $pageId
-	 * @param     $siteThemeId
-	 * @param int $mode
-	 *
-	 * @return PageTheme
-	 * @throws \Doctrine\ORM\NonUniqueResultException
-	 */
-	public function getActivePageThemeForSite( $pageId, $siteThemeId, $mode = AbstractQuery::HYDRATE_OBJECT ) {
-		/** @var $query \Doctrine\ORM\QueryBuilder */
-		$qb     = $this->getEntityManager()->createQueryBuilder();
-		$params = array(
-			':pageId'      => $pageId,
-			':active'      => 1,
-			':siteThemeId' => $siteThemeId
-		);
-		$query  = $qb->select( 'e, p, t' )
-		             ->from( $this->_entity, 'e' )
-		             ->innerJoin( 'e.themeId', 't' )
-		             ->innerJoin( 'e.pageId', 'p' )
-		             ->where( 'e.pageId = :pageId' )
-		             ->andWhere( 'e.isActive = :active' )
-		             ->setParameters( $params );
+    /**
+     * @param     $pageId
+     * @param     $siteThemeId
+     * @param int $mode
+     *
+     * @return PageTheme
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getActivePageThemeForSite($pageId, $siteThemeId, $mode = AbstractQuery::HYDRATE_OBJECT)
+    {
+        /** @var $query \Doctrine\ORM\QueryBuilder */
+        $qb     = $this->getEntityManager()->createQueryBuilder();
+        $params = array(
+            ':pageId'      => $pageId,
+            ':active'      => 1,
+            ':siteThemeId' => $siteThemeId
+        );
+        $query  = $qb->select('e, p, t')
+            ->from($this->_entity, 'e')
+            ->innerJoin('e.themeId', 't')
+            ->innerJoin('e.pageId', 'p')
+            ->where('e.pageId = :pageId')
+            ->andWhere('e.isActive = :active')
+            ->setParameters($params);
 
-		if ( is_numeric( $siteThemeId ) ) {
-			$query->andWhere( 'e.themeId = :siteThemeId' );
-		} else {
-			$query->andWhere( 't.slug = :siteThemeId' );
-		}
+        if (is_numeric($siteThemeId)) {
+            $query->andWhere('e.themeId = :siteThemeId');
+        } else {
+            $query->andWhere('t.slug = :siteThemeId');
+        }
 
-		$query->setMaxResults( 1 );
-		$result = $query->getQuery()->getOneOrNullResult( $mode );
+        $query->setMaxResults(1);
+        $result = $query->getQuery()->getOneOrNullResult($mode);
 
-		return $result;
-	}
+        return $result;
+    }
 }
