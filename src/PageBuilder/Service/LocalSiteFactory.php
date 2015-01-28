@@ -58,7 +58,7 @@ class LocalSiteFactory implements FactoryInterface
             }
         } elseif ($isConsole) {
             $site = new Site();
-            $site->setId(1);
+           // $site->setId(1);
         } else {
             throw new MissingArgumentException('Host not found');
         }
