@@ -4,24 +4,39 @@ namespace PageBuilder\Service;
 use PageBuilder\Entity\Site;
 use PageBuilder\Model\SiteModel;
 use SynergyCommon\Exception\MissingArgumentException;
+use SynergyCommon\Model\AbstractModel;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Storage\Session;
 use Zend\Console\Request;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container;
 
+/**
+ * Class LocalSiteFactory
+ *
+ * @package PageBuilder\Service
+ */
 class LocalSiteFactory implements FactoryInterface
 {
 
-    const CLIENT_DOMAIN_KEY  = 'client_domain';
-    const SESSION_LOCALE_KEY = 'active_locale';
+    const CLIENT_DOMAIN_KEY = 'client_domain';
 
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return mixed|Site
+     * @throws MissingArgumentException
+     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        /** @var  $serviceLocator \Zend\Servicemanager\ServiceManager */
         $host      = null;
         $isConsole = false;
-        /** @var  $serviceLocator \Zend\Servicemanager\ServiceManager */
-        $request = $serviceLocator->get('application')->getRequest();
-        $event   = $serviceLocator->get('application')->getMvcEvent();
+        $request   = $serviceLocator->get('application')->getRequest();
+        $event     = $serviceLocator->get('application')->getMvcEvent();
+        //IMportant to run this first so that the session is initialised
+        $manager   = $this->initialiseSessionManager($serviceLocator, $request);
 
         if ($request instanceof Request) {
             /** @var $event \Zend\Mvc\MvcEvent */
@@ -58,13 +73,15 @@ class LocalSiteFactory implements FactoryInterface
             }
         } elseif ($isConsole) {
             $site = new Site();
-           // $site->setId(1);
+            // $site->setId(1);
         } else {
             throw new MissingArgumentException('Host not found');
         }
 
-        $container = new Container();
-        $container->offsetSet(self::SESSION_LOCALE_KEY, $site->getLocale());
+        $namespace = 'sess' . $site->getSessionNamespace();
+        $container = new Container($namespace, $manager);
+        $container->offsetSet(AbstractModel::SESSION_LOCALE_KEY, $site->getLocale());
+
         //Set locale
         \setlocale(LC_ALL, $site->getLocale());
 
@@ -84,5 +101,24 @@ class LocalSiteFactory implements FactoryInterface
     protected function cleanDomain($domain)
     {
         return str_replace(array('http://', 'https://', 'www.'), '', $domain);
+    }
+
+    /**
+     * @param $serviceLocator
+     */
+    private function initialiseSessionManager($serviceLocator, $request)
+    {
+        $manager = null;
+        if ($request instanceof \Zend\Http\PhpEnvironment\Request) {
+            if ($serviceLocator->has('session_manager')) {
+                $manager = $serviceLocator->get('session_manager');
+                /** @var AuthenticationService $authService */
+                $authService = $serviceLocator->get('zfcuser_auth_service');
+                $session     = new Session(null, null, $manager);
+                $authService->getStorage()->setStorage($session);
+            }
+        }
+
+        return $manager;
     }
 }
