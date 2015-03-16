@@ -5,6 +5,7 @@ use PageBuilder\Entity\Site;
 use PageBuilder\Model\SiteModel;
 use SynergyCommon\Exception\MissingArgumentException;
 use SynergyCommon\Model\AbstractModel;
+use SynergyCommon\ModelTrait\LocaleAwareTrait;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Console\Request;
@@ -36,7 +37,7 @@ class LocalSiteFactory implements FactoryInterface
         $request   = $serviceLocator->get('application')->getRequest();
         $event     = $serviceLocator->get('application')->getMvcEvent();
         //IMportant to run this first so that the session is initialised
-        $manager   = $this->initialiseSessionManager($serviceLocator, $request);
+        $manager = $this->initialiseSessionManager($serviceLocator, $request);
 
         if ($request instanceof Request) {
             /** @var $event \Zend\Mvc\MvcEvent */
@@ -79,7 +80,7 @@ class LocalSiteFactory implements FactoryInterface
         }
 
         $namespace = 'sess' . $site->getSessionNamespace();
-        $container = new Container($namespace, $manager);
+        $container = new Container(LocaleAwareTrait::getNamespace(), $manager);
         $container->offsetSet(AbstractModel::SESSION_LOCALE_KEY, $site->getLocale());
 
         //Set locale

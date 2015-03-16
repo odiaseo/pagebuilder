@@ -3,6 +3,7 @@ namespace PageBuilder\Model;
 
 use Doctrine\ORM\EntityManager;
 use PageBuilder\LocaleAwareInterface;
+use PageBuilder\Service\LocalSiteFactory;
 use SynergyCommon\Doctrine\CachedEntityManager;
 use SynergyCommon\Model\AbstractModel;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -44,6 +45,7 @@ trait ModelDependencyTrait
             $site = $serviceLocator->get('active\site');
             if ($locale = $site->getLocale()) {
                 $model->setLocale($locale);
+
             }
         }
 
