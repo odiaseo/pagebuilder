@@ -88,15 +88,19 @@ class PageBuilderListener
                 $activeMenu = $navigation->findActive($container);
 
                 if ($activeMenu) {
-                    /** @var $model \pageBuilder\Model\PageModel */
-                    /** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
-                    /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
-
-                    $activeTheme = $this->_serviceManager->get('active_theme') ?: null;
-                    $pageBuilder = $viewHelperManager->get('buildPage');
-
-                    $pageBuilder->init($activeMenu['page']->id, $menuTree, $activeTheme);
+                    $pageId = $activeMenu['page']->id;
+                } else {
+                    $pageId = $this->_serviceManager->get('active\site')->getRootPage()->getId();
                 }
+                /** @var $model \pageBuilder\Model\PageModel */
+                /** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
+                /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
+
+                $activeTheme = $this->_serviceManager->get('active_theme') ?: null;
+                $pageBuilder = $viewHelperManager->get('buildPage');
+
+                $pageBuilder->init($pageId, $menuTree, $activeTheme);
+
             }
         }
     }

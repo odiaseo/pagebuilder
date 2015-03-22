@@ -239,9 +239,6 @@ return array(
         'global_domain'     => 'rhemastudio.com',
         'bootstrap_version' => 2,
         'enabled'           => false, //change to true to enable
-        'modules'           => array(
-            'PageBuilder'
-        ),
         'widgets'           => array(
             'paths' => array(
                 'PageBuilder\Widget' => __DIR__ . '/../src/PageBuilder/Widget'
