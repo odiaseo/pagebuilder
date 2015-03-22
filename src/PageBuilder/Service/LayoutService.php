@@ -421,7 +421,7 @@ class LayoutService implements ServiceManagerAwareInterface
             }
         }
 
-        if ($templateObj = $page->getTemplate()) {
+        if (is_object($page) and $templateObj = $page->getTemplate()) {
             if ($layout = $templateObj->getLayout()) {
                 return $layout;
             }
