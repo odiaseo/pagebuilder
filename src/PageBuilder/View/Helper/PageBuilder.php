@@ -175,11 +175,18 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                                             $item->getAttributes(), null, count($row['rowItems'])
                                         );
                                         $html[] = $itemTop;
-                                        $html[] = str_replace(
-                                            array('{{' . self::MAIN_CONTENT . '}}'), array($content),
-                                            is_string($item->getData()) ? $item->getData()
-                                                : $item->getData()->render()
-                                        );
+                                        try {
+                                            $itemData = $item->getData();
+                                            $mainData = str_replace(
+                                                array('{{' . self::MAIN_CONTENT . '}}'), array($content),
+                                                is_string($itemData) ? $itemData : $itemData->render()
+                                            );
+                                        } catch (\Exception $exception) {
+                                            $this->getServiceManager()->get('logger')->logException($exception);
+                                            $mainData = '';
+                                        }
+
+                                        $html[] = $mainData;
                                         $html[] = $itemBottom;
                                     }
 
