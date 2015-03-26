@@ -3,10 +3,15 @@ namespace PageBuilder\Event\Listener;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\MvcEvent;
 
-class PageBuilderListener
-    implements ListenerAggregateInterface
+/**
+ * Class PageBuilderListener
+ *
+ * @package PageBuilder\Event\Listener
+ */
+class PageBuilderListener implements ListenerAggregateInterface
 {
     protected $listeners = array();
 
@@ -58,9 +63,11 @@ class PageBuilderListener
 
     public function initialiseWidgets(MvcEvent $event)
     {
+        /** @var Request $request */
         $moduleEnabled = false;
+        $request       = $this->_serviceManager->get('request');
 
-        if ($app = $event->getApplication()) {
+        if (!$request->isXmlHttpRequest() and $app = $event->getApplication()) {
             /** @var $viewHelperManager \Zend\View\HelperPluginManager */
             $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
 
