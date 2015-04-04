@@ -283,7 +283,7 @@ table {
     z-index: 9999;
 }
 
-.section  .btn-mini {
+.section .btn-mini {
     line-height: 16px;
     margin-bottom: 0;
     margin-left: 2px;
@@ -317,7 +317,7 @@ div.tagsinput {
     line-height: 1em;
 }
 
-.template-canvas .asset  a {
+.template-canvas .asset a {
 
 }
 
@@ -412,11 +412,11 @@ div.tagsinput {
     width: auto;
 }
 
-.attr-container>div {
+.attr-container > div {
     margin-bottom: 5px;
 }
 
-.attr-container>div.checkbox label {
+.attr-container > div.checkbox label {
     width: 100%;
     padding-left: 35px;
 }
