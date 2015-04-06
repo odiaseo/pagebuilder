@@ -48,6 +48,9 @@ define(
                 return dt.getTime();
             },
 
+            userConfirm: function (msg) {
+                return confirm(msg);
+            },
             objToHtmlList: function (obj, prefix) {
                 if (obj instanceof Object && !(obj instanceof String)) {
                     var ul = $('<ul>');
@@ -692,8 +695,9 @@ define(
 
                                 $(pageBuilder.canvasClass).on("load click", ".row , .remove-row, .move-row, .item-delete",
                                     function (e) {
-                                        if (confirm('You about about to delete this item. Click OK to continue')) {
-                                            var elm = $(e.target);
+                                        if (pageBuilder.userConfirm('You about about to delete this item. Click OK to continue')) {
+                                            //var elm = $(e.target);
+                                            var elm = $(this);
                                             if (e.type == 'click') {
                                                 e.preventDefault();
                                                 if (elm.hasClass('item-delete')) {
@@ -819,7 +823,7 @@ define(
 
                                     if (id == 0) {
 
-                                        if (confirm('You about about to reset this template. Click OK to continue')) {
+                                        if (pageBuilder.userConfirm('You about about to reset this template. Click OK to continue')) {
 
                                             var save = $('#save', pageBuilder.actionToolbar);
                                             pageBuilder.resetPageLayout();
@@ -848,7 +852,7 @@ define(
                                             return false;
                                         }
                                     } else {
-                                        if (confirm('You about about to clone this template. This will overwrite the current layout. Click OK to continue')) {
+                                        if (pageBuilder.userConfirm('You about about to clone this template. This will overwrite the current layout. Click OK to continue')) {
                                             pageBuilder.initPageLayout(details.templates.items[id].layout, details['assets'], details['widgets']);
                                             pageBuilder.notify('Page layout', 'template cloned successfully');
                                         } else {
@@ -874,6 +878,8 @@ define(
                                 inner.css('overflow', 'hidden');
 
                                 var canvasHeight = inner.height() - 100;
+
+                                inner.find('.asset-sidebar').height(inner.height() - 50);
                                 inner.find('.template-canvas').height(canvasHeight);
 
                                 var tags = $('.tags', '#attribute-template');
