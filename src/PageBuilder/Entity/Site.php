@@ -66,7 +66,7 @@ class Site extends BaseSite
      */
     private $siteType;
     /**
-     * @ORM\Column(type="string", length=25, nullable=true, name="default_timezone")
+     * @ORM\Column(type="string", length=50, nullable=true, name="default_timezone")
      */
     private $defaultTimezone = 'Europe/London';
     /**
