@@ -46,9 +46,14 @@ class Site extends BaseSite
      */
     private $modules;
     /**
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist")
      */
     private $subDomains;
+    /**
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", cascade="persist")
+     * @ORM\JoinTable(name="Site_Linked_Site")
+     */
+    private $linkedSites;
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
@@ -77,12 +82,29 @@ class Site extends BaseSite
 
     public function __construct()
     {
-        $this->licences   = new ArrayCollection();
-        $this->settings   = new ArrayCollection();
+        $this->licences = new ArrayCollection();
+        $this->settings = new ArrayCollection();
         $this->siteThemes = new ArrayCollection();
-        $this->modules    = new ArrayCollection();
+        $this->modules = new ArrayCollection();
         $this->subDomains = new ArrayCollection();
+        $this->linkedSites = new ArrayCollection();
 
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinkedSites()
+    {
+        return $this->linkedSites;
+    }
+
+    /**
+     * @param mixed $linkedSites
+     */
+    public function setLinkedSites($linkedSites)
+    {
+        $this->linkedSites = $linkedSites;
     }
 
     public function setSiteType($siteType)
@@ -274,9 +296,18 @@ class Site extends BaseSite
             }
         }
 
+        if ($this->getLinkedSites()->count()) {
+            $linkedSites = $this->getLinkedSites();
+            foreach ($linkedSites as $subSite) {
+                $ids[] = $subSite->getId();
+            }
+        }
+
         if ($this->getParent()) {
             $ids[] = $this->getParent()->getId();
         }
+
+        $ids = array_unique($ids);
 
         return $ids;
     }
