@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SynergyCommon\Entity\BaseEntity as CommonEntity;
@@ -21,10 +22,12 @@ class Resource extends CommonEntity
      */
     protected $id;
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="string")
      */
     protected $title;
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="text")
      */
     protected $description;
@@ -46,6 +49,35 @@ class Resource extends CommonEntity
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $dataSource;
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="ResourceTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    protected $translations;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param mixed $translations
+     */
+    public function setTranslations($translations)
+    {
+        $this->translations = $translations;
+    }
 
     public function setDataSource($dataSource)
     {
