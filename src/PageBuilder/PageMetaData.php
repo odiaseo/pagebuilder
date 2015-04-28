@@ -34,6 +34,46 @@ class PageMetaData extends AbstractOptions
 
     /** @var \Zend\Stdlib\AbstractOptions */
     protected $settings;
+    /**
+     * Used for google search input on search results
+     *
+     * @var string
+     */
+    protected $searchTermString = 'keyword';
+
+    protected $searchResultRouteName = 'search/result';
+
+    /**
+     * @return string
+     */
+    public function getSearchTermString()
+    {
+        return $this->searchTermString;
+    }
+
+    /**
+     * @param string $searchTermString
+     */
+    public function setSearchTermString($searchTermString)
+    {
+        $this->searchTermString = $searchTermString;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSearchResultRouteName()
+    {
+        return $this->searchResultRouteName;
+    }
+
+    /**
+     * @param string $searchResultRouteName
+     */
+    public function setSearchResultRouteName($searchResultRouteName)
+    {
+        $this->searchResultRouteName = $searchResultRouteName;
+    }
 
     public function setSearchTerm($searchTerm)
     {
