@@ -46,7 +46,7 @@ class Site extends BaseSite
      */
     private $modules;
     /**
-     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist")
      */
     private $subDomains;
     /**
