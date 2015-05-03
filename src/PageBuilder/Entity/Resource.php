@@ -178,4 +178,12 @@ class Resource extends CommonEntity
     {
         return $this->title;
     }
+
+    public function addTranslation(ResourceTranslation $t)
+    {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
 }
