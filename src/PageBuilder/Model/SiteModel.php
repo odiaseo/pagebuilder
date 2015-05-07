@@ -51,6 +51,7 @@ class SiteModel extends BaseModel
             ->innerJoin('e.siteType', 'x')
             ->leftJoin('e.parent', 'z')
             ->leftJoin('e.subDomains', 'a')
+            ->leftJoin('e.linkedSites', 'l')
             ->leftJoin('e.rootPage', 'y')
             ->setMaxResults(1);
 
