@@ -27,6 +27,10 @@ class Site extends BaseSite
      */
     private $strapline;
     /**
+     * @ORM\Column(type="string", length=5, nullable=true)
+     */
+    private $currency;
+    /**
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade="persist")
      */
     private $siteThemes;
@@ -82,13 +86,28 @@ class Site extends BaseSite
 
     public function __construct()
     {
-        $this->licences = new ArrayCollection();
-        $this->settings = new ArrayCollection();
-        $this->siteThemes = new ArrayCollection();
-        $this->modules = new ArrayCollection();
-        $this->subDomains = new ArrayCollection();
+        $this->licences    = new ArrayCollection();
+        $this->settings    = new ArrayCollection();
+        $this->siteThemes  = new ArrayCollection();
+        $this->modules     = new ArrayCollection();
+        $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 
     /**
