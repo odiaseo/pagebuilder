@@ -314,6 +314,7 @@ return array(
                 'source',
                 'canvas',
                 'aside',
+                'article',
                 'footer',
                 'header',
                 'nav',

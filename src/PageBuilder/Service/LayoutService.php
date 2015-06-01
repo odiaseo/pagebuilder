@@ -2,6 +2,7 @@
 namespace PageBuilder\Service;
 
 use PageBuilder\Entity\Join\PageTheme;
+use PageBuilder\Entity\Join\TemplateSection;
 use PageBuilder\Model\PageModel;
 use PageBuilder\View\Helper\PageBuilder;
 use Zend\ServiceManager\ServiceManager;
@@ -72,6 +73,8 @@ class LayoutService implements ServiceManagerAwareInterface
                 );
             }
         }
+
+        ksort($selected);
 
         return array(
             'templateSections' => $selected,
@@ -291,9 +294,13 @@ class LayoutService implements ServiceManagerAwareInterface
         $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
 
         /** @var $template \PageBuilder\Entity\Template */
-        $template = $templateModel->getRepository()->find($templateId);
-        $sections = $template->getTemplateSections()->toArray();
+        /** @var TemplateSection $templateSection */
 
+        $template = $templateModel->getRepository()->find($templateId);
+        foreach ($template->getTemplateSections() as $templateSection) {
+            $sections[$templateSection->getSortOrder()] = $templateSection;
+        }
+        ksort($sections);
         $details          = $template->toArray();
         $details['theme'] = array(
             'id'        => null,
