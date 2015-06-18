@@ -9,7 +9,8 @@ use SynergyCommon\Entity\BasePage;
 /**
  * Page
  * @ORM\Entity(repositoryClass="PageBuilder\Model\PageRepository")
- * @ORM\Table(name="Page")
+ * @ORM\Table(name="Page", indexes={@ORM\Index(name="IDX_LFT_RGT_ROOT",
+ * columns={"lft", "rgt", "root"})})
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="PageBuilder\Entity\PageTranslation")
  */

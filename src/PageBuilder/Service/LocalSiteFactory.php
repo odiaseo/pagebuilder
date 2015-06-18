@@ -101,7 +101,17 @@ class LocalSiteFactory implements FactoryInterface
      */
     protected function cleanDomain($domain)
     {
-        return str_replace(array('http://', 'https://', 'www.'), '', $domain);
+        $hackReplacements = [
+            'www.ww.',
+            'www.w.',
+            'ww.w.',
+            'ww.',
+            'doc1000.',
+        ];
+
+        $domain = str_replace(array('http://', 'https://', 'www.'), '', $domain);
+
+        return str_replace($hackReplacements, '', $domain);
     }
 
     /**
