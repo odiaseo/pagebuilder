@@ -3,7 +3,6 @@ namespace PageBuilder\Model;
 
 use Doctrine\ORM\EntityManager;
 use PageBuilder\LocaleAwareInterface;
-use PageBuilder\Service\LocalSiteFactory;
 use SynergyCommon\Doctrine\CachedEntityManager;
 use SynergyCommon\Model\AbstractModel;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -24,7 +23,6 @@ trait ModelDependencyTrait
         /** @var EntityManager $entityManager */
         $cacheStatus   = $serviceLocator->get('synergy\cache\status');
         $entityManager = $serviceLocator->get('doctrine.entitymanager.' . $model->getOrm());
-        $cachedManager = new CachedEntityManager($entityManager, $cacheStatus->enabled);
 
         if ($serviceLocator->has('zfcuser_auth_service')) {
             $authService = $serviceLocator->get('zfcuser_auth_service');
@@ -49,7 +47,9 @@ trait ModelDependencyTrait
             }
         }
 
-        $enabled = (!$identity and $cacheStatus->enabled);
+        $enabled       = (!$identity and $cacheStatus->enabled);
+        $cachedManager = new CachedEntityManager($entityManager, $enabled);
+
         $model->setEnableResultCache($enabled);
         $model->setLogger($serviceLocator->get('logger'));
         $model->setEntityManager($cachedManager);
