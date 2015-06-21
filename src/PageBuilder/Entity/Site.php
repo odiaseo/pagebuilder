@@ -45,7 +45,7 @@ class Site extends BaseSite
      */
     private $settings;
     /**
-     * @ORM\ManyToMany(targetEntity="Module", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Module", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Module")
      */
     private $modules;
@@ -54,12 +54,12 @@ class Site extends BaseSite
      */
     private $subDomains;
     /**
-     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", cascade="persist", fetch="LAZY")
      * @ORM\JoinTable(name="Site_Linked_Site")
      */
     private $linkedSites;
     /**
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains", cascade={"persist"})
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;

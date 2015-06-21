@@ -28,7 +28,7 @@ class Page extends BasePage
      */
     protected $parent;
     /**
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Page", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Page", mappedBy="parent", fetch="LAZY")
      * @ORM\OrderBy({"title" = "ASC"})
      */
     protected $children;
@@ -51,14 +51,15 @@ class Page extends BasePage
      */
     protected $cssFile = 'frontend';
     /**
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="rootPage")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="rootPage", fetch="LAZY")
      */
     protected $sites;
     /**
      * @ORM\OneToMany(
      *   targetEntity="PageTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}
+     *   cascade={"persist", "remove"},
+     *   fetch="LAZY"
      * )
      */
     protected $translations;
