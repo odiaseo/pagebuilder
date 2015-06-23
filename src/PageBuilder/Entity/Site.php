@@ -87,7 +87,7 @@ class Site extends BaseSite
     /**
      * Inverse Side
      *
-     * @ORM\ManyToMany(targetEntity="Redirect", mappedBy="redirects")
+     * @ORM\ManyToMany(targetEntity="Redirect", mappedBy="sites")
      */
     protected $redirects;
 

@@ -35,7 +35,7 @@ class Redirect extends AbstractEntity
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Site", cascade="persist", fetch="LAZY", inversedBy="features")
+     * @ORM\ManyToMany(targetEntity="Site", cascade="persist", fetch="LAZY", inversedBy="redirects")
      * @ORM\JoinTable(name="Redirect_Site")
      */
     protected $sites;
