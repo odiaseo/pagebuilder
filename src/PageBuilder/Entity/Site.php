@@ -84,6 +84,13 @@ class Site extends BaseSite
      */
     protected $defaultTemplate;
 
+    /**
+     * Inverse Side
+     *
+     * @ORM\ManyToMany(targetEntity="Redirect", mappedBy="redirects")
+     */
+    protected $redirects;
+
     public function __construct()
     {
         $this->licences    = new ArrayCollection();
@@ -92,6 +99,23 @@ class Site extends BaseSite
         $this->modules     = new ArrayCollection();
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
+        $this->redirects   = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRedirects()
+    {
+        return $this->redirects;
+    }
+
+    /**
+     * @param mixed $redirects
+     */
+    public function setRedirects($redirects)
+    {
+        $this->redirects = $redirects;
     }
 
     /**
