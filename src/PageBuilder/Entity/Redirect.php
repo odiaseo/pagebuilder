@@ -10,8 +10,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * Redirect
  *
  * @ORM\Entity
- * @ORM\Table(name="Redirect", uniqueConstraints={@ORM\UniqueConstraint(name="REDIRECT_SITE", columns={"redirect_id",
- * "site_id"})})
+ * @ORM\Table(name="Redirect")
  */
 class Redirect extends AbstractEntity
 {
