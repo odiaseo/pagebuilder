@@ -48,7 +48,7 @@ class TemplateModel extends BaseModel
         }
 
         foreach ($sections as $key => $v) {
-            $order = $key + 1;
+            $order = $key;
             if ($entry = $this->getEntityManager()->getRepository('PageBuilder\Entity\Join\TemplateSection')
                 ->findOneBy(array('templateId' => $id, 'sectionId' => $v))
             ) {

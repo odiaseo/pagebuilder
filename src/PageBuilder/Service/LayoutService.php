@@ -298,7 +298,9 @@ class LayoutService implements ServiceManagerAwareInterface
 
         $template = $templateModel->getRepository()->find($templateId);
         foreach ($template->getTemplateSections() as $templateSection) {
-            $sections[$templateSection->getSortOrder()] = $templateSection;
+            //$sections[$templateSection->getSortOrder()] = $templateSection;
+            $key            = $templateSection->getSortOrder() . '-' . $templateSection->getId();
+            $sections[$key] = $templateSection;
         }
         ksort($sections);
         $details          = $template->toArray();
