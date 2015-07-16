@@ -73,7 +73,7 @@ class SiteModel extends BaseModel
         /** @var QueryBuilder $query */
         $query = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('e.domain, e.isSubDomain, e.locale, e.displayTitle')
+            ->select('e.id, e.domain, e.isSubDomain, e.locale, e.displayTitle')
             ->from($this->getEntity(), 'e')
             ->where('e.isActive = :active');
 
