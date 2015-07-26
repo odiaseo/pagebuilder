@@ -104,9 +104,10 @@ class LocalSiteFactory implements FactoryInterface
         $hackReplacements = [
             //'www.ww.',
             //'www.w.',
-           // 'ww.w.',
-           // 'ww.',
-           // 'doc1000.',
+            // 'ww.w.',
+            // 'ww.',
+            // 'doc1000.',
+            'admin.'
         ];
 
         $domain = str_replace(array('http://', 'https://', 'www.'), '', $domain);
