@@ -5,8 +5,15 @@ use Zend\Json\Expr;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class JqGridConfigFactory
+ *
+ * @package PageBuilder\Config
+ */
 class JqGridConfigFactory implements FactoryInterface
 {
+    const DATE_FORMAT = 'Y-m-d H:i:s';
+
     /**
      * Create service
      *
@@ -16,7 +23,6 @@ class JqGridConfigFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-
         $datetime = array(
             'edittype'      => 'date',
             'editable'      => true,
@@ -26,15 +32,15 @@ class JqGridConfigFactory implements FactoryInterface
                 'edithidden' => true,
                 'required'   => false,
                 'date'       => array(
-                    'datefmt' => 'D, d M Y'
+                    'datefmt' => self::DATE_FORMAT
                 )
             ),
             'formatter'     => 'date',
             'formatoptions' => array(
-                'newformat' => 'D, d M Y'
+                'newformat' => self::DATE_FORMAT
             ),
             'editoptions'   => array(
-                'format'     => 'D, d M Y',
+                'format'     => self::DATE_FORMAT,
                 'timeFormat' => 'hh:mm:ss',
                 'region'     => 'en',
             )

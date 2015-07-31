@@ -47,7 +47,7 @@ class SiteModel extends BaseModel
     {
         /** @var $query QueryBuilder */
         $qb    = $this->getFindByQueryBuilder($params, null, 'e');
-        $query = $qb->addSelect(array('x, y, z, a'))
+        $query = $qb->addSelect(array('x, y, z, a, l'))
             ->innerJoin('e.siteType', 'x')
             ->leftJoin('e.parent', 'z')
             ->leftJoin('e.subDomains', 'a')
