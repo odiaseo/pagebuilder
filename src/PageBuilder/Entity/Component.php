@@ -31,7 +31,7 @@ class Component extends AbstractEntity
      */
     protected $content;
     /**
-     * @Gedmo\Slug(fields={"title"})
+     * @Gedmo\Slug(fields={"title"}, updatable=false)
      * @ORM\Column(type="string", name="cssid")
      */
     protected $cssId;
@@ -47,10 +47,31 @@ class Component extends AbstractEntity
      * )
      */
     protected $translations;
+    /**
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $slug;
 
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 
     public function setContent($content)

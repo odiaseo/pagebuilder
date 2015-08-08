@@ -11,4 +11,18 @@ use SynergyCommon\ModelTrait\LocaleAwareTrait;
 class ComponentModel extends BaseModel
 {
     use LocaleAwareTrait;
+
+    public function getShoppingGuides()
+    {
+        $builder = $this->getEntityManager()->createQueryBuilder();
+        $query   = $builder->select('e.content')
+            ->from($this->getEntity(), 'e')
+            ->where($builder->expr()->like('e.slug', ':regex'))
+            ->setParameter(':regex', 'shopping-guide-%');
+
+        $query = $this->addHints($query->getQuery());
+        $this->setEnableHydrationCache(true);
+
+        return $query->getScalarResult();
+    }
 }
