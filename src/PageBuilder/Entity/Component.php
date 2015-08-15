@@ -9,6 +9,7 @@ use SynergyCommon\Entity\AbstractEntity;
 /**
  * Component
  *
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity
  * @ORM\Table(name="Component")
  * @Gedmo\TranslationEntity(class="PageBuilder\Entity\ComponentTranslation")
@@ -130,5 +131,17 @@ class Component extends AbstractEntity
             $this->translations[] = $t;
             $t->setObject($this);
         }
+    }
+
+    /**
+     * @ORM\PrePersist @ORM\PreUpdate
+     */
+    public function cleanHtml()
+    {
+        if ($this->content) {
+            $this->content = $this->removeWhiteSpace($this->content);
+        }
+
+        return $this;
     }
 }

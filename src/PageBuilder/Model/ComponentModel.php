@@ -14,11 +14,21 @@ class ComponentModel extends BaseModel
 
     public function getShoppingGuides()
     {
+        return $this->getGuidesWithPrefix('shopping-guide');
+    }
+
+    public function getFilterGuides()
+    {
+        return $this->getGuidesWithPrefix('filter-guide');
+    }
+
+    private function getGuidesWithPrefix($prefix)
+    {
         $builder = $this->getEntityManager()->createQueryBuilder();
         $query   = $builder->select('e.content')
             ->from($this->getEntity(), 'e')
             ->where($builder->expr()->like('e.slug', ':regex'))
-            ->setParameter(':regex', 'shopping-guide-%');
+            ->setParameter(':regex', $prefix . '-%');
 
         $query = $this->addHints($query->getQuery());
         $this->setEnableHydrationCache(true);
