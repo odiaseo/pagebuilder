@@ -76,5 +76,4 @@ class SiteTheme
     {
         return $this->themeId;
     }
-
 }

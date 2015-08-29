@@ -2,6 +2,7 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
 /**
@@ -34,6 +35,8 @@ class ThemeModel extends BaseModel
         try {
             return $query->getSingleResult(AbstractQuery::HYDRATE_OBJECT);
         } catch (NoResultException $e) {
+            return false;
+        } catch (NonUniqueResultException $e) {
             return false;
         }
     }
