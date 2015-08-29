@@ -9,7 +9,8 @@ use SynergyCommon\Entity\AbstractEntity;
  * SiteThemes Join table
  *
  * @ORM\Entity
- * @ORM\Table(name="Site_Theme")
+ * @ORM\Table(name="Site_Theme",uniqueConstraints={@ORM\UniqueConstraint(name="THEME_SITE_ACTIVE", columns={"site_id",
+ * "theme_id", "is_active"})})
  *
  */
 class SiteTheme

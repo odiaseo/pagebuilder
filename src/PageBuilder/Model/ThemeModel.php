@@ -28,6 +28,7 @@ class ThemeModel extends BaseModel
             ->where('s.siteId = :id')
             ->andWhere('s.isActive = 1')
             ->setParameter(':id', $siteId)
+            ->setMaxResults(1)
             ->getQuery();
 
         try {
