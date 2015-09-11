@@ -64,7 +64,7 @@ class LocalSiteFactory implements FactoryInterface
                 $serviceLocator->get('logger')->warn($host . ' - domain was requested but not found');
                 if (!$isConsole and $host != $globalDomain) {
                     $destination = sprintf('http://www.%s?nfh=%s', $globalDomain, $host);
-                    header('HTTP/1.1 401 Domain not found');
+                    header('HTTP/1.1 302 Domain not found');
                     header('Location: ' . $destination);
                 } else {
                     header('HTTP/1.1 403 Application Error');
