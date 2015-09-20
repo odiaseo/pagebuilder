@@ -94,31 +94,34 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                 if (array_key_exists('status', $template) and empty($template['status'])) {
                     unset($layout[$index]);
                 } else {
-                    $sectionAttr               = isset($template['tagAttributes']) ? $template['tagAttributes']
-                        : array();
-                    $template['tagAttributes'] = new TagAttributes($sectionAttr);
-                    if (isset($template['items'])) {
-                        foreach ($template['items'] as &$row) {
-                            $rowAttr              = isset($row['tagAttributes']) ? $row['tagAttributes'] : array();
-                            $row['tagAttributes'] = new TagAttributes($rowAttr);
-                            if (isset($row['rowItems'])) {
-                                foreach ($row['rowItems'] as &$col) {
-                                    $colAttr              = isset($col['tagAttributes']) ? $col['tagAttributes']
-                                        : array();
-                                    $col['tagAttributes'] = new TagAttributes($colAttr);
-                                    if (isset($col['item'])) {
-                                        foreach ($col['item'] as $index => $item) {
-                                            list($itemType, $itemId) = explode('-', $item['name']);
-                                            $attr                  = isset($item['tagAttributes'])
-                                                ? $item['tagAttributes']
-                                                : array();
-                                            $item['tagAttributes'] = new TagAttributes($attr);
-                                            $col['item'][$index]   = $this->getItem(
-                                                $itemType, $itemId, $item['tagAttributes']
-                                            );
+                    $sectionAttr = isset($template['tagAttributes']) ? $template['tagAttributes'] : array();
+                    $secAttrObj  = new TagAttributes($sectionAttr);
+
+                    if ($secAttrObj->getActive()) {
+                        $template['tagAttributes'] = $secAttrObj;
+                        if (isset($template['items'])) {
+                            foreach ($template['items'] as &$row) {
+                                $rowAttr              = isset($row['tagAttributes']) ? $row['tagAttributes'] : array();
+                                $row['tagAttributes'] = new TagAttributes($rowAttr);
+                                if (isset($row['rowItems'])) {
+                                    foreach ($row['rowItems'] as &$col) {
+                                        $colAttr              = isset($col['tagAttributes']) ? $col['tagAttributes']
+                                            : array();
+                                        $col['tagAttributes'] = new TagAttributes($colAttr);
+                                        if (isset($col['item'])) {
+                                            foreach ($col['item'] as $index => $item) {
+                                                list($itemType, $itemId) = explode('-', $item['name']);
+                                                $attr                  = isset($item['tagAttributes'])
+                                                    ? $item['tagAttributes']
+                                                    : array();
+                                                $item['tagAttributes'] = new TagAttributes($attr);
+                                                $col['item'][$index]   = $this->getItem(
+                                                    $itemType, $itemId, $item['tagAttributes']
+                                                );
+                                            }
+                                        } else {
+                                            $col['item'] = array();
                                         }
-                                    } else {
-                                        $col['item'] = array();
                                     }
                                 }
                             }

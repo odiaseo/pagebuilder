@@ -1,6 +1,11 @@
 <?php
 namespace PageBuilder\View;
 
+/**
+ * Class TagAttributes
+ *
+ * @package PageBuilder\View
+ */
 class TagAttributes
 {
     public $wrapper = 'div';
@@ -10,6 +15,7 @@ class TagAttributes
     public $container2 = false;
     public $attributes = array();
     public $options = array();
+    public $active = true;
 
     public function __construct($options = array())
     {
@@ -21,6 +27,22 @@ class TagAttributes
                 $this->$method($val);
             }
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param int $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 
     protected function setAttr($attributes)
