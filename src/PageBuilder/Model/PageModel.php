@@ -4,6 +4,7 @@ namespace PageBuilder\Model;
 use Doctrine\ORM\AbstractQuery;
 use SynergyCommon\Doctrine\CacheAwareQueryTrait;
 use SynergyCommon\Doctrine\QueryBuilder;
+use SynergyCommon\Model\TranslatableModelTrait;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
 /**
@@ -15,6 +16,7 @@ use SynergyCommon\ModelTrait\LocaleAwareTrait;
 class PageModel extends BaseModel
 {
     use LocaleAwareTrait;
+    use TranslatableModelTrait;
 
     /**
      * Returns the navigation menus
@@ -63,7 +65,6 @@ class PageModel extends BaseModel
     protected function buildEntityTree()
     {
         return array();
-
     }
 
     public static function buildPage($node, $hasIdentity = false)
@@ -121,7 +122,6 @@ class PageModel extends BaseModel
         $details['layout'] = is_object($page->template) ? $page->template->layout : '';
 
         return $details;
-
     }
 
     public function updateTemplateId($pageId, $templateId)
@@ -179,7 +179,6 @@ class PageModel extends BaseModel
         $details['layout'] = is_object($page->template) ? $page->template->layout : '';
 
         return $details;
-
     }
 
     /**

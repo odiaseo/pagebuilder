@@ -2,6 +2,7 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
+use SynergyCommon\Model\TranslatableModelTrait;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
 /**
@@ -12,6 +13,7 @@ use SynergyCommon\ModelTrait\LocaleAwareTrait;
 class ResourceModel extends BaseModel
 {
     use LocaleAwareTrait;
+    use TranslatableModelTrait;
 
     /**
      * List Generic Resources

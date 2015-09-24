@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\Model;
 
+use SynergyCommon\Model\TranslatableModelTrait;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
 /**
@@ -11,6 +12,7 @@ use SynergyCommon\ModelTrait\LocaleAwareTrait;
 class ComponentModel extends BaseModel
 {
     use LocaleAwareTrait;
+    use TranslatableModelTrait;
 
     public function getShoppingGuides()
     {
