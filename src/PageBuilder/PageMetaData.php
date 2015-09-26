@@ -19,7 +19,7 @@ class PageMetaData extends AbstractOptions
     public $alt = '';
     public $thumbnail;
 
-    public $section = '';
+    public $section = 'vouchers-discounts';
     public $categories = array();
     public $searchTerm;
     public $type = 'website';
