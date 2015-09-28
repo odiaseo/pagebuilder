@@ -1,6 +1,6 @@
 /**
  * Page builder object
- *
+ * Linked Pagebuilder module
  * @package Page Builder
  * @since 08/12/2013
  */
