@@ -26,6 +26,7 @@ trait ModelDependencyTrait
         $entityManager = $serviceLocator->get('doctrine.entitymanager.' . $model->getOrm());
         $config        = $serviceLocator->get('config');
         $site          = null;
+        $filterName    = 'super_sites';
 
         if ($serviceLocator->has('zfcuser_auth_service')) {
             $authService = $serviceLocator->get('zfcuser_auth_service');
@@ -46,9 +47,10 @@ trait ModelDependencyTrait
             $site = $serviceLocator->get('active\site');
 
             if (in_array($site->getId(), $config['super_sites']) and
-                $entityManager->getFilters()->has('site-specific')
+                $entityManager->getFilters()->has($filterName) and
+                $entityManager->getFilters()->isEnabled($filterName)
             ) {
-                $entityManager->getFilters()->disable('site-specific');
+                $entityManager->getFilters()->disable($filterName);
             }
 
         }
