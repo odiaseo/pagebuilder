@@ -25,6 +25,7 @@ trait ModelDependencyTrait
         $cacheStatus   = $serviceLocator->get('synergy\cache\status');
         $entityManager = $serviceLocator->get('doctrine.entitymanager.' . $model->getOrm());
         $config        = $serviceLocator->get('config');
+        $site          = null;
 
         if ($serviceLocator->has('zfcuser_auth_service')) {
             $authService = $serviceLocator->get('zfcuser_auth_service');
@@ -41,15 +42,21 @@ trait ModelDependencyTrait
             $model->setEntity(get_class($entity));
         }
         /** @var Site $site */
-        $site = $serviceLocator->get('active\site');
-        if ($model instanceof LocaleAwareInterface) {
+        if (!$model instanceof SiteModel) {
+            $site = $serviceLocator->get('active\site');
+
+            if (in_array($site->getId(), $config['super_sites']) and
+                $entityManager->getFilters()->has('site-specific')
+            ) {
+                $entityManager->getFilters()->disable('site-specific');
+            }
+
+        }
+
+        if ($site and $model instanceof LocaleAwareInterface) {
             if ($locale = $site->getLocale()) {
                 $model->setLocale($locale);
             }
-        }
-
-        if (in_array($site->getId(), $config['super_sites']) and $entityManager->getFilters()->has('site-specific')) {
-            $entityManager->getFilters()->disable('site-specific');
         }
 
         $enabled       = (!$identity and $cacheStatus->enabled);
