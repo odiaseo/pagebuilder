@@ -132,6 +132,9 @@ abstract class BaseWidget extends AbstractHelper implements
         return $this;
     }
 
+    /**
+     * @return array
+     */
     protected function getMergedOptions()
     {
         return array_merge($this->options, $this->getAttributes()->getOptions());

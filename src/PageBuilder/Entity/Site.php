@@ -83,7 +83,10 @@ class Site extends BaseSite
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
     protected $defaultTemplate;
-
+    /**
+     * @ORM\Column(type="boolean", name="is_admin", nullable=true)
+     */
+    protected $isAdmin = 0;
     /**
      * Inverse Side
      *
@@ -100,6 +103,22 @@ class Site extends BaseSite
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsAdmin()
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param mixed $isAdmin
+     */
+    public function setIsAdmin($isAdmin)
+    {
+        $this->isAdmin = $isAdmin;
     }
 
     /**
