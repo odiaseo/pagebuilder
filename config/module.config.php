@@ -218,7 +218,6 @@ return array(
             'orm_default' => array(
                 'subscribers' => array(
                     'Gedmo\Translatable\TranslatableListener',
-                    'Gedmo\Sluggable\SluggableListener',
                     'Gedmo\Tree\TreeListener',
                     'Gedmo\Timestampable\TimestampableListener',
                     'SynergyCommon\Doctrine\Event\SluggableListener',
