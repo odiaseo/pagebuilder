@@ -221,6 +221,7 @@ return array(
                     'Gedmo\Sluggable\SluggableListener',
                     'Gedmo\Tree\TreeListener',
                     'Gedmo\Timestampable\TimestampableListener',
+                    'SynergyCommon\Doctrine\Event\SluggableListener',
                     'SynergyCommon\Event\Listener\SiteAwareListener'
                 )
             ),
