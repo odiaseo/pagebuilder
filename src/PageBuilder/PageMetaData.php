@@ -40,8 +40,24 @@ class PageMetaData extends AbstractOptions
      * @var string
      */
     protected $searchTermString = 'keyword';
-
+    protected $strapline = '';
     protected $searchResultRouteName = 'search/result';
+
+    /**
+     * @return mixed
+     */
+    public function getStrapline()
+    {
+        return $this->strapline;
+    }
+
+    /**
+     * @param mixed $strapline
+     */
+    public function setStrapline($strapline)
+    {
+        $this->strapline = $strapline;
+    }
 
     /**
      * @return string

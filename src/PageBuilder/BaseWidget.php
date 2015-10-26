@@ -32,7 +32,7 @@ abstract class BaseWidget extends AbstractHelper implements
             'shared' => true
         );
     /** @var \Zend\ServiceManager\ServiceManager */
-    protected $_serviceManager;
+    public $_serviceManager;
 
     public function setServiceManager(ServiceManager $serviceManager)
     {
