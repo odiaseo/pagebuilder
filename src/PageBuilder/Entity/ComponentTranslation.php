@@ -2,7 +2,7 @@
 namespace PageBuilder\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
+use SynergyCommon\Entity\AbstractTranslation;
 
 /**
  * @ORM\Entity
@@ -12,7 +12,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
  *     })}
  * )
  */
-class ComponentTranslation extends AbstractPersonalTranslation
+class ComponentTranslation extends AbstractTranslation
 {
     /**
      * @ORM\ManyToOne(targetEntity="Component", inversedBy="translations")
