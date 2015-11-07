@@ -74,14 +74,15 @@ class LocalSiteFactory implements FactoryInterface
             }
         } elseif ($isConsole) {
             $site = new Site();
-            // $site->setId(1);
         } else {
             throw new MissingArgumentException('Host not found');
         }
 
-        $namespace = 'sess' . $site->getSessionNamespace();
         $container = new Container(LocaleAwareTrait::getNamespace(), $manager);
-        $container->offsetSet(AbstractModel::SESSION_LOCALE_KEY, $site->getLocale());
+        if (!$i18nLocale = $site->getI18nLocale()) {
+            $i18nLocale = $site->getLocale();
+        }
+        $container->offsetSet(AbstractModel::SESSION_LOCALE_KEY, $i18nLocale);
 
         //Set locale
         \setlocale(LC_ALL, $site->getLocale());
