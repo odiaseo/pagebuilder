@@ -15,6 +15,14 @@ use SynergyCommon\Entity\BaseSite;
 class Site extends BaseSite
 {
     /**
+     * @ORM\Column(type="integer", name="offer_count", options={"default"=0})
+     */
+    protected $offerCount = 0;
+    /**
+     * @ORM\Column(type="integer", name="voucher_count", options={"default"=0})
+     */
+    protected $voucherCount = 0;
+    /**
      * @ORM\Column(type="string", length=75, nullable=true, name="display_title")
      */
     private $displayTitle;
@@ -103,6 +111,38 @@ class Site extends BaseSite
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOfferCount()
+    {
+        return $this->offerCount;
+    }
+
+    /**
+     * @param mixed $offerCount
+     */
+    public function setOfferCount($offerCount)
+    {
+        $this->offerCount = $offerCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVoucherCount()
+    {
+        return $this->voucherCount;
+    }
+
+    /**
+     * @param mixed $voucherCount
+     */
+    public function setVoucherCount($voucherCount)
+    {
+        $this->voucherCount = $voucherCount;
     }
 
     /**
