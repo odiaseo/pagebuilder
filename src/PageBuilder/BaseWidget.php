@@ -39,7 +39,14 @@ abstract class BaseWidget extends AbstractHelper implements
         $this->_serviceManager = $serviceManager;
 
         return $this;
+    }
 
+    /**
+     * @return ServiceManager
+     */
+    public function getServiceManager()
+    {
+        return $this->_serviceManager;
     }
 
     public function init()
@@ -100,7 +107,6 @@ abstract class BaseWidget extends AbstractHelper implements
     public function setOptions($options)
     {
         $this->options = $options;
-
     }
 
     public function mergeOptions(array $options)
@@ -146,5 +152,4 @@ abstract class BaseWidget extends AbstractHelper implements
 
         return $viewHelperManager->get($helper);
     }
-
 }
