@@ -5,7 +5,7 @@ use PageBuilder\Entity\Site;
 use PageBuilder\Exception\RuntimeException;
 use PageBuilder\FormatterInterface;
 use PageBuilder\Model\PageModel;
-use PageBuilder\Model\PageThemeModel;
+use PageBuilder\Model\PageTemplateModel;
 use PageBuilder\Service\LayoutService;
 use PageBuilder\View\TagAttributes;
 use PageBuilder\WidgetData;
@@ -35,16 +35,16 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
     const LAYOUT_WIDGET       = 'widget';
     const LAYOUT_BREADCRUMB   = 'breadcrumb';
 
-    private $_mainContent;
-    private $_menuTree;
-    private $_layout = array();
+    private $mainContent;
+    private $menuTree;
+    private $layout = array();
     /** @var \Zend\View\HelperPluginManager */
-    protected $_pluginManager;
+    protected $pluginManager;
     /** @var \Zend\ServiceManager\ServiceManager */
-    protected $_serviceManager;
+    protected $serviceManager;
 
     /** @var Config\PageBuilderConfig */
-    protected $_options;
+    protected $options;
     /** @var  \PageBuilder\Entity\Theme */
     private $activeTheme;
 
@@ -72,24 +72,28 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
     {
 
         if ($this->getOptions()->getEnabled()) {
-            /** @var PageThemeModel $themeModel */
+            /** @var PageTemplateModel $templateModel */
             /** @var PageModel $pageModel */
             /** @var LayoutService $layoutService */
             /** @var Site $site */
-            $themeModel      = $this->getServiceManager()->get('pagebuilder\model\pageTheme');
-            $layoutService   = $this->getServiceManager()->get('pagebuilder\service\layout');
-            $site            = $this->getServiceManager()->get('active\site');
-            $siteThemeId     = $activeSiteTheme ? $activeSiteTheme->getId() : 'default';
-            $activeTheme     = $themeModel->getActivePageThemeForSite($pageId, $siteThemeId, $site->getId());
-            $this->_menuTree = $menuTree;
+            $templateModel  = $this->getServiceManager()->get('pagebuilder\model\pageTemplate');
+            $layoutService  = $this->getServiceManager()->get('pagebuilder\service\layout');
+            $site           = $this->getServiceManager()->get('active\site');
+            $siteThemeId    = $activeSiteTheme ? $activeSiteTheme->getId() : 'default';
+            $pageTemplate   = $templateModel->getActivePageThemeForSite($pageId, $siteThemeId, $site->getId());
+            $this->menuTree = $menuTree;
 
-            if ($activeTheme) {
-                $layout            = $activeTheme->getLayout();
-                $this->activeTheme = $activeTheme;
+            if ($pageTemplate) {
+                $layout            = $pageTemplate->getTemplate()->getLayout();
+                $this->activeTheme = $pageTemplate->getTemplate()->getTheme();
             }
 
             if (empty($layout)) {
-                $layout            = $layoutService->resolvePageLayout($pageId);
+                //get layout from the page root from the tree
+                $layout = $layoutService->resolvePageLayout($pageId);
+            }
+
+            if (empty($this->activeTheme)) {
                 $this->activeTheme = $activeSiteTheme;
             }
 
@@ -133,7 +137,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                 }
             }
 
-            $this->_layout = $layout;
+            $this->layout = $layout;
         }
 
         return $this;
@@ -145,7 +149,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 
         try {
             if ($layout = $this->getLayout()) {
-                $this->_mainContent = $content;
+                $this->mainContent = $content;
 
                 /** @var $template ['tagAttributes'] \PageBuilder\View\TagAttributes */
                 foreach ($layout as $section => $template) {
@@ -212,7 +216,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                     $html = sprintf('<div class="%s" id="pageTop">%s</div>', $wrapperClass, $html);
                 }
 
-                if ($alias = $this->_options->getFilter()) {
+                if ($alias = $this->options->getFilter()) {
                     $filter = $this->getServiceManager()->get($alias);
 
                     if ($filter instanceof FilterInterface) {
@@ -233,13 +237,13 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 
     /**
      * @param               $itemType
-     * @param               $id
+     * @param               $itemId
      * @param TagAttributes $attr
      *
      * @return object
      * @throws RuntimeException
      */
-    protected function getItem($itemType, $id, TagAttributes $attr)
+    protected function getItem($itemType, $itemId, TagAttributes $attr)
     {
         $data = '';
 
@@ -248,7 +252,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
             case self::LAYOUT_WIDGET:
                 try {
                     /** @var $data \PageBuilder\BaseWidget */
-                    $widgetName = $id . WidgetFactory::WIDGET_SUFFIX;
+                    $widgetName = $itemId . WidgetFactory::WIDGET_SUFFIX;
                     $options    = $attr->getOptions();
 
                     if (!$this->isShared($options)) {
@@ -272,9 +276,9 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                 $componentModel = $this->getServiceManager()->get('pagebuilder\model\component');
 
                 /** @var $component \PageBuilder\Entity\Component */
-                if ($component = $componentModel->findOneTranslatedBy(array('id' => $id))) {
+                if ($component = $componentModel->findOneTranslatedBy(array('id' => $itemId))) {
                     $data     = $this->transform($component->getContent());
-                    $comId    = "data-id='{$itemType}-{$id}'";
+                    $comId    = "data-id='{$itemType}-{$itemId}'";
                     $cssClass = trim("{$itemType} {$component->getCssClass()}");
                     $attr->addClass($cssClass)
                         ->addClass($component->getCssId())
@@ -286,14 +290,14 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                     $data         = str_replace(array_keys($replacements), array_values($replacements), $data);
 
                     //apply formats to the data
-                    $data = $this->_applyFormats($data);
+                    $data = $this->applyFormats($data);
                 }
 
                 break;
             default:
                 $message = 'Layout itemType ' . $itemType . ' not found';
-                if ($this->_serviceManager->has('logger')) {
-                    $this->_serviceManager->get('logger')->err($message);
+                if ($this->serviceManager->has('logger')) {
+                    $this->serviceManager->get('logger')->err($message);
                 } else {
                     throw new RuntimeException($message);
                 }
@@ -314,7 +318,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      *
      * @return string
      */
-    protected function _applyFormats($data)
+    protected function applyFormats($data)
     {
         if ($this->getOptions()->getOutputFormatters()) {
 
@@ -323,7 +327,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                     /** @var $formatter \PageBuilder\FormatterInterface */
                     $data = $formatter->format($data);
                 } elseif (is_callable($formatter)) {
-                    $data = $formatter($data, $this->_serviceManager);
+                    $data = $formatter($data, $this->serviceManager);
                 }
             }
         }
@@ -338,7 +342,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 
     public function getLayout()
     {
-        return $this->_layout;
+        return $this->layout;
     }
 
     /**
@@ -348,7 +352,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
-        $this->_pluginManager = $serviceLocator;
+        $this->pluginManager = $serviceLocator;
 
         return $this;
     }
@@ -360,7 +364,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     public function getServiceLocator()
     {
-        return $this->_pluginManager;
+        return $this->pluginManager;
     }
 
     /**
@@ -375,7 +379,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
         $top = $bottom = '';
         if ($wrapper = $attr->getWrapper()) {
             /** @var $microDataHelper  \PageBuilder\View\Helper\MicroData */
-            $microDataHelper = $this->_pluginManager->get('microdata');
+            $microDataHelper = $this->pluginManager->get('microdata');
 
             switch ($section) {
                 case 'header':
@@ -422,18 +426,18 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
 
     public function setServiceManager($serviceManager)
     {
-        $this->_serviceManager = $serviceManager;
+        $this->serviceManager = $serviceManager;
 
         return $this;
     }
 
     public function getServiceManager()
     {
-        if (!$this->_serviceManager) {
-            $this->_serviceManager = $this->_pluginManager->getServiceLocator();
+        if (!$this->serviceManager) {
+            $this->serviceManager = $this->pluginManager->getServiceLocator();
         }
 
-        return $this->_serviceManager;
+        return $this->serviceManager;
     }
 
     /**
@@ -441,7 +445,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     public function setOptions($options)
     {
-        $this->_options = $options;
+        $this->options = $options;
     }
 
     /**
@@ -449,7 +453,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     public function getOptions()
     {
-        return $this->_options;
+        return $this->options;
     }
 
     /**
@@ -486,8 +490,8 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     protected function transform($class)
     {
-        if ($this->_options->getBootstrapVersion() > 2) {
-            foreach ($this->_options->getCssClassmap() as $search => $replace) {
+        if ($this->options->getBootstrapVersion() > 2) {
+            foreach ($this->options->getCssClassmap() as $search => $replace) {
                 $pattern = '/' . $search . '/i';
                 if (preg_match($pattern, $class, $matches)) {
                     $done = str_replace($search, $replace, $class);

@@ -91,7 +91,7 @@ class LayoutService implements ServiceManagerAwareInterface
      */
     public function getPageThemeLayout($pageThemeId)
     {
-        /** @var $themeModel \PageBuilder\Model\PageThemeModel */
+        /** @var $themeModel \PageBuilder\Model\PageTemplateModel */
         $themeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
 
         /** @var $pageTheme \PageBuilder\Entity\Join\PageTheme */
@@ -405,11 +405,12 @@ class LayoutService implements ServiceManagerAwareInterface
     }
 
     /**
-     * @param int $pageId
+     * @param      $pageId
+     * @param null $themeId
      *
      * @return array
      */
-    public function resolvePageLayout($pageId)
+    public function resolvePageLayout($pageId, $themeId = null)
     {
         /** @var $site \PageBuilder\Entity\Site */
         /** @var $parent \PageBuilder\Entity\Page */

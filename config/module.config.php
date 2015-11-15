@@ -139,7 +139,7 @@ return array(
             'pagebuilder\entity\theme'           => 'PageBuilder\Entity\Theme',
             'pagebuilder\entity\setting'         => 'PageBuilder\Entity\Setting',
             'pagebuilder\entity\redirect'        => 'PageBuilder\Entity\Redirect',
-            'pagebuilder\entity\pageTheme'       => 'PageBuilder\Entity\Join\PageTheme',
+            'pagebuilder\entity\pageTemplate'    => 'PageBuilder\Entity\Join\PageTemplate',
             'pagebuilder\entity\siteTheme'       => 'PageBuilder\Entity\Join\SiteTheme',
             'pagebuilder\entity\templateSection' => 'PageBuilder\Entity\Join\TemplateSection',
             //Services

@@ -13,8 +13,7 @@ use SynergyCommon\Entity\BaseEntity as CommonBaseEntity;
  * @ORM\Table(name="Theme")
  *
  */
-class Theme
-    extends CommonBaseEntity
+class Theme extends CommonBaseEntity
 {
     /**
      * @ORM\Id
@@ -60,12 +59,7 @@ class Theme
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="themeId", fetch="LAZY")
      */
     protected $siteThemes;
-    /**
-     * Place holder for the association
-     *
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\PageTheme", mappedBy="themeId", fetch="LAZY")
-     */
-    protected $pageThemes;
+
     /**
      * Place holder for the association
      *
@@ -86,8 +80,23 @@ class Theme
     public function __construct()
     {
         $this->siteThemes = new ArrayCollection();
-        $this->pageThemes = new ArrayCollection();
         $this->templates  = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemplates()
+    {
+        return $this->templates;
+    }
+
+    /**
+     * @param mixed $templates
+     */
+    public function setTemplates($templates)
+    {
+        $this->templates = $templates;
     }
 
     public function setBootstrapVersion($bootstrapVersion)
@@ -98,16 +107,6 @@ class Theme
     public function getBootstrapVersion()
     {
         return $this->bootstrapVersion;
-    }
-
-    public function setTemplates($templates)
-    {
-        $this->templates = $templates;
-    }
-
-    public function getTemplates()
-    {
-        return $this->templates;
     }
 
     public function setFolder($folder)
@@ -130,24 +129,14 @@ class Theme
         return $this->description;
     }
 
-    public function setId($id)
+    public function setId($itemId)
     {
-        $this->id = $id;
+        $this->id = $itemId;
     }
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function setPageThemes($pageThemes)
-    {
-        $this->pageThemes = $pageThemes;
-    }
-
-    public function getPageThemes()
-    {
-        return $this->pageThemes;
     }
 
     public function setSiteThemes($siteThemes)

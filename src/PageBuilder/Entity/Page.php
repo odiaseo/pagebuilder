@@ -33,10 +33,10 @@ class Page extends BasePage
      */
     protected $children;
     /**
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\PageTheme", mappedBy="pageId" , cascade={"persist"})
-     * @ORM\JoinTable(name="Page_Theme")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\PageTemplate", mappedBy="page" , cascade={"persist"})
+     * @ORM\JoinTable(name="Page_Template")
      */
-    protected $pageThemes;
+    protected $pageTemplates;
     /**
      * @ORM\ManyToMany(targetEntity="Resource", cascade="persist", fetch="LAZY")
      * @ORM\JoinTable(name="Page_Resource")
@@ -201,5 +201,4 @@ class Page extends BasePage
     {
         return $this->template;
     }
-
 }

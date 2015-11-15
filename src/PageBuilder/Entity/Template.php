@@ -13,8 +13,7 @@ use SynergyCommon\Entity\BaseEntity as CommonBaseEntity;
  * @ORM\Table(name="Template")
  *
  */
-class Template
-    extends CommonBaseEntity
+class Template extends CommonBaseEntity
 {
     /**
      * @ORM\Id
@@ -35,30 +34,60 @@ class Template
      */
     protected $layout;
     /**
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\TemplateSection", mappedBy="templateId", cascade={"persist","remove"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\TemplateSection",
+     * mappedBy="templateId", cascade={"persist","remove"}, fetch="EAGER")
      * @ORM\JoinTable(name="Template_Section")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $templateSections;
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="templates")
-     * @ORM\JoinColumn(name="theme_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=false)
      */
-    private $theme;
+    protected $theme;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\PageTemplate", mappedBy="template" , cascade={"persist"})
+     * @ORM\JoinTable(name="Page_Template")
+     */
+    protected $templatePages;
 
     public function __construct()
     {
         $this->templateSections = new ArrayCollection();
+        $this->templatePages    = new ArrayCollection();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param mixed $theme
+     */
     public function setTheme($theme)
     {
         $this->theme = $theme;
     }
 
-    public function getTheme()
+    /**
+     * @return mixed
+     */
+    public function getTemplatePages()
     {
-        return $this->theme;
+        return $this->templatePages;
+    }
+
+    /**
+     * @param mixed $templatePages
+     */
+    public function setTemplatePages($templatePages)
+    {
+        $this->templatePages = $templatePages;
     }
 
     public function setDescription($description)
@@ -71,9 +100,9 @@ class Template
         return $this->description;
     }
 
-    public function setId($id)
+    public function setId($itemId)
     {
-        $this->id = $id;
+        $this->id = $itemId;
     }
 
     public function getId()
@@ -110,5 +139,4 @@ class Template
     {
         return $this->title;
     }
-
 }
