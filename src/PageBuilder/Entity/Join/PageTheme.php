@@ -3,6 +3,7 @@ namespace PageBuilder\Entity\Join;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use PageBuilder\Entity\Site;
 use SynergyCommon\Entity\AbstractEntity;
 
 /**
@@ -10,11 +11,11 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Page_Theme",
- * uniqueConstraints={@ORM\UniqueConstraint(name="page_theme_idx", columns={"page_id", "theme_id", "is_active"})})
+ * uniqueConstraints={@ORM\UniqueConstraint(name="page_theme_idx",
+ * columns={"page_id", "theme_id", "is_active", "site_id"})})
  *
  */
-class PageTheme
-    extends AbstractEntity
+class PageTheme extends AbstractEntity
 {
     /**
      * @ORM\Id
@@ -37,9 +38,31 @@ class PageTheme
      */
     protected $pageId;
     /**
+     * @var Site
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
+     * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
+     */
+    protected $dataSource;
+    /**
      * @ORM\Column(type="json_array", nullable=true)
      */
     protected $layout;
+
+    /**
+     * @return Site
+     */
+    public function getDataSource()
+    {
+        return $this->dataSource;
+    }
+
+    /**
+     * @param Site $dataSource
+     */
+    public function setDataSource($dataSource)
+    {
+        $this->dataSource = $dataSource;
+    }
 
     public function setId($id)
     {
@@ -96,5 +119,4 @@ class PageTheme
     {
         return $this->themeId;
     }
-
 }

@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\View\Helper;
 
+use PageBuilder\Entity\Site;
 use PageBuilder\Exception\RuntimeException;
 use PageBuilder\FormatterInterface;
 use PageBuilder\Model\PageModel;
@@ -74,10 +75,12 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
             /** @var PageThemeModel $themeModel */
             /** @var PageModel $pageModel */
             /** @var LayoutService $layoutService */
+            /** @var Site $site */
             $themeModel      = $this->getServiceManager()->get('pagebuilder\model\pageTheme');
             $layoutService   = $this->getServiceManager()->get('pagebuilder\service\layout');
+            $site            = $this->getServiceManager()->get('active\site');
             $siteThemeId     = $activeSiteTheme ? $activeSiteTheme->getId() : 'default';
-            $activeTheme     = $themeModel->getActivePageThemeForSite($pageId, $siteThemeId);
+            $activeTheme     = $themeModel->getActivePageThemeForSite($pageId, $siteThemeId, $site->getId());
             $this->_menuTree = $menuTree;
 
             if ($activeTheme) {

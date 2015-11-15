@@ -56,21 +56,23 @@ class PageThemeModel extends BaseModel
     }
 
     /**
-     * @param     $pageId
-     * @param     $siteThemeId
-     * @param int $mode
+     * @param      $pageId
+     * @param      $themeId
+     * @param null $siteId
+     * @param int  $mode
      *
      * @return PageTheme
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getActivePageThemeForSite($pageId, $siteThemeId, $mode = AbstractQuery::HYDRATE_OBJECT)
+
+    public function getActivePageThemeForSite($pageId, $themeId, $siteId = null, $mode = AbstractQuery::HYDRATE_OBJECT)
     {
         /** @var $query \Doctrine\ORM\QueryBuilder */
         $qb     = $this->getEntityManager()->createQueryBuilder();
         $params = array(
             ':pageId'      => $pageId,
             ':active'      => 1,
-            ':siteThemeId' => $siteThemeId
+            ':siteThemeId' => $themeId
         );
         $query  = $qb->select('e, p, t')
             ->from($this->_entity, 'e')
@@ -79,13 +81,18 @@ class PageThemeModel extends BaseModel
             ->where('e.pageId = :pageId')
             ->setParameters($params);
 
-        if (is_numeric($siteThemeId)) {
+        if (is_numeric($themeId)) {
             $query->andWhere('e.themeId = :siteThemeId');
         } else {
             $query->andWhere('t.slug = :siteThemeId');
         }
 
         $query->andWhere('e.isActive = :active');
+
+        if ($siteId) {
+       //     $query->andWhere($query->expr()->eq('e.dataSource', $siteId));
+        }
+
         $query->setMaxResults(1);
         $result = $query->getQuery()->getOneOrNullResult($mode);
 
