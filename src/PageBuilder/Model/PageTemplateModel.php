@@ -68,34 +68,41 @@ class PageTemplateModel extends BaseModel
     public function getActivePageThemeForSite($pageId, $themeId, $siteId = null, $mode = AbstractQuery::HYDRATE_OBJECT)
     {
         /** @var $query \Doctrine\ORM\QueryBuilder */
-        $qb     = $this->getEntityManager()->createQueryBuilder();
-        $params = array(
-            ':pageId'      => $pageId,
-            ':active'      => 1,
-            ':siteThemeId' => $themeId
-        );
-        $query  = $qb->select('e, p, t')
-            ->from($this->_entity, 'e')
-            ->innerJoin('e.template', 't')
-            ->innerJoin('e.page', 'p')
-            ->where('e.page = :pageId')
-            ->setParameters($params);
+        try {
+            $qb     = $this->getEntityManager()->createQueryBuilder();
+            $params = array(
+                ':pageId'      => $pageId,
+                ':active'      => 1,
+                ':siteThemeId' => $themeId
+            );
+            $query  = $qb->select('e, p, t')
+                ->from($this->_entity, 'e')
+                ->innerJoin('e.template', 't')
+                ->innerJoin('t.theme', 'th')
+                ->innerJoin('e.page', 'p')
+                ->where('e.page = :pageId')
+                ->setParameters($params);
 
-        if (is_numeric($themeId)) {
-            $query->andWhere('t.theme = :siteThemeId');
-        } else {
-            $query->andWhere('t.slug = :siteThemeId');
+            if (is_numeric($themeId)) {
+                $query->andWhere('t.theme = :siteThemeId');
+            } else {
+                $query->andWhere('th.slug = :siteThemeId');
+            }
+
+            $query->andWhere('e.isActive = :active');
+
+            if ($siteId) {
+                $query->andWhere($query->expr()->eq('e.site', $siteId));
+            }
+
+            $query->setMaxResults(1);
+            $result = $query->getQuery()->getOneOrNullResult($mode);
+
+            return $result;
+        } catch (\Exception $exception) {
+            $this->getLogger()->logException($exception);
+
+            return null;
         }
-
-        $query->andWhere('e.isActive = :active');
-
-        if ($siteId) {
-            $query->andWhere($query->expr()->eq('e.site', $siteId));
-        }
-
-        $query->setMaxResults(1);
-        $result = $query->getQuery()->getOneOrNullResult($mode);
-
-        return $result;
     }
 }
