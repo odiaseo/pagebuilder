@@ -81,14 +81,16 @@ class SiteModel extends BaseModel
             $query->andWhere('e.siteType = :siteType');
         } else {
             $query->andWhere('e.siteType <> :siteType');
-
         }
-        $query->setParameters(
-            array(
-                ':active'   => 1,
-                ':siteType' => self::TYPE_VOUCHER
-            )
-        );
+
+        $query->andWhere('e.isAdmin = :zero')
+            ->setParameters(
+                array(
+                    ':active'   => 1,
+                    ':zero'     => 0,
+                    ':siteType' => self::TYPE_VOUCHER
+                )
+            );
         $query->setEnableHydrationCache(true);
 
         return $query->getQuery()->getArrayResult();
