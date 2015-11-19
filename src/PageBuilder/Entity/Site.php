@@ -84,7 +84,7 @@ class Site extends BaseSite
      */
     protected $defaultTemplate;
     /**
-     * @ORM\Column(type="boolean", name="is_admin", nullable=true)
+     * @ORM\Column(type="boolean", name="is_admin", nullable=true, options={"default" = 0})
      */
     protected $isAdmin = 0;
     /**
