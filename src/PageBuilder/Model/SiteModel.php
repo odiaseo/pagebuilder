@@ -52,8 +52,7 @@ class SiteModel extends BaseModel
             ->leftJoin('e.parent', 'z')
             ->leftJoin('e.subDomains', 'a')
             ->leftJoin('e.linkedSites', 'l')
-            ->leftJoin('e.rootPage', 'y')
-            ->setMaxResults(1);
+            ->leftJoin('e.rootPage', 'y');
 
         if ($mode != AbstractQuery::HYDRATE_OBJECT) {
             $query->setEnableHydrationCache($this->enableResultCache);
