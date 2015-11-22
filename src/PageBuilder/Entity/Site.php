@@ -50,21 +50,17 @@ class Site extends BaseSite
      */
     protected $modules;
     /**
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist", fetch="LAZY")
      */
     protected $subDomains;
     /**
-     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", inversedBy="linkedToMe")
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", fetch="LAZY")
      * @ORM\JoinTable(name="Site_Linked_Site",
      *      joinColumns={@ORM\JoinColumn(name="main_site_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="sub_site_id", referencedColumnName="id")}
      *      ))
      */
     protected $linkedSites;
-    /**
-     * @ORM\ManyToMany(targetEntity="Site", mappedBy="linkedSites")
-     */
-    protected $linkedToMe;
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains", cascade={"persist"})
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
@@ -110,6 +106,22 @@ class Site extends BaseSite
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinkedToMe()
+    {
+        return $this->linkedToMe;
+    }
+
+    /**
+     * @param mixed $linkedToMe
+     */
+    public function setLinkedToMe($linkedToMe)
+    {
+        $this->linkedToMe = $linkedToMe;
     }
 
     /**
