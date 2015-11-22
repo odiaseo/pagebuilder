@@ -17,67 +17,74 @@ class Site extends BaseSite
     /**
      * @ORM\Column(type="string", length=75, nullable=true, name="display_title")
      */
-    private $displayTitle;
+    protected $displayTitle;
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $description;
+    protected $description;
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    private $strapline;
+    protected $strapline;
     /**
      * @ORM\Column(type="string", length=5, nullable=true)
      */
-    private $currency;
+    protected $currency;
     /**
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade="persist")
      */
-    private $siteThemes;
+    protected $siteThemes;
     /**
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Licence", cascade="persist")
      * @ORM\JoinTable(name="Site_Licence")
      */
-    private $licences;
+    protected $licences;
     /**
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Setting")
      */
-    private $settings;
+    protected $settings;
     /**
      * @ORM\ManyToMany(targetEntity="Module", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Module")
      */
-    private $modules;
+    protected $modules;
     /**
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist")
      */
-    private $subDomains;
+    protected $subDomains;
     /**
-     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", cascade="persist", fetch="LAZY")
-     * @ORM\JoinTable(name="Site_Linked_Site")
+     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", inversedBy="linkedToMe")
+     * @ORM\JoinTable(name="Site_Linked_Site",
+     *      joinColumns={@ORM\JoinColumn(name="main_site_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="sub_site_id", referencedColumnName="id")}
+     *      ))
      */
-    private $linkedSites;
+    protected $linkedSites;
+    /**
+     * @ORM\ManyToMany(targetEntity="Site", mappedBy="linkedSites")
+     */
+    protected $linkedToMe;
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains", cascade={"persist"})
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
-    private $parent;
+    protected $parent;
 
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", cascade="persist", inversedBy="sites")
      * @ORM\JoinColumn(name="root_id", referencedColumnName="id", nullable=false)
      */
-    private $rootPage;
+    protected $rootPage;
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade="persist", inversedBy="sites", fetch="LAZY")
      * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id", nullable=false)
      */
-    private $siteType;
+    protected $siteType;
     /**
      * @ORM\Column(type="string", length=50, nullable=true, name="default_timezone")
      */
-    private $defaultTimezone = 'Europe/London';
+    protected $defaultTimezone = 'Europe/London';
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
