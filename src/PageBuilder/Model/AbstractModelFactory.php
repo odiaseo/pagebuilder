@@ -63,6 +63,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
         }
         /** @var BaseModel $model */
         $model = new $modelName();
+        $model->setServiceLocator($serviceLocator);
 
         return $this->setDependency($serviceLocator, $model, $entity);
     }
