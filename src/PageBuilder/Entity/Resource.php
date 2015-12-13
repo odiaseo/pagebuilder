@@ -11,7 +11,7 @@ use SynergyCommon\Entity\BaseEntity as CommonEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Resource")
- *
+ * @Gedmo\TranslationEntity(class="PageBuilder\Entity\ResourceTranslation")
  */
 class Resource extends CommonEntity
 {
@@ -105,7 +105,8 @@ class Resource extends CommonEntity
                 break;
             case 'link':
                 $html = sprintf(
-                    '<a href="%s" target="_blank" rel="nofollow" class="resource-link">Click Here</a>',
+                    '<a href="%s" target="_blank" rel="nofollow" class="resource-link">'.$this->getTitle().
+                    ' <i class="icon-mail-forward"></i></a>',
                     $this->getResourceUrl()
                 );
                 break;
