@@ -161,7 +161,7 @@ class PageModel extends BaseModel
 
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e')
-            ->from($this->_entity, 'e')
+            ->from($this->getEntity(), 'e')
             ->where($qb->expr()->eq('e.level', ':level'))
             ->setParameter('level', 0)
             ->getQuery();
@@ -192,7 +192,7 @@ class PageModel extends BaseModel
 
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e')
-            ->from($this->_entity, 'e')
+            ->from($this->getEntity(), 'e')
             ->where('e.isVisible = 1')
             ->andWhere('e.parent NOT IN (12, 15)')
             ->andWhere('e.level > 0')
@@ -215,7 +215,7 @@ class PageModel extends BaseModel
         /** @var $query QueryBuilder  | CacheAwareQueryTrait */
         $qb    = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('e.id, t.layout', 'p.id as parentId')
-            ->from($this->_entity, 'e')
+            ->from($this->getEntity(), 'e')
             ->leftJoin('e.template', 't')
             ->leftJoin('e.parent', 'p')
             ->where('e.id = :id')

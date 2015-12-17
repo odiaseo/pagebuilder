@@ -23,7 +23,7 @@ class PageTemplateModel extends BaseModel
         /** @var $query \Doctrine\ORM\Query */
 
         $query = $qb->select('e, m')
-            ->from($this->_entity, 'e')
+            ->from($this->getEntity(), 'e')
             ->innerJoin('e.pageId', 'm')
             ->where('e.id = :id')
             ->setMaxResults(1)
@@ -46,7 +46,7 @@ class PageTemplateModel extends BaseModel
         /** @var $query \Doctrine\ORM\Query */
 
         $query = $qb->select('e')
-            ->from($this->_entity, 'e')
+            ->from($this->getEntity(), 'e')
             ->where('e.themeId = :id')
             ->setMaxResults(1)
             ->setParameter('id', $id)
@@ -76,7 +76,7 @@ class PageTemplateModel extends BaseModel
                 ':siteThemeId' => $themeId
             );
             $query  = $qb->select('e, p, t')
-                ->from($this->_entity, 'e')
+                ->from($this->getEntity(), 'e')
                 ->innerJoin('e.template', 't')
                 ->innerJoin('t.theme', 'th')
                 ->innerJoin('e.page', 'p')

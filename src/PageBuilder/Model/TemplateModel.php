@@ -75,7 +75,7 @@ class TemplateModel extends BaseModel
         $qb   = $this->getEntityManager()->createQueryBuilder();
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e.id, e.title, e.description, e.layout')
-            ->from($this->_entity, 'e')
+            ->from($this->getEntity(), 'e')
             ->getQuery();
 
         $result = $query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
@@ -109,5 +109,4 @@ class TemplateModel extends BaseModel
 
         return $this->save($template);
     }
-
 }
