@@ -62,8 +62,8 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
      * Get the active site theme and find a layout for the the current page that matches the site theme
      * If not layout is found, use the template assigned to the page if set
      *
-     * @param     int        $pageId
-     * @param Navigation     $menuTree
+     * @param     int $pageId
+     * @param Navigation $menuTree
      * @param AbstractEntity $activeSiteTheme
      *
      * @return $this
@@ -212,8 +212,15 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                 $html = array_filter($html);
                 $html = implode('', $html);
 
-                if ($this->activeTheme and $wrapperClass = $this->activeTheme->getWrapperClass()) {
-                    $html = sprintf('<div class="%s" id="pageTop">%s</div>', $wrapperClass, $html);
+                if ($this->activeTheme) {
+                    $cssId        = $this->activeTheme->getWrapper();
+                    $wrapperClass = $this->activeTheme->getWrapperClass();
+
+                    if ($cssId or $wrapperClass) {
+                        $wrapperClass = $wrapperClass ?: 'wrapper';
+                        $cssId        = $cssId ?: 'pageTop';
+                        $html         = sprintf('<div class="%s" id="%s">%s</div>', $wrapperClass, $cssId, $html);
+                    }
                 }
 
                 if ($alias = $this->options->getFilter()) {
@@ -370,7 +377,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
     /**
      * @param TagAttributes $attr
      * @param TagAttributes $attr
-     * @param string        $section
+     * @param string $section
      *
      * @return array
      */

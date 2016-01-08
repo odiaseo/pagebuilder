@@ -38,6 +38,10 @@ class Theme extends CommonBaseEntity
      */
     protected $wrapperClass;
     /**
+     * @ORM\Column(name="wrapper",type="string", length=30, nullable=true)
+     */
+    protected $wrapper = 'pageTop';
+    /**
      * @ORM\Column(name="body_class",type="string", length=30, nullable=true)
      */
     protected $bodyClass;
@@ -81,6 +85,22 @@ class Theme extends CommonBaseEntity
     {
         $this->siteThemes = new ArrayCollection();
         $this->templates  = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWrapper()
+    {
+        return $this->wrapper;
+    }
+
+    /**
+     * @param mixed $wrapper
+     */
+    public function setWrapper($wrapper)
+    {
+        $this->wrapper = $wrapper;
     }
 
     /**
