@@ -173,7 +173,7 @@ class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
                                     $colAttr = $col['tagAttributes'];
 
                                     if (count($row['rowItems']) > 1) {
-                                        $colAttr->setClass($col['class']);
+                                        $colAttr->addClass($col['class']);
                                     }
                                     list($colTop, $colBottom) = $this->getTopBottomContainers($colAttr);
 

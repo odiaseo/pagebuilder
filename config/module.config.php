@@ -274,6 +274,7 @@ return array(
                 'iframe',
                 'i',
                 'input',
+                'li',
                 'link',
                 'label',
                 'menu',
@@ -299,7 +300,8 @@ return array(
                 'address',
                 'samp',
                 'small',
-                'style'
+                'style',
+                'ul'
             ),
             'form'  => array(
                 'input',

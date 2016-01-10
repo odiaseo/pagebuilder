@@ -42,6 +42,23 @@ class PageMetaData extends AbstractOptions
     protected $searchTermString = 'keyword';
     protected $strapline = '';
     protected $searchResultRouteName = 'search/result';
+    protected $noIndex = false;
+
+    /**
+     * @return boolean
+     */
+    public function isNoIndex()
+    {
+        return $this->noIndex;
+    }
+
+    /**
+     * @param boolean $noIndex
+     */
+    public function setNoIndex($noIndex)
+    {
+        $this->noIndex = $noIndex;
+    }
 
     /**
      * @return mixed
