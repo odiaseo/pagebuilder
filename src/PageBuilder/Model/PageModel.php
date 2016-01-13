@@ -214,7 +214,7 @@ class PageModel extends BaseModel
     {
         /** @var $query QueryBuilder  | CacheAwareQueryTrait */
         $qb    = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->select('e.id, t.layout', 'p.id as parentId')
+        $query = $qb->select('e.id, t.layout', 'p.id as parentId', 't.id as templateId')
             ->from($this->getEntity(), 'e')
             ->leftJoin('e.template', 't')
             ->leftJoin('e.parent', 'p')
@@ -225,7 +225,7 @@ class PageModel extends BaseModel
                 )
             );
 
-        $query->setEnableHydrationCache(true);
+        $query->setEnableHydrationCache($this->enableResultCache);
         $result = $query->getQuery()->getOneOrNullResult($mode);
 
         return $result;
