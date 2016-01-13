@@ -338,7 +338,10 @@ return array(
             'span'            => 'col-md-',
             'row-fluid'       => 'row',
             'icon-'           => 'glyphicon .glyphicon-',
-            'container-fluid' => 'container'
+            'container-fluid' => 'container',
+            'input-large'     => 'input-lg',
+            'input-xlarge'    => 'input-lg',
+            'input-small'     => 'input-sm',
         ),
         'replacements'      => array(
             '[year]' => date('Y')
