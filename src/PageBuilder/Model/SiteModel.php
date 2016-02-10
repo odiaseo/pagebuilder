@@ -96,12 +96,12 @@ class SiteModel extends BaseModel
     }
 
     /**
-     * @param int  $modewr
+     * @param int $modewr
      * @param null $siteType
      *
      * @return array
      */
-    public function getActiveDomains($mode = AbstractQuery::HYDRATE_OBJECT, $siteType = null)
+    public function getActiveDomains($mode = AbstractQuery::HYDRATE_OBJECT, $siteType = null, $order = true)
     {
         $query = $this->getEntityManager()
             ->createQueryBuilder()
@@ -117,6 +117,10 @@ class SiteModel extends BaseModel
         if ($siteType) {
             $query->andWhere('e.siteType = :siteType')
                 ->setParameter(':siteType', $siteType);
+        }
+
+        if ($order) {
+            $query->orderBy('e.createdAt', 'DESC');
         }
 
         return $query->getQuery()->getResult($mode);
