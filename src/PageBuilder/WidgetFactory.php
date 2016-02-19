@@ -80,9 +80,6 @@ class WidgetFactory implements AbstractFactoryInterface
                 return $widget;
             }
         }
-
         return false;
-
     }
-
 }
