@@ -67,7 +67,7 @@ class PageBuilderListener implements ListenerAggregateInterface
         $moduleEnabled = false;
         $request       = $this->_serviceManager->get('request');
 
-        if (!$request->isXmlHttpRequest() and $app = $event->getApplication()) {
+        if ($request instanceof Request and !$request->isXmlHttpRequest() and $app = $event->getApplication()) {
             /** @var $viewHelperManager \Zend\View\HelperPluginManager */
             $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
 
@@ -107,7 +107,6 @@ class PageBuilderListener implements ListenerAggregateInterface
                 $pageBuilder = $viewHelperManager->get('buildPage');
 
                 $pageBuilder->init($pageId, $menuTree, $activeTheme);
-
             }
         }
     }
