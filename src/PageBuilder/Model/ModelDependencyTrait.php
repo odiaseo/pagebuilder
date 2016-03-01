@@ -67,6 +67,7 @@ trait ModelDependencyTrait
         $model->setEnableResultCache($enabled);
         $model->setLogger($serviceLocator->get('logger'));
         $model->setEntityManager($cachedManager);
+        $model->setServiceLocator($serviceLocator);
 
         return $model;
     }
