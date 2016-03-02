@@ -8,7 +8,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * Module
  *
  * @ORM\Entity
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Module
     extends AbstractEntity

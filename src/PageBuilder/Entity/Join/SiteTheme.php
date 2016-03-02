@@ -11,7 +11,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * @ORM\Entity
  * @ORM\Table(name="Site_Theme",uniqueConstraints={@ORM\UniqueConstraint(name="THEME_SITE_ACTIVE", columns={"site_id",
  * "theme_id", "is_active"})})
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class SiteTheme
     extends AbstractEntity

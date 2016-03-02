@@ -13,6 +13,7 @@ use SynergyCommon\Entity\BasePage;
  * columns={"lft", "rgt", "root"})})
  * @Gedmo\Tree(type="nested")
  * @Gedmo\TranslationEntity(class="PageBuilder\Entity\PageTranslation")
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Page extends BasePage
 {

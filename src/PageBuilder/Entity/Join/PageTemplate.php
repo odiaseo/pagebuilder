@@ -14,7 +14,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * @ORM\Table(name="Page_Template",
  * uniqueConstraints={@ORM\UniqueConstraint(name="page_template_idx",
  * columns={"page_id", "template_id", "is_active", "site_id"})})
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class PageTemplate extends AbstractEntity
 {

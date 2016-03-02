@@ -11,7 +11,7 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  * @ORM\Table(name="Section")
  * @ORM\Entity
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Section extends AbstractEntity
 {

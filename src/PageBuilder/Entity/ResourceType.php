@@ -10,7 +10,7 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Resource_Type")
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class ResourceType extends AbstractEntity
 {

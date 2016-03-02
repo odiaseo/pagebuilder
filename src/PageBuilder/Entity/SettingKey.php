@@ -10,7 +10,7 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Setting_Key")
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class SettingKey
     extends AbstractEntity

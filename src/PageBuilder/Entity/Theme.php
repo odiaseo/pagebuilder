@@ -11,7 +11,7 @@ use SynergyCommon\Entity\BaseEntity as CommonBaseEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Theme")
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Theme extends CommonBaseEntity
 {

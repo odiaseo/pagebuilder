@@ -11,6 +11,7 @@ use SynergyCommon\Entity\AbstractTranslation;
  *         "locale", "object_id", "field"
  *     })}
  * )
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class ResourceTranslation extends AbstractTranslation
 {

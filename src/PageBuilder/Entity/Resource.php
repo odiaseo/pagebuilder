@@ -12,6 +12,7 @@ use SynergyCommon\Entity\BaseEntity as CommonEntity;
  * @ORM\Entity
  * @ORM\Table(name="Resource")
  * @Gedmo\TranslationEntity(class="PageBuilder\Entity\ResourceTranslation")
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Resource extends CommonEntity
 {

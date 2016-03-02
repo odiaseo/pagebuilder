@@ -13,6 +13,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * @ORM\Entity
  * @ORM\Table(name="Component")
  * @Gedmo\TranslationEntity(class="PageBuilder\Entity\ComponentTranslation")
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Component extends AbstractEntity
 {

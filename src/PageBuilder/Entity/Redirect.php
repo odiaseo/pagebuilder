@@ -11,6 +11,7 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Redirect")
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Redirect extends AbstractEntity
 {

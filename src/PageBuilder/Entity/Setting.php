@@ -9,7 +9,7 @@ use SynergyCommon\Entity\BaseEntity as CommonEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Setting")
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Setting extends CommonEntity
 {

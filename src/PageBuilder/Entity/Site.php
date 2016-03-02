@@ -11,6 +11,7 @@ use SynergyCommon\Entity\BaseSite;
  *
  * @ORM\Entity
  * @ORM\Table(name="Site", indexes={@ORM\Index(name="IDX_DOMAIN", columns={"domain", "is_active"})})
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Site extends BaseSite
 {

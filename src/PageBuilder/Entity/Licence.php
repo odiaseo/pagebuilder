@@ -11,6 +11,7 @@ use SynergyCommon\Entity\BaseLicence;
  * @ORM\Entity
  * @ORM\Table(name="Licence")
  * @ORM\HasLifecycleCallbacks
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Licence
     extends BaseLicence

@@ -11,7 +11,7 @@ use SynergyCommon\Entity\BaseEntity as CommonBaseEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Template")
- *
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE", region="SlowMoving")
  */
 class Template extends CommonBaseEntity
 {

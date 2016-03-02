@@ -10,7 +10,7 @@ use SynergyCommon\Entity\AbstractEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="Template_Section", uniqueConstraints={@ORM\UniqueConstraint(name="tsx_idx", columns={"template_id", "section_id"})})
- *
+ * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class TemplateSection
     extends AbstractEntity
