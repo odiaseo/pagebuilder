@@ -10,9 +10,10 @@
 namespace PageBuilder;
 
 use PageBuilder\Event\Listener\PageBuilderListener;
-use PageBuilder\Util\Widget;
-use PageBuilder\View\Helper\Config\PageBuilderConfig;
-use PageBuilder\View\Helper\PageBuilder;
+use PageBuilder\Service\ActiveThemeFactory;
+use PageBuilder\Service\WidgetInitializer;
+use PageBuilder\Service\WidgetUtilFactory;
+use PageBuilder\View\Helper\PageBuilderInitializer;
 use SynergyCommon\Event\Listener\SynergyModuleListener;
 use Zend\Http\Response;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
@@ -47,7 +48,7 @@ class Module implements DependencyIndicatorInterface
 
         $synergyListener = new SynergyModuleListener();
         $eventManager->attach($synergyListener);
-        $synergyListener->initSession($e);
+        $synergyListener->initmemcacSession($e);
         $synergyListener->bootstrap($eventManager, $serviceLocator);
     }
 
@@ -82,28 +83,7 @@ class Module implements DependencyIndicatorInterface
                 'active\site'       => 'PageBuilder\Service\LocalSiteFactory',
             ),
             'initializers' => array(
-                'widget' => function ($widget, $sm) {
-                    /** @var  $sm \Zend\Servicemanager\ServiceManager */
-
-                    /** @var $widget  \object */
-                    if ($widget instanceof WidgetInterface) {
-                        /** @var $mvcEvent \Zend\Mvc\MvcEvent */
-                        $mvcEvent = $sm->get('application')->getMvcEvent();
-                        $widget->setServiceManager($sm);
-                        $widget->setView($sm->get('viewrenderer'));
-                        $widget->setMvcEvent($mvcEvent);
-                        $response = $widget->init();
-
-                        //send response if we have a widget returning a response instance
-                        if ($response instanceof Response) {
-                            $mvcEvent->stopPropagation();
-
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
+                'widget' => WidgetInitializer::class,
             ),
 
             'factories'    => array(
@@ -116,22 +96,8 @@ class Module implements DependencyIndicatorInterface
                 'PageBuilder\WidgetDataFactory'             => 'PageBuilder\WidgetDataFactory',
                 'Zend\Session\SessionManager'               => 'Zend\Session\Service\SessionManagerFactory',
                 'AffiliateManager\Service\LocalSiteFactory' => 'AffiliateManager\Service\LocalSiteFactory',
-                'active_theme'                              => function ($sm) {
-                    /** @var  $sm \Zend\Servicemanager\ServiceManager */
-                    $site  = $sm->get('active\site');
-                    $theme = $sm->get('pagebuilder\model\theme')->getActiveTheme($site->getId());
-
-                    return $theme;
-                },
-
-                'PageBuilder\Util\Widget'                   => function ($serviceManager) {
-                    $widget = new Widget();
-                    $widget->setServiceManager($serviceManager);
-                    $widget->init();
-
-                    return $widget;
-                }
-
+                'active_theme'                              => ActiveThemeFactory::class,
+                'PageBuilder\Util\Widget'                   => WidgetUtilFactory::class,
             )
         );
     }
@@ -154,44 +120,7 @@ class Module implements DependencyIndicatorInterface
                 'microData'     => 'SynergyCommon\View\Helper\MicroData',
             ),
             'initializers' => array(
-                'initbuilder' => function ($helper, $helperManager) {
-                    /** @var $helperManager \Zend\View\HelperPluginManager */
-                    /** @var $serviceManager \Zend\ServiceManager\ServiceManager */
-                    $serviceManager = $helperManager->getServicelocator();
-                    if ($helper instanceof PageBuilder) {
-                        $config = $serviceManager->get('config');
-
-                        $formatters = array();
-                        foreach ($config['pagebuilder']['output_formatters'] as $format) {
-                            if (is_string($format)) {
-                                $formatters[] = $serviceManager->get($format);
-                            } elseif ($format instanceof FormatterInterface) {
-                                $formatters[] = $format;
-                            } elseif (is_callable($format)) {
-                                $formatters[] = $format;
-                            } else {
-                                continue;
-                            }
-                        }
-
-                        /** @var $theme \PageBuilder\Entity\Theme */
-
-                        $theme         = $serviceManager->get('active_theme');
-                        $builderConfig = $config['pagebuilder'];
-                        if ($theme) {
-                            $builderConfig['bootstrap_version'] = $theme->getBootstrapVersion();
-                        }
-
-                        if (is_string($builderConfig['replacements'])) {
-                            $builderConfig['replacements'] = $serviceManager->get($builderConfig['replacements']);
-                        }
-
-                        $options = new PageBuilderConfig($builderConfig);
-                        $options->setOutputFormatters($formatters);
-
-                        $helper->setOptions($options);
-                    }
-                }
+                'initbuilder' => PageBuilderInitializer::class
             )
         );
     }
