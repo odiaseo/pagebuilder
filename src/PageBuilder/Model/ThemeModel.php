@@ -20,8 +20,8 @@ class ThemeModel extends BaseModel
      */
     public function getActiveTheme($siteId)
     {
-        $em    = $this->getEntityManager();
-        $query = $em
+        $manager = $this->getEntityManager();
+        $query   = $manager
             ->createQueryBuilder()
             ->select('t,s')
             ->from($this->_entity, 't')

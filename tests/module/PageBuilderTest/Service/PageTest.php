@@ -11,6 +11,11 @@ class PageTest extends BaseTestClass
     /** @var \SynergyDataGrid\Grid\GridType\DoctrineORMGrid; */
     protected $_grid;
 
+    public function testLocalSite()
+    {
+        $pageService = $this->_serviceManager->get('active\Site');
+        $this->assertInstanceOf('PageBuilder\Entity\Site', $pageService);
+    }
     public function testService()
     {
         $pageService = $this->_serviceManager->get('pagebuilder\service\layout');

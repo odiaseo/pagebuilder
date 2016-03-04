@@ -32,29 +32,35 @@ class Site extends BaseSite
      */
     protected $currency;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade="persist")
      */
     protected $siteThemes;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Licence", cascade="persist")
      * @ORM\JoinTable(name="Site_Licence")
      */
     protected $licences;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Setting")
      */
     protected $settings;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="Module", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Module")
      */
     protected $modules;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist", fetch="LAZY")
      */
     protected $subDomains;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", fetch="LAZY")
      * @ORM\JoinTable(name="Site_Linked_Site",
      *      joinColumns={@ORM\JoinColumn(name="main_site_id", referencedColumnName="id")},
@@ -63,17 +69,20 @@ class Site extends BaseSite
      */
     protected $linkedSites;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains", cascade={"persist"})
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     protected $parent;
 
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", cascade="persist", inversedBy="sites")
      * @ORM\JoinColumn(name="root_id", referencedColumnName="id", nullable=false)
      */
     protected $rootPage;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade="persist", inversedBy="sites", fetch="LAZY")
      * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id", nullable=false)
      */
@@ -83,6 +92,7 @@ class Site extends BaseSite
      */
     protected $defaultTimezone = 'Europe/London';
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
@@ -94,6 +104,7 @@ class Site extends BaseSite
     /**
      * Inverse Side
      *
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="Redirect", mappedBy="sites")
      */
     protected $redirects;
@@ -107,22 +118,6 @@ class Site extends BaseSite
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLinkedToMe()
-    {
-        return $this->linkedToMe;
-    }
-
-    /**
-     * @param mixed $linkedToMe
-     */
-    public function setLinkedToMe($linkedToMe)
-    {
-        $this->linkedToMe = $linkedToMe;
     }
 
     /**
