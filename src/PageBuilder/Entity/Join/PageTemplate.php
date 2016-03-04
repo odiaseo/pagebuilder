@@ -25,17 +25,20 @@ class PageTemplate extends AbstractEntity
      */
     protected $id;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template", inversedBy="templatePages")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
     protected $template;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", inversedBy="pageTemplates")
      * @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=false)
      */
     protected $page;
     /**
      * @var Site
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */

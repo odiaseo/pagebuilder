@@ -10,8 +10,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * @ORM\Entity
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
-class Module
-    extends AbstractEntity
+class Module extends AbstractEntity
 {
     /**
      * @ORM\Id
@@ -44,6 +43,7 @@ class Module
      */
     protected $isActive;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Licence")
      * @ORM\JoinColumn(name="licence_id", referencedColumnName="id")
      */
@@ -128,5 +128,4 @@ class Module
     {
         return $this->title;
     }
-
 }

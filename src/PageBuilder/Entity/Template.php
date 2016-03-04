@@ -34,6 +34,7 @@ class Template extends CommonBaseEntity
      */
     protected $layout;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\TemplateSection",
      * mappedBy="templateId", cascade={"persist","remove"}, fetch="EAGER")
      * @ORM\JoinTable(name="Template_Section")
@@ -41,12 +42,14 @@ class Template extends CommonBaseEntity
      */
     protected $templateSections;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="templates")
      * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=false)
      */
     protected $theme;
 
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\PageTemplate", mappedBy="template" , cascade={"persist"})
      * @ORM\JoinTable(name="Page_Template")
      */

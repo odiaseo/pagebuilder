@@ -42,6 +42,7 @@ class Component extends AbstractEntity
      */
     protected $cssClass;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(
      *   targetEntity="ComponentTranslation",
      *   mappedBy="object",

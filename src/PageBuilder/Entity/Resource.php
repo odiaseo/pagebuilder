@@ -33,6 +33,7 @@ class Resource extends CommonEntity
      */
     protected $description;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="ResourceType", cascade="persist")
      * @ORM\JoinColumn(name="resource_type_id", referencedColumnName="id", nullable=false)
      */
@@ -46,11 +47,13 @@ class Resource extends CommonEntity
      */
     protected $isGeneric = 0;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="Site", cascade="persist")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $dataSource;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(
      *   targetEntity="ResourceTranslation",
      *   mappedBy="object",

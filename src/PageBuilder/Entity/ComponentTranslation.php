@@ -16,6 +16,7 @@ use SynergyCommon\Entity\AbstractTranslation;
 class ComponentTranslation extends AbstractTranslation
 {
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="Component", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */

@@ -12,8 +12,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * @ORM\Table(name="Setting_Key")
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
-class SettingKey
-    extends AbstractEntity
+class SettingKey extends AbstractEntity
 {
     /**
      * @ORM\Id
@@ -116,5 +115,4 @@ class SettingKey
     {
         return $this->title;
     }
-
 }

@@ -13,7 +13,7 @@ use SynergyCommon\Entity\BaseSite;
  * @ORM\Table(name="Site", indexes={@ORM\Index(name="IDX_DOMAIN", columns={"domain", "is_active"})})
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
-class Site extends BaseSite
+class Site
 {
     /**
      * @ORM\Column(type="string", length=75, nullable=true, name="display_title")

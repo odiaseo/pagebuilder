@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use SynergyCommon\Entity\AbstractEntity;
 
 /**
- * Brand
+ * SiteType
  *
  * @ORM\Entity
  * @ORM\Table(name="Site_Type")
@@ -34,6 +34,7 @@ class SiteType extends AbstractEntity
      */
     protected $facebookPage;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="siteType")
      */
     protected $sites;

@@ -13,8 +13,7 @@ use SynergyCommon\Entity\BaseLicence;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
-class Licence
-    extends BaseLicence
+class Licence extends BaseLicence
 {
 
 }

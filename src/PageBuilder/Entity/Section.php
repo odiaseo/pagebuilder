@@ -31,6 +31,7 @@ class Section extends AbstractEntity
      */
     protected $slug;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\TemplateSection", mappedBy="sectionId", cascade={"persist","remove"}, fetch="EAGER")
      * @ORM\JoinTable(name="Template_Section")
      * @ORM\OrderBy({"sortOrder" = "ASC"})

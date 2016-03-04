@@ -31,6 +31,7 @@ class Setting extends CommonEntity
     protected $settingValue = '';
     /**
      * @var Site
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */

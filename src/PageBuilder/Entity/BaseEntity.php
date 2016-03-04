@@ -10,6 +10,7 @@ use SynergyCommon\Entity\BaseEntity as CommonEntity;
 abstract class BaseEntity extends CommonEntity
 {
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */

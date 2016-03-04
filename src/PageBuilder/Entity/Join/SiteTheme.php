@@ -23,6 +23,7 @@ class SiteTheme
      */
     protected $id;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="siteThemes")
      * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=false)
      */
@@ -32,6 +33,7 @@ class SiteTheme
      */
     protected $isActive = 0;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="siteThemes")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */

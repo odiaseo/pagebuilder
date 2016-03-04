@@ -60,6 +60,7 @@ class Theme extends CommonBaseEntity
     /**
      * Place holder for the association
      *
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="themeId", fetch="LAZY")
      */
     protected $siteThemes;
@@ -67,6 +68,7 @@ class Theme extends CommonBaseEntity
     /**
      * Place holder for the association
      *
+     * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Template", mappedBy="theme")
      */
     protected $templates;

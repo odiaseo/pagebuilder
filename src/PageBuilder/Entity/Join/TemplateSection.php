@@ -31,6 +31,7 @@ class TemplateSection
      */
     protected $sortOrder = 0;
     /**
+     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Section", inversedBy="templates", cascade={"all"})
      * @ORM\JoinColumn(name="section_id", referencedColumnName="id", nullable=false)
      */
@@ -92,5 +93,4 @@ class TemplateSection
     {
         return $this->templateId;
     }
-
 }
