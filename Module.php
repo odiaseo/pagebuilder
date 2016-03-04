@@ -48,7 +48,7 @@ class Module implements DependencyIndicatorInterface
 
         $synergyListener = new SynergyModuleListener();
         $eventManager->attach($synergyListener);
-        $synergyListener->initmemcacSession($e);
+        $synergyListener->initSession($e);
         $synergyListener->bootstrap($eventManager, $serviceLocator);
     }
 
