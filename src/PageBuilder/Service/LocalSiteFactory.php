@@ -83,6 +83,7 @@ class LocalSiteFactory implements FactoryInterface
             $i18nLocale = $site->getLocale();
         }
         $container->offsetSet(AbstractModel::SESSION_LOCALE_KEY, $i18nLocale);
+        $container->offsetSet(AbstractModel::SESSION_SITE_KEY, $host);
 
         //Set locale
         \setlocale(LC_ALL, $site->getLocale());
