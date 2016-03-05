@@ -59,7 +59,7 @@ class PageTemplateModel extends BaseModel
      * @param      $pageId
      * @param      $themeId
      * @param null $siteId
-     * @param int  $mode
+     * @param int $mode
      *
      * @return PageTemplate
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -92,6 +92,7 @@ class PageTemplateModel extends BaseModel
             $query->andWhere('e.isActive = :active');
 
             if ($siteId) {
+                $this->disableSiteFilter();
                 $query->andWhere($query->expr()->eq('e.site', $siteId));
             }
 
