@@ -15,6 +15,7 @@ use PageBuilder\Service\WidgetInitializer;
 use PageBuilder\Service\WidgetUtilFactory;
 use PageBuilder\View\Helper\PageBuilderInitializer;
 use SynergyCommon\Event\Listener\SynergyModuleListener;
+use SynergyCommon\Session\SessionManagerFactory;
 use Zend\Http\Response;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\Mvc\ModuleRouteListener;

@@ -360,6 +360,15 @@ return array(
             'namespace' => 'pagebuilder'
         )
     ),
+    'session'         => [
+        'config' => [
+            'options' => [
+                'phpSaveHandler' => 'memcache',
+                'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
+            ]
+        ],
+    ],
+
     'session_config'  => array(
         'phpSaveHandler' => 'memcache',
         'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
