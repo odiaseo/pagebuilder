@@ -386,6 +386,8 @@ class Site extends BaseSite
 
         $ids = array_unique($ids);
 
+        asort($ids);
+
         return $ids;
     }
 }
