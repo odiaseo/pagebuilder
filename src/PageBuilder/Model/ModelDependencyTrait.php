@@ -4,6 +4,7 @@ namespace PageBuilder\Model;
 use Doctrine\ORM\EntityManager;
 use PageBuilder\Entity\Site;
 use PageBuilder\LocaleAwareInterface;
+use SynergyCommon\CacheAwareInterface;
 use SynergyCommon\Doctrine\CachedEntityManager;
 use SynergyCommon\Model\AbstractModel;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -13,7 +14,7 @@ trait ModelDependencyTrait
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @param AbstractModel           $model
+     * @param AbstractModel $model
      * @param                         $entity
      *
      * @return BaseModel
@@ -52,7 +53,6 @@ trait ModelDependencyTrait
             ) {
                 $entityManager->getFilters()->disable($filterName);
             }
-
         }
 
         if ($site and $model instanceof LocaleAwareInterface) {
@@ -61,6 +61,9 @@ trait ModelDependencyTrait
             }
         }
 
+        if ($model instanceof CacheAwareInterface) {
+            $model->setCache('system\cache');
+        }
         $enabled       = (!$identity and $cacheStatus->enabled);
         $cachedManager = new CachedEntityManager($entityManager, $enabled);
 
