@@ -7,6 +7,18 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
+if (extension_loaded('memcached')) {
+    $memcacheConfig = [
+        'phpSaveHandler' => 'memcached',
+        'savePath'       => '127.0.0.1:11211?weight=1&timeout=1',
+    ];
+} else {
+    $memcacheConfig = [
+        'phpSaveHandler' => 'memcache',
+        'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
+    ];
+}
+
 return array(
 
     'controllers'     => array(
@@ -362,16 +374,10 @@ return array(
     ),
     'session'         => [
         'config' => [
-            'options' => [
-                'phpSaveHandler' => extension_loaded('memcached') ? 'memcached' : 'memcache',
-                'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
-            ]
+            'options' => $memcacheConfig
         ],
     ],
 
-    'session_config'  => array(
-        'phpSaveHandler' => extension_loaded('memcached') ? 'memcached' : 'memcache',
-        'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
-    ),
+    'session_config'  => $memcacheConfig,
     'super_sites'     => []
 );
