@@ -212,9 +212,8 @@ class PageModel extends BaseModel
      */
     public function getMainPageById($id, $mode = AbstractQuery::HYDRATE_ARRAY)
     {
-        /** @var $query QueryBuilder  | CacheAwareQueryTrait */
-        $qb    = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->select('e.id, t.layout', 'p.id as parentId', 't.id as templateId')
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('e.id, t.layout', 'p.id as parentId', 't.id as templateId')
             ->from($this->getEntity(), 'e')
             ->leftJoin('e.template', 't')
             ->leftJoin('e.parent', 'p')
@@ -225,8 +224,8 @@ class PageModel extends BaseModel
                 )
             );
 
-        $query->setEnableHydrationCache($this->enableResultCache);
-        $result = $query->getQuery()->getOneOrNullResult($mode);
+        $qb->setEnableHydrationCache($this->enableResultCache);
+        $result = $qb->getQuery()->getOneOrNullResult($mode);
 
         return $result;
     }

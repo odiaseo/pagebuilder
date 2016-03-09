@@ -46,8 +46,8 @@ class SiteModel extends BaseModel
     public function findSiteBy(array $params, $mode = AbstractQuery::HYDRATE_OBJECT)
     {
         /** @var $query QueryBuilder */
-        $qb    = $this->getFindByQueryBuilder($params, null, 'e');
-        $query = $qb->addSelect(array('x, y, z, a, l'))
+        $qb = $this->getFindByQueryBuilder($params, null, 'e');
+        $qb->addSelect(array('x, y, z, a, l'))
             ->innerJoin('e.siteType', 'x')
             ->leftJoin('e.parent', 'z')
             ->leftJoin('e.subDomains', 'a')
@@ -55,9 +55,9 @@ class SiteModel extends BaseModel
             ->leftJoin('e.rootPage', 'y');
 
         if ($mode != AbstractQuery::HYDRATE_OBJECT) {
-            $query->setEnableHydrationCache($this->enableResultCache);
+            $qb->setEnableHydrationCache($this->enableResultCache);
         }
-        $site = $query->getQuery()->getOneOrNullResult($mode);
+        $site = $qb->getQuery()->getOneOrNullResult($mode);
 
         return $site;
     }

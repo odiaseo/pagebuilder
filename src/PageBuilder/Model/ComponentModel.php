@@ -32,8 +32,8 @@ class ComponentModel extends BaseModel
             ->where($builder->expr()->like('e.slug', ':regex'))
             ->setParameter(':regex', $prefix . '-%');
 
+        $builder->setEnableHydrationCache(true);
         $query = $this->addHints($query->getQuery());
-        $this->setEnableHydrationCache(true);
 
         return $query->getScalarResult();
     }

@@ -25,16 +25,15 @@ class ResourceModel extends BaseModel
      */
     public function getGenericResources($limit = 10, $mode = AbstractQuery::HYDRATE_OBJECT)
     {
-        $query = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('e')
+        $builder = $this->getEntityManager()->createQueryBuilder();
+
+        $builder->select('e')
             ->from($this->_entity, 'e')
             ->where('e.isGeneric = 1')
-            ->setMaxResults($limit)
-            ->getQuery();
+            ->setMaxResults($limit);
 
-        $query = LocaleAwareTrait::addHints($query);
-        $this->setEnableHydrationCache($this->enableResultCache);
+        $builder->setEnableHydrationCache($this->enableResultCache);
+        $query = LocaleAwareTrait::addHints($builder->getQuery());
 
         return $query->execute($mode);
     }

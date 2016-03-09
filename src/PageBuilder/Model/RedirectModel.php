@@ -20,15 +20,15 @@ class RedirectModel extends BaseModel
      */
     public function getAllRedirects()
     {
+        /** @var QueryBuilder $query */
         $entity = $this->getEntity();
         $qb     = $this->getEntityManager()->createQueryBuilder();
-        /** @var QueryBuilder $query */
-        $query = $qb->select('e.source, e.redirectType, e.redirectDestination, s.id as sourceId, s.domain')
+        $qb->select('e.source, e.redirectType, e.redirectDestination, s.id as sourceId, s.domain')
             ->from($entity, 'e')
             ->innerJoin('e.sites', 's');
 
-        $query->setEnableHydrationCache($this->enableResultCache);
+        $qb->setEnableHydrationCache($this->enableResultCache);
 
-        return $query->getQuery()->getArrayResult();
+        return $qb->getQuery()->getArrayResult();
     }
 }

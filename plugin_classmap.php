@@ -8,7 +8,6 @@ return array (
   'doctrinepaginator' => 'Application\\Adapter\\DoctrinePaginator',
   'queryfilter' => 'Application\\Adapter\\QueryFilter',
   'solrpaginator' => 'Application\\Adapter\\SolrPaginator',
-  'dbadapter' => 'Application\\Authentication\\Adapter\\DbAdapter',
   'authenticationservice' => 'Application\\Authentication\\AuthenticationService',
   'identity' => 'Application\\Authentication\\Identity',
   'acl' => 'Application\\Authorisation\\Acl',
