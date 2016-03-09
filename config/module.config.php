@@ -363,14 +363,14 @@ return array(
     'session'         => [
         'config' => [
             'options' => [
-                'phpSaveHandler' => 'memcache',
+                'phpSaveHandler' => extension_loaded('memcached') ? 'memcached' : 'memcache',
                 'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
             ]
         ],
     ],
 
     'session_config'  => array(
-        'phpSaveHandler' => 'memcache',
+        'phpSaveHandler' => extension_loaded('memcached') ? 'memcached' : 'memcache',
         'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
     ),
     'super_sites'     => []
