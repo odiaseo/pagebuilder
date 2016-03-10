@@ -7,7 +7,7 @@ use SynergyCommon\Entity\AbstractTranslation;
 /**
  * @ORM\Entity
  * @ORM\Table(name="Component_Translation",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="component_lookup_unique_idx", columns={
  *         "locale", "object_id", "field"
  *     })}
  * )
