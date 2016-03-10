@@ -20,7 +20,6 @@ class RedirectModel extends BaseModel
      */
     public function getAllRedirects()
     {
-        /** @var QueryBuilder $query */
         $entity = $this->getEntity();
         $qb     = $this->getEntityManager()->createQueryBuilder();
         $qb->select('e.source, e.redirectType, e.redirectDestination, s.id as sourceId, s.domain')

@@ -96,9 +96,9 @@ class SiteModel extends BaseModel
     }
 
     /**
-     * @param int $modewr
+     * @param int $mode
      * @param null $siteType
-     *
+     * @param bool $order
      * @return array
      */
     public function getActiveDomains($mode = AbstractQuery::HYDRATE_OBJECT, $siteType = null, $order = true)

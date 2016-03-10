@@ -28,11 +28,10 @@ class ResourceModel extends BaseModel
         $builder = $this->getEntityManager()->createQueryBuilder();
 
         $builder->select('e')
-            ->from($this->_entity, 'e')
+            ->from($this->getEntity(), 'e')
             ->where('e.isGeneric = 1')
             ->setMaxResults($limit);
 
-        $builder->setEnableHydrationCache($this->enableResultCache);
         $query = LocaleAwareTrait::addHints($builder->getQuery());
 
         return $query->execute($mode);

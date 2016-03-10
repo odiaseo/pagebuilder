@@ -32,7 +32,7 @@ class ComponentModel extends BaseModel
             ->where($builder->expr()->like('e.slug', ':regex'))
             ->setParameter(':regex', $prefix . '-%');
 
-        $builder->setEnableHydrationCache(true);
+        $builder->setEnableHydrationCache($this->enableResultCache);
         $query = $this->addHints($query->getQuery());
 
         return $query->getScalarResult();
