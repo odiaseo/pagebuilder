@@ -4,7 +4,7 @@ namespace PageBuilder\Navigation;
 use Zend\Navigation\Exception;
 use Zend\Navigation\Navigation;
 use Zend\Navigation\Service\DefaultNavigationFactory;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
 
 /**
  * Class NavigationFactory
@@ -28,7 +28,7 @@ class NavigationFactory extends DefaultNavigationFactory
         }
     }
 
-    protected function getPages(ServiceLocatorInterface $serviceManager)
+    protected function getPages(ContainerInterface $serviceManager)
     {
         /** @var $pageModel \PageBuilder\Model\PageModel */
         $pageModel = $serviceManager->get($this->_model);
