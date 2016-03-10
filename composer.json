@@ -36,7 +36,7 @@
         "synergy/common": "1.0.x-dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
         "psr-0": {
