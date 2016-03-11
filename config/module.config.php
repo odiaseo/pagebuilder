@@ -143,19 +143,20 @@ return array(
         ),
 
         'invokables'         => array(
-            'pagebuilder\entity\component'       => 'PageBuilder\Entity\Component',
-            'pagebuilder\entity\page'            => 'PageBuilder\Entity\Page',
-            'pagebuilder\entity\section'         => 'PageBuilder\Entity\Section',
-            'pagebuilder\entity\site'            => 'PageBuilder\Entity\Site',
-            'pagebuilder\entity\template'        => 'PageBuilder\Entity\Template',
-            'pagebuilder\entity\theme'           => 'PageBuilder\Entity\Theme',
-            'pagebuilder\entity\setting'         => 'PageBuilder\Entity\Setting',
-            'pagebuilder\entity\redirect'        => 'PageBuilder\Entity\Redirect',
-            'pagebuilder\entity\pageTemplate'    => 'PageBuilder\Entity\Join\PageTemplate',
-            'pagebuilder\entity\siteTheme'       => 'PageBuilder\Entity\Join\SiteTheme',
-            'pagebuilder\entity\templateSection' => 'PageBuilder\Entity\Join\TemplateSection',
+            'pagebuilder\entity\component'                  => 'PageBuilder\Entity\Component',
+            'pagebuilder\entity\page'                       => 'PageBuilder\Entity\Page',
+            'pagebuilder\entity\section'                    => 'PageBuilder\Entity\Section',
+            'pagebuilder\entity\site'                       => 'PageBuilder\Entity\Site',
+            'pagebuilder\entity\template'                   => 'PageBuilder\Entity\Template',
+            'pagebuilder\entity\theme'                      => 'PageBuilder\Entity\Theme',
+            'pagebuilder\entity\setting'                    => 'PageBuilder\Entity\Setting',
+            'pagebuilder\entity\redirect'                   => 'PageBuilder\Entity\Redirect',
+            'pagebuilder\entity\pageTemplate'               => 'PageBuilder\Entity\Join\PageTemplate',
+            'pagebuilder\entity\siteTheme'                  => 'PageBuilder\Entity\Join\SiteTheme',
+            'pagebuilder\entity\templateSection'            => 'PageBuilder\Entity\Join\TemplateSection',
             //Services
-            'PageBuilder\Service\LayoutService'  => 'PageBuilder\Service\LayoutService'
+            'PageBuilder\Service\LayoutService'             => 'PageBuilder\Service\LayoutService',
+            'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\MemcachedSessionHandler::class,
         ),
         'factories'          => array(
             'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
