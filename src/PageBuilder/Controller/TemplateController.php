@@ -6,8 +6,7 @@ namespace PageBuilder\Controller;
  *
  * @package PageBuilder\Controller
  */
-class TemplateController
-    extends BaseRestfulController
+class TemplateController extends BasePageRestfulController
 {
     /**
      * Get template details

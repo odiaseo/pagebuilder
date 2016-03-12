@@ -19,6 +19,7 @@ abstract class BaseWidget extends AbstractHelper implements
     WidgetInterface
 {
     const CAT_GENERAL = 'General';
+    protected $allowEmpty = false;
     protected $id;
     protected $name;
     protected $description;
@@ -52,6 +53,22 @@ abstract class BaseWidget extends AbstractHelper implements
     public function init()
     {
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAllowEmpty()
+    {
+        return $this->allowEmpty;
+    }
+
+    /**
+     * @param boolean $allowEmpty
+     */
+    public function setAllowEmpty($allowEmpty)
+    {
+        $this->allowEmpty = $allowEmpty;
     }
 
     public function getCategory()
@@ -143,7 +160,12 @@ abstract class BaseWidget extends AbstractHelper implements
      */
     protected function getMergedOptions()
     {
-        return array_merge($this->options, $this->getAttributes()->getOptions());
+        if ($this->getAttributes()) {
+
+            return array_merge($this->options, $this->getAttributes()->getOptions());
+        }
+
+        return $this->options;
     }
 
     protected function getHelper($helper)

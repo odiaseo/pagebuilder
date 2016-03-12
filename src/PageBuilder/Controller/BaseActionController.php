@@ -17,9 +17,7 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @method translator()
  * @package Application\Controller
  */
-class BaseActionController
-    extends AbstractActionController
-    implements SiteAwareInterface, PageAwareInterface
+class BaseActionController extends AbstractActionController implements SiteAwareInterface, PageAwareInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -108,5 +106,4 @@ class BaseActionController
     {
         return $this->_log;
     }
-
 }

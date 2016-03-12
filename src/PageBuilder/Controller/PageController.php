@@ -6,8 +6,7 @@ namespace PageBuilder\Controller;
  *
  * @package PageBuilder\Controller
  */
-class PageController
-    extends BaseRestfulController
+class PageController extends BasePageRestfulController
 {
 
     /**
@@ -39,7 +38,5 @@ class PageController
         return $this->_sendPayload(
             $this->_getService($this->_pageServiceKey)->updatePageLayout($id, $data['themeId'], $layout)
         );
-
     }
-
 }

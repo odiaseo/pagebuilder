@@ -1,10 +1,13 @@
 <?php
 namespace PageBuilder\Controller;
 
-use SynergyCommon\Controller\BaseRestfulController as BaseRestController;
+use SynergyCommon\Controller\BaseRestfulController;
 
-class BaseRestfulController
-    extends BaseRestController
+/**
+ * Class BaseRestfulController
+ * @package PageBuilder\Controller
+ */
+class BasePageRestfulController extends BaseRestfulController
 {
     protected $_pageServiceKey = 'pagebuilder\service\layout';
 

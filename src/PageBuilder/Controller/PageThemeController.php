@@ -1,8 +1,10 @@
 <?php
 namespace PageBuilder\Controller;
-
-class PageThemeController
-    extends BaseRestfulController
+/**
+ * Class PageThemeController
+ * @package PageBuilder\Controller
+ */
+class PageThemeController extends BasePageRestfulController
 {
 
     /**
@@ -34,6 +36,5 @@ class PageThemeController
         return $this->_sendPayload(
             $this->_getService($this->_pageServiceKey)->updatePageThemeLayout($id, $layout)
         );
-
     }
 }
