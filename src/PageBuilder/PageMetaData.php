@@ -41,7 +41,7 @@ class PageMetaData extends AbstractOptions
      */
     protected $searchTermString = 'keyword';
     protected $strapline = '';
-    protected $searchResultRouteName = 'search/result';
+    protected $searchResultRouteName = 'google\deal-search\redirect';
     protected $noIndex = false;
 
     /**
