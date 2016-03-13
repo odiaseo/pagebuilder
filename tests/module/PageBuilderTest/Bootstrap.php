@@ -69,6 +69,9 @@ class Bootstrap
 
     public static function getServiceManager()
     {
+        if (!self::$serviceManager) {
+            self::init();
+        }
         return static::$serviceManager;
     }
 
