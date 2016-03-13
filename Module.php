@@ -95,7 +95,6 @@ class Module implements DependencyIndicatorInterface
                 'PageBuilder\Service\WidgetService'         => 'PageBuilder\Service\WidgetService',
                 'PageBuilder\Service\TemplateService'       => 'PageBuilder\Service\TemplateService',
                 'PageBuilder\WidgetDataFactory'             => 'PageBuilder\WidgetDataFactory',
-                'Zend\Session\SessionManager'               => 'Zend\Session\Service\SessionManagerFactory',
                 'AffiliateManager\Service\LocalSiteFactory' => 'AffiliateManager\Service\LocalSiteFactory',
                 'active_theme'                              => ActiveThemeFactory::class,
                 'PageBuilder\Util\Widget'                   => WidgetUtilFactory::class,

@@ -6,6 +6,7 @@
  * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
+use SynergyCommon\Service\Factory\DoctrineSessionSaveHandlerFactory;
 
 if (extension_loaded('memcached')) {
     $memcacheConfig = [
@@ -143,25 +144,27 @@ return array(
         ),
 
         'invokables'         => array(
-            'pagebuilder\entity\component'                  => 'PageBuilder\Entity\Component',
-            'pagebuilder\entity\page'                       => 'PageBuilder\Entity\Page',
-            'pagebuilder\entity\section'                    => 'PageBuilder\Entity\Section',
-            'pagebuilder\entity\site'                       => 'PageBuilder\Entity\Site',
-            'pagebuilder\entity\template'                   => 'PageBuilder\Entity\Template',
-            'pagebuilder\entity\theme'                      => 'PageBuilder\Entity\Theme',
-            'pagebuilder\entity\setting'                    => 'PageBuilder\Entity\Setting',
-            'pagebuilder\entity\redirect'                   => 'PageBuilder\Entity\Redirect',
-            'pagebuilder\entity\pageTemplate'               => 'PageBuilder\Entity\Join\PageTemplate',
-            'pagebuilder\entity\siteTheme'                  => 'PageBuilder\Entity\Join\SiteTheme',
-            'pagebuilder\entity\templateSection'            => 'PageBuilder\Entity\Join\TemplateSection',
+            'pagebuilder\entity\component'       => 'PageBuilder\Entity\Component',
+            'pagebuilder\entity\page'            => 'PageBuilder\Entity\Page',
+            'pagebuilder\entity\section'         => 'PageBuilder\Entity\Section',
+            'pagebuilder\entity\site'            => 'PageBuilder\Entity\Site',
+            'pagebuilder\entity\template'        => 'PageBuilder\Entity\Template',
+            'pagebuilder\entity\theme'           => 'PageBuilder\Entity\Theme',
+            'pagebuilder\entity\setting'         => 'PageBuilder\Entity\Setting',
+            'pagebuilder\entity\redirect'        => 'PageBuilder\Entity\Redirect',
+            'pagebuilder\entity\pageTemplate'    => 'PageBuilder\Entity\Join\PageTemplate',
+            'pagebuilder\entity\siteTheme'       => 'PageBuilder\Entity\Join\SiteTheme',
+            'pagebuilder\entity\templateSection' => 'PageBuilder\Entity\Join\TemplateSection',
             //Services
-            'PageBuilder\Service\LayoutService'             => 'PageBuilder\Service\LayoutService',
-            'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\MemcachedSessionHandler::class,
+            'PageBuilder\Service\LayoutService'  => 'PageBuilder\Service\LayoutService',
+             'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\MemcachedSessionHandler::class,
         ),
         'factories'          => array(
-            'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
-            'PageBuilder\Config\JqGridConfigFactory' => 'PageBuilder\Config\JqGridConfigFactory',
-            'Zend\Session\Config\ConfigInterface'    => 'Zend\Session\Service\SessionConfigFactory',
+            'PageBuilder\DataProvider\GridDefault'          => 'PageBuilder\DataProvider\GridDefault',
+            'PageBuilder\Config\JqGridConfigFactory'        => 'PageBuilder\Config\JqGridConfigFactory',
+            'Zend\Session\Config\ConfigInterface'           => 'Zend\Session\Service\SessionConfigFactory',
+            'Zend\Session\SessionManager'                   => 'Zend\Session\Service\SessionManagerFactory',
+            //'Zend\Session\SaveHandler\SaveHandlerInterface' => DoctrineSessionSaveHandlerFactory::class,
         )
     ),
     'view_manager'    => array(
@@ -373,12 +376,12 @@ return array(
             'namespace' => 'pagebuilder'
         )
     ),
-    'session'         => [
-        'config' => [
-            'options' => $memcacheConfig
-        ],
-    ],
 
-    'session_config'  => $memcacheConfig,
+    'session_config'  => array_merge(
+        $memcacheConfig,
+        [
+            'remember_me_seconds' => 7200
+        ]
+    ),
     'super_sites'     => []
 );
