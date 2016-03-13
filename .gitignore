@@ -2,6 +2,5 @@ vendor/
 .idea/
 data/
 autoload/
-application.config.php
 composer.phar
 composer.lock
