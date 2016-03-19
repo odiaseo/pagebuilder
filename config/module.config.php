@@ -8,15 +8,15 @@
  */
 use SynergyCommon\Service\Factory\DoctrineSessionSaveHandlerFactory;
 
-if (extension_loaded('memcache')) {
-    $memcacheConfig = [
-        'phpSaveHandler' => 'memcache',
-        'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
-    ];
-} elseif (extension_loaded('memcached')) {
+if (extension_loaded('memcached')) {
     $memcacheConfig = [
         'phpSaveHandler' => 'memcached',
         'savePath'       => '127.0.0.1:11211?weight=1&timeout=1',
+    ];
+} elseif (extension_loaded('memcache')) {
+    $memcacheConfig = [
+        'phpSaveHandler' => 'memcache',
+        'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
     ];
 } else {
     $memcacheConfig = [];
