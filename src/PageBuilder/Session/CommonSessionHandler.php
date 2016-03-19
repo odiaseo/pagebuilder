@@ -7,7 +7,7 @@ use Zend\Session\SaveHandler\SaveHandlerInterface;
  * Class MemcachedSession
  * @package PageBuilder\Session
  */
-class MemcachedSessionHandler extends \SessionHandler implements SaveHandlerInterface
+class CommonSessionHandler extends \SessionHandler implements SaveHandlerInterface
 {
     /**
      * @param string $sessionId

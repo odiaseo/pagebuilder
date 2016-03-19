@@ -164,7 +164,7 @@ return array(
             'pagebuilder\entity\templateSection'            => 'PageBuilder\Entity\Join\TemplateSection',
             //Services
             'PageBuilder\Service\LayoutService'             => 'PageBuilder\Service\LayoutService',
-            //'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\MemcachedSessionHandler::class,
+            'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\CommonSessionHandler::class,
         ),
         'factories'          => array(
             'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
