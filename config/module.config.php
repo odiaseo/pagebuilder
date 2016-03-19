@@ -8,7 +8,12 @@
  */
 use SynergyCommon\Service\Factory\DoctrineSessionSaveHandlerFactory;
 
-if (extension_loaded('memcached')) {
+if (extension_loaded('redis')) {
+    $memcacheConfig = [
+        'phpSaveHandler' => 'redis',
+        'savePath'       => 'tcp://127.0.0.1:6379',
+    ];
+} elseif (extension_loaded('memcached')) {
     $memcacheConfig = [
         'phpSaveHandler' => 'memcached',
         'savePath'       => '127.0.0.1:11211?weight=1&timeout=1',
@@ -159,7 +164,7 @@ return array(
             'pagebuilder\entity\templateSection'            => 'PageBuilder\Entity\Join\TemplateSection',
             //Services
             'PageBuilder\Service\LayoutService'             => 'PageBuilder\Service\LayoutService',
-            'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\MemcachedSessionHandler::class,
+            //'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\MemcachedSessionHandler::class,
         ),
         'factories'          => array(
             'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
