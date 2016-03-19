@@ -11,7 +11,7 @@ use SynergyCommon\Service\Factory\DoctrineSessionSaveHandlerFactory;
 if (extension_loaded('redis')) {
     $memcacheConfig = [
         'phpSaveHandler' => 'redis',
-        'savePath'       => 'tcp://127.0.0.1:6379',
+        'savePath'       => '127.0.0.1:6379',
     ];
 } elseif (extension_loaded('memcached')) {
     $memcacheConfig = [
