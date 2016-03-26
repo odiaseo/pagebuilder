@@ -92,7 +92,7 @@ class PageTemplateModel extends BaseModel
             $query->andWhere('e.isActive = :active');
 
             if ($siteId) {
-                $this->disableSiteFilter();
+                //$this->disableSiteFilter();
                 $query->andWhere($query->expr()->eq('e.site', $siteId));
             }
 
