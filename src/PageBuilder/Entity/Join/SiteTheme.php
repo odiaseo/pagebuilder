@@ -13,8 +13,7 @@ use SynergyCommon\Entity\AbstractEntity;
  * "theme_id", "is_active"})})
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
-class SiteTheme
-    extends AbstractEntity
+class SiteTheme extends AbstractEntity
 {
     /**
      * @ORM\Id
