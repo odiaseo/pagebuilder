@@ -383,11 +383,22 @@ return array(
             'namespace' => 'pagebuilder'
         )
     ),
-
+    'session'         => [
+        'config'     => [
+            'authentication_expiration_time' => 300
+        ],
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    ],
     'session_config'  => array_merge(
         $memcacheConfig,
         [
-            'remember_me_seconds' => 7200
+            'remember_me_seconds' => 7200,
+            'cookie_httponly'     => true,
+            'cookie_lifetime'     => 7200,
+            'gc_maxlifetime'      => 7200,
         ]
     ),
     'super_sites'     => []
