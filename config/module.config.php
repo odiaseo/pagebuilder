@@ -387,10 +387,6 @@ return array(
         'config'     => [
             'authentication_expiration_time' => 300
         ],
-        'validators' => array(
-            'Zend\Session\Validator\RemoteAddr',
-            'Zend\Session\Validator\HttpUserAgent',
-        ),
     ],
     'session_config'  => array_merge(
         $memcacheConfig,
