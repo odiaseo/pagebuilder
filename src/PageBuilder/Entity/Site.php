@@ -109,7 +109,7 @@ class Site extends BaseSite
      */
     protected $redirects;
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=25, nullable=true, name="ip_address")
      */
     protected $ipAddress;
 
@@ -129,6 +129,9 @@ class Site extends BaseSite
      */
     public function getIpAddress()
     {
+        if (empty($this->ipAddress)) {
+            $this->ensureIpAddressIsSet();
+        }
         return $this->ipAddress;
     }
 
