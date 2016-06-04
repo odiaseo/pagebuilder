@@ -129,9 +129,6 @@ class Site extends BaseSite
      */
     public function getIpAddress()
     {
-        if (empty($this->ipAddress)) {
-            $this->ensureIpAddressIsSet();
-        }
         return $this->ipAddress;
     }
 
