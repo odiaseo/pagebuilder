@@ -367,9 +367,9 @@ class Site extends BaseSite
     public function ensureIpAddressIsSet()
     {
         if (empty($this->ipAddress) and $this->domain) {
-            $ipAddress = gethostbyname($this->getDisplayDomain());
+            $ipAddress = gethostbyname($this->domain);
             if ($this->domain != $ipAddress) {
-                $this->ipAddress = $ipAddress;
+                $this->setIpAddress($ipAddress);
             }
         }
     }
