@@ -108,6 +108,10 @@ class Site extends BaseSite
      * @ORM\ManyToMany(targetEntity="Redirect", mappedBy="sites")
      */
     protected $redirects;
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    protected $ipAddress;
 
     public function __construct()
     {
@@ -118,6 +122,22 @@ class Site extends BaseSite
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIpAddress()
+    {
+        return $this->ipAddress;
+    }
+
+    /**
+     * @param mixed $ipAddress
+     */
+    public function setIpAddress($ipAddress)
+    {
+        $this->ipAddress = $ipAddress;
     }
 
     /**
@@ -358,6 +378,20 @@ class Site extends BaseSite
         }
 
         return '';
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function ensureIpAddressIsSet()
+    {
+        if (empty($this->ipAddress) and $this->domain) {
+            $ipAddress = gethostbyname($this->getDisplayDomain());
+            if ($this->domain != $ipAddress) {
+                $this->ipAddress = $ipAddress;
+            }
+        }
     }
 
     /**
