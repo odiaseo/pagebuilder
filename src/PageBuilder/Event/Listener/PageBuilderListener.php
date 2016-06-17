@@ -49,8 +49,9 @@ class PageBuilderListener implements ListenerAggregateInterface
     public function renderErrorPage()
     {
         $errorPage = $this->findErrorPage();
-
-        if ($errorPage) {
+        $request   = $this->_serviceManager->get('request');
+        
+        if ($errorPage and $request instanceof Request) {
             /** @var $viewHelperManager \Zend\View\HelperPluginManager */
             $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
 
