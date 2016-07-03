@@ -35,7 +35,7 @@ class BaseModel extends AbstractModel
         return $this->_entityInstance;
     }
 
-    protected function disableSiteFilter()
+    public function disableSiteFilter()
     {
         /** @var Site $site */
         if ($this->getServiceLocator()->has('active\site')) {
