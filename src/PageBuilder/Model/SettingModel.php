@@ -2,6 +2,7 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\QueryBuilder;
+use PageBuilder\Entity\Setting;
 use PageBuilder\Entity\Site;
 
 /**
@@ -36,16 +37,31 @@ class SettingModel extends BaseModel
 
     /**
      * @param $siteId
-     *
      * @return array
      */
     public function getSettingBySiteId($siteId)
     {
         /** @var $query QueryBuilder */
-        $qb = $this->getFindByQueryBuilder(array('dataSource' => $siteId), null, 'e');
+        $params = ['dataSource' => $siteId];
+        $qb     = $this->getFindByQueryBuilder($params, null, 'e');
         $qb->addSelect('k')
             ->innerJoin('e.settingKey', 'k');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param $settingKeyId
+     * @param array $params
+     * @return Setting
+     */
+    public function getSettingByKey($settingKeyId, array $params)
+    {
+        /** @var $query QueryBuilder */
+        $params['settingKey'] = $settingKeyId;
+
+        $qb = $this->getFindByQueryBuilder($params, null, 'e');
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
