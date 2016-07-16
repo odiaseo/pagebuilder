@@ -252,6 +252,10 @@ class Theme extends CommonBaseEntity
     public function getActiveColourScheme()
     {
         /** @var Join\SiteTheme $siteTheme */
+        if (!$this->getSiteThemes()) {
+            return '';
+        }
+
         foreach ($this->getSiteThemes() as $siteTheme) {
             if ($siteTheme->getIsActive()) {
                 return $siteTheme->getColourScheme();
