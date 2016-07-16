@@ -45,10 +45,7 @@ class Theme extends CommonBaseEntity
      * @ORM\Column(name="body_class",type="string", length=30, nullable=true)
      */
     protected $bodyClass;
-    /**
-     * @ORM\Column(name="colour_scheme",type="string", length=150, nullable=true)
-     */
-    protected $colourScheme;
+
     /**
      * @ORM\Column(name="background_image",type="string", nullable=true)
      */
@@ -250,18 +247,16 @@ class Theme extends CommonBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return mixed|string
      */
-    public function getColourScheme()
+    public function getActiveColourScheme()
     {
-        return $this->colourScheme;
-    }
-
-    /**
-     * @param mixed $colourScheme
-     */
-    public function setColourScheme($colourScheme)
-    {
-        $this->colourScheme = $colourScheme;
+        /** @var Join\SiteTheme $siteTheme */
+        foreach ($this->getSiteThemes() as $siteTheme) {
+            if ($siteTheme->getIsActive()) {
+                return $siteTheme->getColourScheme();
+            }
+        }
+        return '';
     }
 }

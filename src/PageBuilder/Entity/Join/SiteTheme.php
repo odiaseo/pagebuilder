@@ -37,6 +37,10 @@ class SiteTheme extends AbstractEntity
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $siteId;
+    /**
+     * @ORM\Column(name="colour_scheme",type="string", length=50, nullable=true)
+     */
+    protected $colourScheme;
 
     public function setId($id)
     {
@@ -76,5 +80,21 @@ class SiteTheme extends AbstractEntity
     public function getThemeId()
     {
         return $this->themeId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColourScheme()
+    {
+        return $this->colourScheme;
+    }
+
+    /**
+     * @param mixed $colourScheme
+     */
+    public function setColourScheme($colourScheme)
+    {
+        $this->colourScheme = $colourScheme;
     }
 }
