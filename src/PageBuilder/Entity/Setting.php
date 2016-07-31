@@ -26,7 +26,7 @@ class Setting extends CommonEntity
      */
     protected $settingKey;
     /**
-     * @ORM\Column(type="text", name="setting_value")
+     * @ORM\Column(type="string", name="setting_value", length=512)
      */
     protected $settingValue = '';
     /**

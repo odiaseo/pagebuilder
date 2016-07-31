@@ -101,6 +101,9 @@ class JqGridConfigFactory implements FactoryInterface
                         'edithidden' => true
                     )
                 ),
+                'settingValue' => array(
+                    'hidden' => false
+                ),
                 'description'      => array(
                     'hidden'    => true,
                     'editrules' => array(
