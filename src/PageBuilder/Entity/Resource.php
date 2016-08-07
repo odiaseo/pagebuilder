@@ -108,11 +108,8 @@ class Resource extends CommonEntity
                 );
                 break;
             case 'link':
-                $html = sprintf(
-                    '<a href="%s" target="_blank" rel="nofollow" class="resource-link">'.$this->getTitle().
-                    ' <i class="icon-mail-forward"></i></a>',
-                    $this->getResourceUrl()
-                );
+                $html = '<a href="' . $this->getResourceUrl() . '" target="_blank" rel="nofollow" class="resource-link">' . $this->getTitle() .
+                    ' <i class="icon-mail-forward"></i></a>';
                 break;
             default:
                 $html = '';
