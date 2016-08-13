@@ -32,7 +32,7 @@ class SiteRank extends CommonEntity
     protected $title;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="integer")
      */
     protected $popularity;
     /**
