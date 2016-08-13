@@ -108,6 +108,11 @@ class Site extends BaseSite
      * @ORM\ManyToMany(targetEntity="Redirect", mappedBy="sites")
      */
     protected $redirects;
+    /**
+     * @ORM\Cache("READ_ONLY")
+     * @ORM\OneToMany(targetEntity="SiteRank", mappedBy="site", cascade="persist")
+     */
+    protected $siteRanks;
 
     public function __construct()
     {
@@ -118,6 +123,23 @@ class Site extends BaseSite
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
+        $this->siteRanks   = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSiteRanks()
+    {
+        return $this->siteRanks;
+    }
+
+    /**
+     * @param mixed $siteRanks
+     */
+    public function setSiteRanks($siteRanks)
+    {
+        $this->siteRanks = $siteRanks;
     }
 
     /**
