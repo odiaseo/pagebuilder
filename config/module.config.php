@@ -154,6 +154,7 @@ return array(
             'pagebuilder\entity\component'                  => 'PageBuilder\Entity\Component',
             'pagebuilder\entity\page'                       => 'PageBuilder\Entity\Page',
             'pagebuilder\entity\section'                    => 'PageBuilder\Entity\Section',
+            'pagebuilder\entity\siteRank'                    => 'PageBuilder\Entity\SiteRank',
             'pagebuilder\entity\site'                       => 'PageBuilder\Entity\Site',
             'pagebuilder\entity\template'                   => 'PageBuilder\Entity\Template',
             'pagebuilder\entity\theme'                      => 'PageBuilder\Entity\Theme',

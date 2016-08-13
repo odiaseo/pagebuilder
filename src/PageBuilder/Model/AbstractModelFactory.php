@@ -2,6 +2,7 @@
 namespace PageBuilder\Model;
 
 use SynergyCommon\Entity\AbstractEntity;
+use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -52,12 +53,13 @@ class AbstractModelFactory implements AbstractFactoryInterface
         /** @var $authService \Zend\Authentication\AuthenticationService */
         $modelId = str_replace($this->_configPrefix, '', $requestedName);
         $idParts = explode('\\', $modelId);
+        $filter = new DashToCamelCase();
 
         if ($idParts[0] == 'join') {
-            $modelName = __NAMESPACE__ . '\\' . ucfirst($idParts[1]) . 'Model';
+            $modelName = __NAMESPACE__ . '\\' . $filter->filter($idParts[1]) . 'Model';
             $entity    = $serviceLocator->get('pagebuilder\entity\\' . $idParts[1]);
         } else {
-            $modelName = __NAMESPACE__ . '\\' . ucfirst($modelId) . 'Model';
+            $modelName = __NAMESPACE__ . '\\' . $filter->filter($modelId) . 'Model';
             /** @var AbstractEntity $entity */
             $entity = $serviceLocator->get('pagebuilder\entity\\' . $modelId);
         }

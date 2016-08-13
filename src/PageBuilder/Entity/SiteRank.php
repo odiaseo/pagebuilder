@@ -9,7 +9,10 @@ use SynergyCommon\Entity\BaseEntity as CommonEntity;
  * Alexa Ranking By Day
  *
  * @ORM\Entity
- * @ORM\Table(name="SiteRank")
+ * @ORM\Table(name="SiteRank",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="site_ranked_at", columns={
+ *         "site_id", "ranked_at"
+ *     })})
  * @ORM\HasLifecycleCallbacks
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
@@ -124,5 +127,21 @@ class SiteRank extends CommonEntity
     public function setPopularity($popularity)
     {
         $this->popularity = $popularity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRankedAt()
+    {
+        return $this->rankedAt;
+    }
+
+    /**
+     * @param mixed $rankedAt
+     */
+    public function setRankedAt($rankedAt)
+    {
+        $this->rankedAt = $rankedAt;
     }
 }
