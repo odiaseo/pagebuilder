@@ -83,6 +83,7 @@ class SiteModel extends BaseModel
         }
 
         $query->andWhere('e.isAdmin = :zero')
+            
             ->setParameters(
                 array(
                     ':active'   => 1,
