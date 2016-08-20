@@ -115,7 +115,7 @@ class Site extends BaseSite
     protected $siteRanks;
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\OneToOne(targetEntity="Site")
+     * @ORM\ManyToOne(targetEntity="Site")
      * @ORM\JoinColumn(name="voucher_site_id", referencedColumnName="id", nullable=true)
      */
     protected $voucherSite;
