@@ -113,6 +113,12 @@ class Site extends BaseSite
      * @ORM\OneToMany(targetEntity="SiteRank", mappedBy="site", cascade="persist")
      */
     protected $siteRanks;
+    /**
+     * @ORM\Cache("READ_ONLY")
+     * @ORM\OneToOne(targetEntity="Site")
+     * @ORM\JoinColumn(name="voucher_site_id", referencedColumnName="id", nullable=true)
+     */
+    protected $voucherSite;
 
     public function __construct()
     {
@@ -124,6 +130,22 @@ class Site extends BaseSite
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
         $this->siteRanks   = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVoucherSite()
+    {
+        return $this->voucherSite;
+    }
+
+    /**
+     * @param mixed $voucherSite
+     */
+    public function setVoucherSite($voucherSite)
+    {
+        $this->voucherSite = $voucherSite;
     }
 
     /**
