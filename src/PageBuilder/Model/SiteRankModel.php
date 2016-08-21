@@ -14,12 +14,14 @@ class SiteRankModel extends BaseModel
      * @param $fromDate
      * @param $toDate
      * @param $filter
+     * @param int $limit
      *
      * @return array
      */
-    public function getReportQuery($siteId, $fromDate, $toDate, $filter)
+    public function getReportQuery($siteId, $fromDate, $toDate, $filter, $limit = null)
     {
-        $filter = strtolower($filter);
+        $siteList = [];
+        $filter   = strtolower($filter);
 
         if (empty($fromDate)) {
             $fromDate = (new DateTime('first day of the year'))->format('Y-m-d');
@@ -32,9 +34,9 @@ class SiteRankModel extends BaseModel
         $builder = $this->getEntityManager()->createQuerybuilder();
         $query   = $builder->select(
             [
-                'e.popularity total',
+                '(e.popularity) total',
                 'DATE(e.rankedAt) regDay',
-                's.locale domain',
+                's.domain domain',
                 '1 valid',
                 'e.rankedAt',
             ]
@@ -43,20 +45,33 @@ class SiteRankModel extends BaseModel
             ->where('e.rankedAt >= :start')
             ->andWhere('e.rankedAt <= :end')
             ->andWhere('s.siteType = :siteType')
-            ->addOrderBy('e.popularity')
             ->addOrderBy('e.rankedAt')
-            ->addGroupBy('s.domain')
+            ->addOrderBy('e.popularity')
+            ->addGroupBy('e.site')
             ->setParameters(
                 [
                     ':start'    => $fromDate,
                     ':end'      => $toDate,
                     ':siteType' => 1
                 ]
-            )->setMaxResults(10);
+            );
 
-        if ($siteId) {
-            $query->andWhere('e.site = :site')
-                ->setParameter(':site', $siteId);
+        if ($limit) {
+            $subQueryBuilder = $builder = $this->getEntityManager()->createQuerybuilder();
+            $subQuery        = $subQueryBuilder->select('f.id, s.id site_id')
+                ->from($this->getEntity(), 'f')
+                ->innerJoin('f.site', 's')
+                ->groupBy('s.id')
+                ->orderBy('f.popularity', 'ASC')
+                ->setMaxResults($limit);
+
+            foreach ($subQuery->getQuery()->getArrayResult() as $item) {
+                $siteList[] = $item['site_id'];
+            }
+
+            if ($siteList) {
+                $query->andWhere($builder->expr()->in('s.id', $siteList));
+            }
         }
         switch ($filter) {
             case 'year':
