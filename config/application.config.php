@@ -1,6 +1,4 @@
 <?php
-use SynergyCommon\Service\ServiceLocatorAwareInitializer;
-use SynergyCommon\Service\ServiceManagerAwareInitializer;
 
 if (!defined('APPLICATION_ENV')) {
     if (isset($_SERVER['APPLICATION_ENV'])) {
@@ -13,16 +11,7 @@ if (!defined('APPLICATION_ENV')) {
 }
 
 \ini_set('default_charset', 'utf-8');
-
 date_default_timezone_set('UTC');
-
-$modules = array(
-    'DoctrineModule',
-    'DoctrineORMModule',
-    'SynergyCommon',
-    'SynergyDataGrid',
-    'PageBuilder',
-);
 
 if (APPLICATION_ENV == 'development') {
     error_reporting(E_ALL);
@@ -33,7 +22,34 @@ if (APPLICATION_ENV == 'development') {
 
 return array(
     // This should be an array of module namespaces used in the application.
-    'modules'                 => $modules,
+    'modules' => array(
+        'Zend\Log',
+        'Zend\Mail',
+        'Zend\Mvc\Console',
+        'Zend\Mvc\I18n',
+        'Zend\I18n',
+        'Zend\Mvc\Plugin\FilePrg',
+        'Zend\Mvc\Plugin\FlashMessenger',
+        'Zend\Mvc\Plugin\Identity',
+        'Zend\Mvc\Plugin\Prg',
+        'Zend\Navigation',
+        'Zend\Paginator',
+        'Zend\Serializer',
+        'Zend\ServiceManager\Di',
+        'Zend\Session',
+        'Zend\Router',
+        'Zend\Form',
+        'Zend\InputFilter',
+        'Zend\Filter',
+        'Zend\Validator',
+        'Zend\Hydrator',
+        'Zend\Cache',
+        'DoctrineModule',
+        'DoctrineORMModule',
+        'SynergyCommon',
+        'SynergyDataGrid',
+        'PageBuilder',
+    ),
 
     'module_listener_options' => array(
         'module_paths'             => array(
@@ -47,10 +63,4 @@ return array(
         'module_map_cache_enabled' => false,
         'cache_dir'                => 'data/cache',
     ),
-    'service_manager'         => [
-        'initializers' => [
-            'ServiceManagerAwareInitializer' => ServiceManagerAwareInitializer::class,
-            'ServiceLocatorAwareInitializer' => ServiceLocatorAwareInitializer::class,
-        ],
-    ]
 );

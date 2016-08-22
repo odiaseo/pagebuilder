@@ -1,17 +1,24 @@
 <?php
 namespace PageBuilder\Service;
 
-use PageBuilder\Entity\Join\PageTheme;
 use PageBuilder\Entity\Join\TemplateSection;
 use PageBuilder\Model\PageModel;
 use PageBuilder\View\Helper\PageBuilder;
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 
-class LayoutService implements ServiceManagerAwareInterface
+/**
+ * Class LayoutService
+ * @package PageBuilder\Service
+ */
+class LayoutService
 {
     /** @var  \Zend\ServiceManager\ServiceManager */
     protected $_serviceManager;
+
+    public function __construct(ServiceManager $serviceManager)
+    {
+        $this->setServiceManager($serviceManager);
+    }
 
     public function setServiceManager(ServiceManager $serviceManager)
     {
@@ -94,7 +101,6 @@ class LayoutService implements ServiceManagerAwareInterface
         /** @var $themeModel \PageBuilder\Model\PageTemplateModel */
         $themeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
 
-        /** @var $pageTheme \PageBuilder\Entity\Join\PageTheme */
         $pageTheme = $themeModel->findObject($pageThemeId);
 
         return $this->getPageLayout($pageTheme->getPageId()->getId(), $pageTheme->getThemeId()->getId());
@@ -138,24 +144,15 @@ class LayoutService implements ServiceManagerAwareInterface
 
         );
 
-        $themeId = null;
-        /** @var $pageTheme \PageBuilder\Entity\Join\PageTheme */
+        $themeId = $pageTheme = null;
         if ($pageThemeId) {
             /** @var $pageThemeModel \PageBuilder\Model\BaseModel */
             $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
             $pageTheme      = $pageThemeModel->findObject($pageThemeId);
-            $themeId        = $pageTheme->getThemeId()->getId();
-        } else {
-
-            foreach ($page->getPageThemes() as $pageTheme) {
-                if ($pageTheme->getIsActive()) {
-                    $themeId = $pageTheme->getThemeId()->getId();
-                    break;
-                }
-            }
+            $themeId        = $pageTheme->getId();
         }
 
-        if ($themeId) {
+        if ($themeId and $pageTheme) {
             $details['themeId'] = $themeId;
 
             $details['layout']    = $pageTheme->getLayout();
@@ -167,7 +164,6 @@ class LayoutService implements ServiceManagerAwareInterface
             } elseif ($temp = $page->getParent()->getTemplate()) {
                 $sections = $temp->getTemplateSections()->toArray();
             }
-
         }
         /** @var $section \PageBuilder\Entity\Join\TemplateSection */
         foreach ($sections as $section) {
@@ -196,7 +192,7 @@ class LayoutService implements ServiceManagerAwareInterface
         $widgetUtil = $this->_serviceManager->get('util\widget');
 
         $widgetList = $widgetUtil->getWidgetList();
-        $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
+        $urlHelper  = $this->_serviceManager->get('ViewHelperManager')->get('url');
 
         $return = array(
             'error'     => $error,
@@ -231,56 +227,6 @@ class LayoutService implements ServiceManagerAwareInterface
         return $return;
     }
 
-    public function updatePageThemeLayout($pageThemeId, $layout)
-    {
-        try {
-            /** @var $service \PageBuilder\Model\PageModel */
-            $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
-
-            /** @var \PageBuilder\Entity\Join\PageTheme $pageTheme */
-            $pageTheme = $pageThemeModel->find($pageThemeId);
-            $pageTheme->setLayout($layout);
-            $pageThemeModel->save($pageTheme);
-
-            return array(
-                'error'   => false,
-                'message' => sprintf('Page Theme #%d updated successfully', $pageThemeId)
-            );
-        } catch (\Exception $exception) {
-            return array(
-                'error'   => true,
-                'message' => $exception->getMessage()
-            );
-        }
-    }
-
-    public function updatePageLayout($pageId, $themeId, $layout)
-    {
-        try {
-            /** @var $service \PageBuilder\Model\PageModel */
-            $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
-
-            /** @var \PageBuilder\Entity\Join\PageTheme $pageTheme */
-            if (!$pageTheme = $pageThemeModel->find($themeId)) {
-                $pageTheme = new PageTheme();
-                $pageTheme->setPageId($pageId);
-                $pageTheme->setThemeId($themeId);
-            }
-            $pageTheme->setLayout($layout);
-
-            $pageThemeModel->save($pageTheme);
-
-            return array(
-                'error'   => false,
-                'message' => sprintf('Page #%d updated successfully', $pageId)
-            );
-        } catch (\Exception $exception) {
-            return array(
-                'error'   => true,
-                'message' => $exception->getMessage()
-            );
-        }
-    }
 
     public function getTemplateLayout($templateId)
     {
@@ -335,7 +281,7 @@ class LayoutService implements ServiceManagerAwareInterface
         /** @var $widgetUtil \PageBuilder\Util\Widget */
         $widgetUtil = $this->_serviceManager->get('util\widget');
         $widgetList = $widgetUtil->getWidgetList();
-        $urlHelper  = $this->_serviceManager->get('viewhelpermanager')->get('url');
+        $urlHelper  = $this->_serviceManager->get('ViewHelperManager')->get('url');
 
         $return = array(
             'error'     => $error,
@@ -394,7 +340,7 @@ class LayoutService implements ServiceManagerAwareInterface
     {
         $tagList = array();
         /** @var $builder \PageBuilder\View\Helper\PageBuilder */
-        $builder = $this->_serviceManager->get('viewhelpermanager')->get('buildpage');
+        $builder = $this->_serviceManager->get('ViewHelperManager')->get('buildPage');
 
         foreach ($builder->getOptions()->getTags() as $type => $list) {
             asort($list);

@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilder\Service;
 
+use Interop\Container\ContainerInterface;
 use PageBuilder\Entity\Site;
 use PageBuilder\Model\SiteModel;
 use SynergyCommon\Exception\MissingArgumentException;
@@ -9,9 +10,7 @@ use SynergyCommon\ModelTrait\LocaleAwareTrait;
 use SynergyCommon\Util;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
-use Zend\Console\Request;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Session\Container;
 
 /**
@@ -25,12 +24,13 @@ class LocalSiteFactory implements FactoryInterface
     const CLIENT_DOMAIN_KEY = 'client_domain';
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
+     * @param ContainerInterface $serviceLocator
+     * @param string $requestedName
+     * @param array|null $options
      * @return mixed|Site
      * @throws MissingArgumentException
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         /** @var  $serviceLocator \Zend\Servicemanager\ServiceManager */
         $request = $serviceLocator->get('application')->getRequest();

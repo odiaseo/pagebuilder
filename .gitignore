@@ -3,4 +3,6 @@ vendor/
 data/
 autoload/
 composer.phar
-composer.lock
+build
+*.local.xml
+coverage-report

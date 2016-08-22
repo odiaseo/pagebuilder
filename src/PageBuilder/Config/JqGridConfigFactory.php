@@ -1,9 +1,9 @@
 <?php
 namespace PageBuilder\Config;
 
+use Interop\Container\ContainerInterface;
 use Zend\Json\Expr;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class JqGridConfigFactory
@@ -15,13 +15,12 @@ class JqGridConfigFactory implements FactoryInterface
     const DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return array
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $datetime = array(
             'edittype'      => 'date',
@@ -101,7 +100,7 @@ class JqGridConfigFactory implements FactoryInterface
                         'edithidden' => true
                     )
                 ),
-                'settingValue' => array(
+                'settingValue'     => array(
                     'hidden' => false
                 ),
                 'description'      => array(

@@ -75,7 +75,6 @@ class Page extends BasePage
     {
         parent::__construct();
         $this->children     = new ArrayCollection();
-        $this->pageThemes   = new ArrayCollection();
         $this->sites        = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->resources    = new ArrayCollection();
@@ -171,16 +170,6 @@ class Page extends BasePage
     public function getChildren()
     {
         return $this->children;
-    }
-
-    public function setPageThemes($pageThemes)
-    {
-        $this->pageThemes = $pageThemes;
-    }
-
-    public function getPageThemes()
-    {
-        return $this->pageThemes;
     }
 
     public function setParent($parent)

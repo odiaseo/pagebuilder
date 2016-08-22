@@ -6,7 +6,6 @@
  * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-use SynergyCommon\Service\Factory\DoctrineSessionSaveHandlerFactory;
 
 if (extension_loaded('redis')) {
     $memcacheConfig = [
@@ -28,20 +27,10 @@ if (extension_loaded('redis')) {
 }
 
 return array(
-
-    'controllers'     => array(
-        'invokables' => array(
-            'PageBuilder\Controller\Page'            => 'PageBuilder\Controller\PageController',
-            'PageBuilder\Controller\PageTheme'       => 'PageBuilder\Controller\PageThemeController',
-            'PageBuilder\Controller\Index'           => 'PageBuilder\Controller\IndexController',
-            'PageBuilder\Controller\TemplateSection' => 'PageBuilder\Controller\TemplateSectionController',
-            'PageBuilder\Controller\Template'        => 'PageBuilder\Controller\TemplateController',
-        ),
-    ),
     'router'          => array(
         'routes' => array(
             'pagebuilder\home'  => array(
-                'type'    => 'Zend\Mvc\Router\Http\Literal',
+                'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/pagebuilder-app',
                     'defaults' => array(
@@ -51,7 +40,7 @@ return array(
                 ),
             ),
             'pagebuilder\admin' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Literal',
+                'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/pagebuilder/admin',
                     'defaults' => array(
@@ -68,20 +57,6 @@ return array(
                         '__NAMESPACE__' => 'PageBuilder\Controller',
                         'module'        => 'page-builder',
                         'controller'    => 'PageBuilder\Controller\Page'
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+'
-                    ),
-                )
-            ),
-            'builder\theme'     => array(
-                'type'    => 'Segment',
-                'options' => array(
-                    'route'       => '/pagebuilder/layout/theme[/:id]',
-                    'defaults'    => array(
-                        '__NAMESPACE__' => 'PageBuilder\Controller',
-                        'module'        => 'page-builder',
-                        'controller'    => 'PageBuilder\Controller\PageTheme'
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+'
@@ -150,24 +125,11 @@ return array(
             'SynergyCommon\Entity\AbstractEntityFactory',
         ),
 
-        'invokables'         => array(
-            'pagebuilder\entity\component'                  => 'PageBuilder\Entity\Component',
-            'pagebuilder\entity\page'                       => 'PageBuilder\Entity\Page',
-            'pagebuilder\entity\section'                    => 'PageBuilder\Entity\Section',
-            'pagebuilder\entity\siteRank'                    => 'PageBuilder\Entity\SiteRank',
-            'pagebuilder\entity\site'                       => 'PageBuilder\Entity\Site',
-            'pagebuilder\entity\template'                   => 'PageBuilder\Entity\Template',
-            'pagebuilder\entity\theme'                      => 'PageBuilder\Entity\Theme',
-            'pagebuilder\entity\setting'                    => 'PageBuilder\Entity\Setting',
-            'pagebuilder\entity\redirect'                   => 'PageBuilder\Entity\Redirect',
-            'pagebuilder\entity\pageTemplate'               => 'PageBuilder\Entity\Join\PageTemplate',
-            'pagebuilder\entity\siteTheme'                  => 'PageBuilder\Entity\Join\SiteTheme',
-            'pagebuilder\entity\templateSection'            => 'PageBuilder\Entity\Join\TemplateSection',
-            //Services
-            'PageBuilder\Service\LayoutService'             => 'PageBuilder\Service\LayoutService',
+        'invokables' => array(
             'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\CommonSessionHandler::class,
         ),
-        'factories'          => array(
+        'factories'  => array(
+            'PageBuilder\Service\LayoutService'      => 'PageBuilder\Service\LayoutServiceFactory',
             'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
             'PageBuilder\Config\JqGridConfigFactory' => 'PageBuilder\Config\JqGridConfigFactory',
             'Zend\Session\Config\ConfigInterface'    => 'Zend\Session\Service\SessionConfigFactory',
@@ -385,7 +347,7 @@ return array(
         )
     ),
     'session'         => [
-        'config'     => [
+        'config' => [
             'authentication_expiration_time' => 300
         ],
     ],

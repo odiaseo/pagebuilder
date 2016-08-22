@@ -1,11 +1,10 @@
 <?php
 namespace PageBuilder\View\Helper;
 
+use Interop\Container\ContainerInterface;
 use PageBuilder\FormatterInterface;
 use PageBuilder\View\Helper\Config\PageBuilderConfig;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\ServiceManager\InitializerInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Initializer\InitializerInterface;
 
 /**
  * Class WidgetInitializers
@@ -14,16 +13,13 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class PageBuilderInitializer implements InitializerInterface
 {
     /**
-     * Initialize
-     *
-     * @param $helper
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $serviceLocator
+     * @param object $helper
+     * @return bool
      */
-    public function initialize($helper, ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceManager, $helper)
     {
         /** @var $serviceManager \Zend\ServiceManager\ServiceManager */
-        $serviceManager = $serviceLocator->getServicelocator();
         if ($helper instanceof PageBuilder) {
             $config = $serviceManager->get('config');
 

@@ -3,8 +3,11 @@ namespace PageBuilder;
 
 use Zend\Stdlib\AbstractOptions;
 
-class WidgetData
-    extends AbstractOptions
+/**
+ * Class WidgetData
+ * @package PageBuilder
+ */
+class WidgetData extends AbstractOptions
 {
     /** @var \PageBuilder\View\TagAttributes */
     public $attributes;

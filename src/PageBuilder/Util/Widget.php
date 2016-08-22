@@ -3,14 +3,13 @@
 namespace PageBuilder\Util;
 
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 
 /**
  * Class Widget
  *
  * @package PageBuilder\Util
  */
-class Widget implements ServiceManagerAwareInterface
+class Widget
 {
     const CACHE_LOCATION = 'data/cache/config/widgets.php';
 
@@ -95,11 +94,9 @@ class Widget implements ServiceManagerAwareInterface
 
                             $path          = array($id => $data);
                             $store[0][$id] = $data;
-
                         } else {
                             continue;
                         }
-
                     } else {
                         $dirName = $splFileInfo->getFilename();
                         $path    = array($dirName => array());

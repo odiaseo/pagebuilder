@@ -5,23 +5,20 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Class LocalSiteFactory
- *
+ * Class WidgetUtilFactory
  * @package PageBuilder\Service
  */
-class ActiveThemeFactory implements FactoryInterface
+class LayoutServiceFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
-     * @return mixed
+     *
+     * @return LayoutService
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        $site  = $serviceLocator->get('active\site');
-        $theme = $serviceLocator->get('pagebuilder\model\theme')->getActiveTheme($site->getId());
-
-        return $theme;
+        return new LayoutService($serviceLocator);
     }
 }

@@ -135,7 +135,7 @@ class PageModel extends BaseModel
 
     public function getNavigation()
     {
-        $navigation = $this->_sm->get('viewhelpermanager')->get('navigation');
+        $navigation = $this->_sm->get('ViewHelperManager')->get('navigation');
         $menu       = $navigation('menu');
 
         return $menu;

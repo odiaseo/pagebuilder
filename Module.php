@@ -15,8 +15,6 @@ use PageBuilder\Service\WidgetInitializer;
 use PageBuilder\Service\WidgetUtilFactory;
 use PageBuilder\View\Helper\PageBuilderInitializer;
 use SynergyCommon\Event\Listener\SynergyModuleListener;
-use SynergyCommon\Session\SessionManagerFactory;
-use Zend\Http\Response;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -42,13 +40,15 @@ class Module implements DependencyIndicatorInterface
         $moduleRouteListener->attach($eventManager);
 
         $serviceLocator = $e->getApplication()->getServiceManager();
-        $eventManager->attach(new PageBuilderListener($serviceLocator));
+        $listener       = new PageBuilderListener($serviceLocator);
+        $listener->attach($eventManager);
 
         /** @var $serviceLocator \Zend\ServiceManager\ServiceManager */
         $serviceLocator = $e->getApplication()->getServiceManager();
 
         $synergyListener = new SynergyModuleListener();
-        $eventManager->attach($synergyListener);
+        $synergyListener->attach($eventManager);
+
         $synergyListener->initSession($e);
         $synergyListener->bootstrap($eventManager, $serviceLocator);
     }
@@ -87,7 +87,7 @@ class Module implements DependencyIndicatorInterface
                 'widget' => WidgetInitializer::class,
             ),
 
-            'factories'    => array(
+            'factories' => array(
                 'PageBuilder\Service\LocalSiteFactory'      => 'PageBuilder\Service\LocalSiteFactory',
                 'PageBuilder\Service\PageService'           => 'PageBuilder\Service\PageService',
                 'PageBuilder\Navigation\NavigationFactory'  => 'PageBuilder\Navigation\NavigationFactory',
@@ -106,7 +106,7 @@ class Module implements DependencyIndicatorInterface
     {
         return array(
             'invokables' => array(
-                'buildPage' => 'PageBuilder\Controller\Plugin\PageBuilder'
+                'buildPage' => 'PageBuilder\Controller\Plugin\PageBuilder',
             )
         );
     }

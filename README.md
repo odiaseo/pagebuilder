@@ -1,6 +1,6 @@
 #Dependencies
 ##Backend
-+ Zend Framework 2
++ Zend Framework 3
 + Doctribe ORM
 + Synergy DataGrid
 

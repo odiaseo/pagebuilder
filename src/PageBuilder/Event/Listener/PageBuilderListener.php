@@ -23,18 +23,16 @@ class PageBuilderListener implements ListenerAggregateInterface
         $this->_serviceManager = $serviceManager;
     }
 
-    public function attach(EventManagerInterface $events)
+    /**
+     * @param EventManagerInterface $events
+     * @param int $priority
+     */
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
 
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initialiseWidgets'), -2);
-        $this->listeners[] = $events->attach(
-            array(
-                MvcEvent::EVENT_RENDER_ERROR,
-                MvcEvent::EVENT_DISPATCH_ERROR
-            ),
-            array($this, 'renderErrorPage'),
-            9999
-        );
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'renderErrorPage'), 9998);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderErrorPage'), 9999);
     }
 
     public function detach(EventManagerInterface $events)
@@ -50,10 +48,10 @@ class PageBuilderListener implements ListenerAggregateInterface
     {
         $errorPage = $this->findErrorPage();
         $request   = $this->_serviceManager->get('request');
-        
+
         if ($errorPage and $request instanceof Request) {
             /** @var $viewHelperManager \Zend\View\HelperPluginManager */
-            $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
+            $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
 
             /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
             $pageBuilder = $viewHelperManager->get('buildPage');
@@ -70,7 +68,7 @@ class PageBuilderListener implements ListenerAggregateInterface
 
         if ($request instanceof Request and !$request->isXmlHttpRequest() and $app = $event->getApplication()) {
             /** @var $viewHelperManager \Zend\View\HelperPluginManager */
-            $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
+            $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
 
             /** @var $helper \PageBuilder\View\Helper\PageBuilder */
             $helper = $viewHelperManager->get('buildPage');

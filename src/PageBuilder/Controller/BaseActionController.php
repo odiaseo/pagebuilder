@@ -5,8 +5,8 @@ namespace PageBuilder\Controller;
 use Doctrine\ORM\EntityManager;
 use PageBuilder\PageAwareInterface;
 use PageBuilder\PageMetaData;
+use SynergyCommon\Controller\BaseActionController as CommonActionController;
 use SynergyCommon\SiteAwareInterface;
-use Zend\Mvc\Controller\AbstractActionController;
 
 /**
  * Class BaseController
@@ -17,7 +17,7 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @method translator()
  * @package Application\Controller
  */
-class BaseActionController extends AbstractActionController implements SiteAwareInterface, PageAwareInterface
+class BaseActionController extends CommonActionController implements SiteAwareInterface, PageAwareInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager

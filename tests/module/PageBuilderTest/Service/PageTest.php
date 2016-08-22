@@ -5,8 +5,8 @@ use PageBuilder\Controller\PageController;
 use PageBuilderTest\Bootstrap;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\Http\TreeRouteStack as HttpRouter;
+use Zend\Router\RouteMatch;
 
 /**
  * @backupGlobals disabled
@@ -29,7 +29,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
 
     protected $response;
 
-    /** @var  \Zend\Mvc\Router\RouteMatch */
+    /** @var  \Zend\Router\RouteMatch */
     protected $routeMatch;
 
     /** @var  \Zend\Mvc\MvcEvent */
@@ -38,9 +38,10 @@ class PageTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
+
         $this->serviceManager = Bootstrap::getServiceManager();
 
-        $this->controller = new PageController();
+        $this->controller = new PageController($this->serviceManager);
         $this->request    = new Request();
         $this->routeMatch = new RouteMatch(array());
         $this->event      = new MvcEvent();
@@ -56,7 +57,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
 
     public function testLocalSite()
     {
-        $pageService = $this->serviceManager->get('active\Site');
+        $pageService = $this->serviceManager->get('active\site');
         $this->assertInstanceOf('PageBuilder\Entity\Site', $pageService);
     }
 
@@ -68,7 +69,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
 
     public function testPageBuilder()
     {
-        $pageService = $this->serviceManager->get('viewhelpermanager')->get('buildpage');
+        $pageService = $this->serviceManager->get('ViewHelperManager')->get('buildPage');
         $this->assertInstanceOf('PageBuilder\View\Helper\PageBuilder', $pageService);
     }
 

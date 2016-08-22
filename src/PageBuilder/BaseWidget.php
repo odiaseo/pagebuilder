@@ -5,7 +5,6 @@ namespace PageBuilder;
 use PageBuilder\View\TagAttributes;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\View\Helper\AbstractHelper;
 
 /**
@@ -14,9 +13,7 @@ use Zend\View\Helper\AbstractHelper;
  *
  * @package PageBuilder
  */
-abstract class BaseWidget extends AbstractHelper implements
-    ServiceManagerAwareInterface,
-    WidgetInterface
+abstract class BaseWidget extends AbstractHelper implements WidgetInterface
 {
     const CAT_GENERAL = 'General';
     protected $allowEmpty = false;
@@ -170,7 +167,7 @@ abstract class BaseWidget extends AbstractHelper implements
 
     protected function getHelper($helper)
     {
-        $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
+        $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
 
         return $viewHelperManager->get($helper);
     }

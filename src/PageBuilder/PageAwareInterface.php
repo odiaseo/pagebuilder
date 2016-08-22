@@ -2,6 +2,10 @@
 
 namespace PageBuilder;
 
+/**
+ * Interface PageAwareInterface
+ * @package PageBuilder
+ */
 interface PageAwareInterface
 {
     /**

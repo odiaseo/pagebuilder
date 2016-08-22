@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/module/PageBuilderTest/Bootstrap.php" colors="true" backupGlobals="false"
+         backupStaticAttributes="false">
+
+    <testsuites>
+        <testsuite name="Synergy Page Builder Test Suite">
+            <directory suffix="Test.php">tests/module/PageBuilderTest</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <includePath>./src</includePath>
+        <includePath>./vendor</includePath>
+    </php>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="tests/coverage-report" charset="UTF-8"
+             yui="true" highlight="true" lowUpperBound="50"
+             highLowerBound="80"/>
+    </logging>
+</phpunit>

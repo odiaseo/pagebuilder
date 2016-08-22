@@ -1,9 +1,9 @@
 <?php
 namespace PageBuilder;
 
+use Interop\Container\ContainerInterface;
 use Zend\Http\Response;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 /**
  * Class WidgetFactory
@@ -17,15 +17,11 @@ class WidgetFactory implements AbstractFactoryInterface
     public static $registry = array();
 
     /**
-     * Determine if we can create a service with name
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param                         $name
-     * @param                         $requestedName
-     *
+     * @param ContainerInterface $serviceLocator
+     * @param string $requestedName
      * @return bool
      */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function canCreate(ContainerInterface $serviceLocator, $requestedName)
     {
         if (substr($requestedName, -6) == self::WIDGET_SUFFIX) {
             /** @var $util \PageBuilder\Util\Widget */
@@ -39,18 +35,15 @@ class WidgetFactory implements AbstractFactoryInterface
     }
 
     /**
-     * Create service with name
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param                         $name
-     * @param                         $requestedName
-     *
-     * @return mixed
+     * @param ContainerInterface $serviceLocator
+     * @param string $requestedName
+     * @param array|null $options
+     * @return $this|bool|BaseWidget
      */
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         /** @var $serviceLocator \Zend\Servicemanager\ServiceManager */
-        $widgetId = str_replace(self::WIDGET_SUFFIX, '', $name);
+        $widgetId = str_replace(self::WIDGET_SUFFIX, '', $requestedName);
 
         /** @var $util \PageBuilder\Util\Widget */
         $util = $serviceLocator->get('util\widget');

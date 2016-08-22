@@ -13,7 +13,6 @@ use PageBuilder\WidgetFactory;
 use SynergyCommon\Entity\AbstractEntity;
 use Zend\Filter\FilterInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Helper\Navigation;
@@ -24,7 +23,7 @@ use Zend\View\Helper\Navigation;
  *
  * @package PageBuilder\View\Helper
  */
-class PageBuilder extends AbstractHelper implements ServiceLocatorAwareInterface
+class PageBuilder extends AbstractHelper
 {
     const SHARE_KEY      = 'shared';
     const MAIN_CONTENT   = 'main';

@@ -1,6 +1,10 @@
 <?php
 namespace PageBuilder;
 
+/**
+ * Interface WidgetInterface
+ * @package PageBuilder
+ */
 interface WidgetInterface
 {
     public function render();
@@ -14,3 +18,4 @@ interface WidgetInterface
     public function getOptions();
 
 }
+

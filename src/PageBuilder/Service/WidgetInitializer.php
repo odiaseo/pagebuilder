@@ -1,10 +1,10 @@
 <?php
 namespace PageBuilder\Service;
 
+use Interop\Container\ContainerInterface;
 use PageBuilder\WidgetInterface;
 use Zend\Http\PhpEnvironment\Response;
-use Zend\ServiceManager\InitializerInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Initializer\InitializerInterface;
 
 /**
  * Class WidgetInitializers
@@ -13,13 +13,11 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class WidgetInitializer implements InitializerInterface
 {
     /**
-     * Initialize
-     *
-     * @param $widget
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $serviceLocator
+     * @param object $widget
+     * @return bool
      */
-    public function initialize($widget, ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceLocator, $widget)
     {
         /** @var $widget  \object */
         /** @var $mvcEvent \Zend\Mvc\MvcEvent */
