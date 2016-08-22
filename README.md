@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/odiaseo/pagebuilder.svg?branch=master)](https://travis-ci.org/odiaseo/pagebuilder)
+
 #Dependencies
 ##Backend
 + Zend Framework 3
