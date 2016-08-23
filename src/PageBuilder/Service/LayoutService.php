@@ -227,7 +227,6 @@ class LayoutService
         return $return;
     }
 
-
     public function getTemplateLayout($templateId)
     {
         $templateSections = array();
@@ -320,9 +319,10 @@ class LayoutService
             $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
 
             /** @var \PageBuilder\Entity\Template $template */
-            $template = $templateModel->findObject($templateId);
-            $template->setlayout($layout);
-            $templateModel->save($template);
+            if ($template = $templateModel->findObject($templateId)) {
+                $template->setlayout($layout);
+                $templateModel->save($template);
+            }
 
             return array(
                 'error'   => false,
