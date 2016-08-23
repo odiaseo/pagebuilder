@@ -116,7 +116,7 @@ class PageBuilderListener implements ListenerAggregateInterface
     private function findErrorPage()
     {
         /** @var $viewHelperManager \Zend\View\HelperPluginManager */
-        $viewHelperManager = $this->_serviceManager->get('viewHelperManager');
+        $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
 
         /** @var $navigation \Zend\View\Helper\Navigation */
         $navigation = $viewHelperManager->get('navigation');
