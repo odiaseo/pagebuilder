@@ -3,13 +3,14 @@ return array(
     'doctrine' => array(
         'connection' => array(
             'orm_default' => array(
-                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
                 'params'      => array(
-                    'host'     => '87.230.13.184',
+                    'driver'   => 'pdo_sqlite',
+                    'host'     => '127.0.0.1',
                     'port'     => '3306',
-                    'user'     => 'vaboose_user',
-                    'password' => 'vaboose_user',
-                    'dbname'   => 'vaboose_merged',
+                    'user'     => 'root',
+                    'password' => 'password',
+                    'path'     => sys_get_temp_dir() . '/sqlite.db',
                 ),
             ),
         )
