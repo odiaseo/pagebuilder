@@ -32,7 +32,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": ">=5.5",
+    "php": ">=5.6",
     "zendframework/zend-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
     "zendframework/zendframework": "^3.0.2",
     "doctrine/doctrine-orm-module": "dev-master",

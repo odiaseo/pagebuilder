@@ -23,8 +23,8 @@ class WidgetInitializer implements InitializerInterface
         /** @var $mvcEvent \Zend\Mvc\MvcEvent */
         if ($widget instanceof WidgetInterface) {
             $mvcEvent = $serviceLocator->get('application')->getMvcEvent();
-            $widget->setServiceManager($serviceLocator);
-            $widget->setView($serviceLocator->get('viewrenderer'));
+            $widget->setServiceLocator($serviceLocator);
+            $widget->setView($serviceLocator->get('ViewRenderer'));
             $widget->setMvcEvent($mvcEvent);
             $response = $widget->init();
 

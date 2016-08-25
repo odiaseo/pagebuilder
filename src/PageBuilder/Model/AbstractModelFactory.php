@@ -3,6 +3,7 @@ namespace PageBuilder\Model;
 
 use Interop\Container\ContainerInterface;
 use SynergyCommon\Entity\AbstractEntity;
+use Zend\Filter\Word\CamelCaseToDash;
 use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
@@ -78,8 +79,10 @@ class AbstractModelFactory implements AbstractFactoryInterface
     private function resolveEntityClassName(ContainerInterface $serviceLocator, $id, $default)
     {
         /** @var $sampleService \SynergyCommon\Service\BaseService */
+        $reverseFilter   = new CamelCaseToDash();
+        $entityId        = strtolower($reverseFilter->filter($id));
         $sampleService   = $serviceLocator->get('synergycommon\service\base');
-        $entityClassName = $sampleService->getClassnameFromEntityKey($id);
+        $entityClassName = $sampleService->getClassnameFromEntityKey($entityId);
 
         if ($entityClassName) {
             return new $entityClassName;

@@ -22,7 +22,6 @@ use Zend\Mvc\MvcEvent;
 /**
  * Class Module
  *
- * @package PageBuilder
  */
 class Module implements DependencyIndicatorInterface
 {
@@ -96,7 +95,7 @@ class Module implements DependencyIndicatorInterface
                 'PageBuilder\Service\TemplateService'       => 'PageBuilder\Service\TemplateService',
                 'PageBuilder\WidgetDataFactory'             => 'PageBuilder\WidgetDataFactory',
                 'AffiliateManager\Service\LocalSiteFactory' => 'AffiliateManager\Service\LocalSiteFactory',
-                'active_theme'                              => ActiveThemeFactory::class,
+                'active\theme'                              => ActiveThemeFactory::class,
                 'PageBuilder\Util\Widget'                   => WidgetUtilFactory::class,
             )
         );
@@ -115,9 +114,7 @@ class Module implements DependencyIndicatorInterface
     {
         return array(
             'invokables'   => array(
-                'buildPage'     => 'PageBuilder\View\Helper\PageBuilder',
-                'flashMessages' => 'SynergyCommon\View\Helper\FlashMessages',
-                'microData'     => 'SynergyCommon\View\Helper\MicroData',
+                'buildPage' => 'PageBuilder\View\Helper\PageBuilder',
             ),
             'initializers' => array(
                 'initbuilder' => PageBuilderInitializer::class

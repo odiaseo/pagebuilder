@@ -3,8 +3,9 @@
 namespace PageBuilder;
 
 use PageBuilder\View\TagAttributes;
+use SynergyCommon\Service\ServiceLocatorAwareInterface;
+use SynergyCommon\Service\ServiceLocatorAwareTrait;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
 /**
@@ -13,8 +14,11 @@ use Zend\View\Helper\AbstractHelper;
  *
  * @package PageBuilder
  */
-abstract class BaseWidget extends AbstractHelper implements WidgetInterface
+abstract class BaseWidget extends AbstractHelper implements WidgetInterface, ServiceLocatorAwareInterface
 {
+
+    use ServiceLocatorAwareTrait;
+
     const CAT_GENERAL = 'General';
     protected $allowEmpty = false;
     protected $id;
@@ -22,30 +26,15 @@ abstract class BaseWidget extends AbstractHelper implements WidgetInterface
     protected $description;
     protected $category;
     protected $class = array();
-    /** @var \PageBuilder\View\TagAttributes */
+    /**
+     * @var TagAttributes
+     */
     protected $attributes;
     protected $_mvcEvent;
     protected $options
         = array(
             'shared' => true
         );
-    /** @var \Zend\ServiceManager\ServiceManager */
-    public $_serviceManager;
-
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->_serviceManager = $serviceManager;
-
-        return $this;
-    }
-
-    /**
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->_serviceManager;
-    }
 
     public function init()
     {
@@ -167,7 +156,7 @@ abstract class BaseWidget extends AbstractHelper implements WidgetInterface
 
     protected function getHelper($helper)
     {
-        $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
 
         return $viewHelperManager->get($helper);
     }

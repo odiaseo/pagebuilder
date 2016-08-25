@@ -55,7 +55,7 @@ class PageBuilderListener implements ListenerAggregateInterface
 
             /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
             $pageBuilder = $viewHelperManager->get('buildPage');
-            $activeTheme = $this->_serviceManager->get('active_theme') ?: null;
+            $activeTheme = $this->_serviceManager->get('active\theme') ?: null;
             $pageBuilder->init($errorPage->getId(), null, $activeTheme);
         }
     }
@@ -102,7 +102,7 @@ class PageBuilderListener implements ListenerAggregateInterface
                 /** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
                 /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
 
-                $activeTheme = $this->_serviceManager->get('active_theme') ?: null;
+                $activeTheme = $this->_serviceManager->get('active\theme') ?: null;
                 $pageBuilder = $viewHelperManager->get('buildPage');
 
                 $pageBuilder->init($pageId, $menuTree, $activeTheme);

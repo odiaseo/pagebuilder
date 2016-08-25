@@ -433,6 +433,7 @@ class Site extends BaseSite
 
         if ($this->getLinkedSites() and $this->getLinkedSites()->count()) {
             $linkedSites = $this->getLinkedSites();
+            /** @var Site $subSite */
             foreach ($linkedSites as $subSite) {
                 $ids[] = $subSite->getId();
             }
@@ -447,5 +448,34 @@ class Site extends BaseSite
         sort($ids);
 
         return $ids;
+    }
+
+
+    /**
+     * Get sum of all offers
+     *
+     * @return mixed
+     */
+    public function sumOfferCount()
+    {
+        $count = $this->getOfferCount();
+        if ($this->getParent()) {
+            $count += $this->getParent()->getOfferCount();
+        }
+
+        if ($this->getLinkedSites()->count()) {
+            /** @var Site $linked */
+            foreach ($this->getLinkedSites() as $linked) {
+                $count += $linked->getOfferCount();
+            }
+        }
+
+        if ($this->getSubDomains()->count()) {
+            foreach ($this->getSubDomains() as $linked) {
+                $count += $linked->getOfferCount();
+            }
+        }
+
+        return $count;
     }
 }

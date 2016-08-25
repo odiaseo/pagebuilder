@@ -73,7 +73,6 @@ class Page extends BasePage
 
     public function __construct()
     {
-        parent::__construct();
         $this->children     = new ArrayCollection();
         $this->sites        = new ArrayCollection();
         $this->translations = new ArrayCollection();

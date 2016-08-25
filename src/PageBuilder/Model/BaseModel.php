@@ -39,7 +39,7 @@ class BaseModel extends AbstractModel
     {
         /** @var Site $site */
         if ($this->getServiceLocator()->has('active\site')) {
-            $site      = $this->getServiceLocator()->get('active\Site');
+            $site      = $this->getServiceLocator()->get('active\site');
             $namespace = $site->getSessionNamespace();
             (new Container($namespace))->offsetSet(self::FILTER_SESSION_KEY, true);
         }

@@ -13,7 +13,7 @@ use Zend\ServiceManager\Initializer\InitializerInterface;
 class PageBuilderInitializer implements InitializerInterface
 {
     /**
-     * @param ContainerInterface $serviceLocator
+     * @param ContainerInterface $serviceManager
      * @param object $helper
      * @return bool
      */
@@ -38,7 +38,7 @@ class PageBuilderInitializer implements InitializerInterface
 
             /** @var $theme \PageBuilder\Entity\Theme */
 
-            $theme         = $serviceManager->get('active_theme');
+            $theme         = $serviceManager->get('active\theme');
             $builderConfig = $config['pagebuilder'];
             if ($theme) {
                 $builderConfig['bootstrap_version'] = $theme->getBootstrapVersion();
@@ -50,7 +50,7 @@ class PageBuilderInitializer implements InitializerInterface
 
             $options = new PageBuilderConfig($builderConfig);
             $options->setOutputFormatters($formatters);
-
+            $helper->setServiceLocator($serviceManager);
             $helper->setOptions($options);
             return true;
         }

@@ -11,6 +11,7 @@ use PageBuilder\View\TagAttributes;
 use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
 use SynergyCommon\Entity\AbstractEntity;
+use SynergyCommon\View\Helper\MicroData;
 use Zend\Filter\FilterInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -75,9 +76,9 @@ class PageBuilder extends AbstractHelper
             /** @var PageModel $pageModel */
             /** @var LayoutService $layoutService */
             /** @var Site $site */
-            $templateModel  = $this->getServiceManager()->get('pagebuilder\model\pageTemplate');
-            $layoutService  = $this->getServiceManager()->get('pagebuilder\service\layout');
-            $site           = $this->getServiceManager()->get('active\site');
+            $templateModel  = $this->getServiceLocator()->get('pagebuilder\model\pageTemplate');
+            $layoutService  = $this->getServiceLocator()->get('pagebuilder\service\layout');
+            $site           = $this->getServiceLocator()->get('active\site');
             $siteThemeId    = $activeSiteTheme ? $activeSiteTheme->getId() : 'default';
             $pageTemplate   = $templateModel->getActivePageThemeForSite($pageId, $siteThemeId, $site->getId());
             $this->menuTree = $menuTree;
@@ -191,7 +192,7 @@ class PageBuilder extends AbstractHelper
                                                 is_string($itemData) ? $itemData : $itemData->render()
                                             );
                                         } catch (\Exception $exception) {
-                                            $this->getServiceManager()->get('logger')->logException($exception);
+                                            $this->getServiceLocator()->get('logger')->logException($exception);
                                             $mainData = '';
                                         }
 
@@ -223,7 +224,7 @@ class PageBuilder extends AbstractHelper
                 }
 
                 if ($alias = $this->options->getFilter()) {
-                    $filter = $this->getServiceManager()->get($alias);
+                    $filter = $this->getServiceLocator()->get($alias);
 
                     if ($filter instanceof FilterInterface) {
                         $html = $filter->filter($html);
@@ -235,7 +236,7 @@ class PageBuilder extends AbstractHelper
                 return $content;
             }
         } catch (\Exception $e) {
-            $this->getServiceManager()->get('logger')->logException($e);
+            $this->getServiceLocator()->get('logger')->logException($e);
         }
 
         return $content;
@@ -262,14 +263,14 @@ class PageBuilder extends AbstractHelper
                     $options    = $attr->getOptions();
 
                     if (!$this->isShared($options)) {
-                        $this->getServiceManager()->setShared($widgetName, false);
+                        $this->getServiceLocator()->setShared($widgetName, false);
                     }
 
                     if (array_key_exists('shared', $options) and empty($options['shared'])) {
-                        $this->getServiceManager()->setShared($widgetName, false);
+                        $this->getServiceLocator()->setShared($widgetName, false);
                     }
 
-                    $data = $this->getServiceManager()->get($widgetName);
+                    $data = $this->getServiceLocator()->get($widgetName);
                     $attr->addClass($data->getId());
                     $data->setAttributes($attr);
                 } catch (ServiceNotFoundException $e) {
@@ -279,7 +280,7 @@ class PageBuilder extends AbstractHelper
                 break;
             case self::LAYOUT_USER_DEFINED:
                 /** @var $componentModel \PageBuilder\Model\ComponentModel */
-                $componentModel = $this->getServiceManager()->get('pagebuilder\model\component');
+                $componentModel = $this->getServiceLocator()->get('pagebuilder\model\component');
 
                 /** @var $component \PageBuilder\Entity\Component */
                 if ($component = $componentModel->findOneTranslatedBy(array('id' => $itemId))) {
@@ -356,9 +357,22 @@ class PageBuilder extends AbstractHelper
      *
      * @return $this
      */
+    private function setPluginManager(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->pluginManager = $serviceLocator->get('ViewHelperManager');
+
+        return $this;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return $this
+     */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
-        $this->pluginManager = $serviceLocator;
+        $this->serviceManager = $serviceLocator;
+        $this->setPluginManager($serviceLocator);
 
         return $this;
     }
@@ -370,7 +384,7 @@ class PageBuilder extends AbstractHelper
      */
     public function getServiceLocator()
     {
-        return $this->pluginManager;
+        return $this->serviceManager;
     }
 
     /**
@@ -384,8 +398,8 @@ class PageBuilder extends AbstractHelper
     {
         $top = $bottom = '';
         if ($wrapper = $attr->getWrapper()) {
-            /** @var $microDataHelper  \PageBuilder\View\Helper\MicroData */
-            $microDataHelper = $this->pluginManager->get('microdata');
+            /** @var $microDataHelper MicroData */
+            $microDataHelper = $this->pluginManager->get('microData');
 
             switch ($section) {
                 case 'header':
@@ -428,22 +442,6 @@ class PageBuilder extends AbstractHelper
         }
 
         return array($top, $bottom);
-    }
-
-    public function setServiceManager($serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-
-        return $this;
-    }
-
-    public function getServiceManager()
-    {
-        if (!$this->serviceManager) {
-            $this->serviceManager = $this->pluginManager->getServiceLocator();
-        }
-
-        return $this->serviceManager;
     }
 
     /**

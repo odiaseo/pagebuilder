@@ -57,9 +57,9 @@ class WidgetFactory implements AbstractFactoryInterface
             $mvcEvent = $serviceLocator->get('application')->getMvcEvent();
 
             /** @var $viewhelper \Zend\View\Renderer\RendererInterface */
-            $viewhelper = $serviceLocator->get('viewrenderer');
+            $viewhelper = $serviceLocator->get('ViewRenderer');
 
-            $widget->setServiceManager($serviceLocator);
+            $widget->setServiceLocator($serviceLocator);
             $widget->setView($viewhelper);
             $widget->setMvcEvent($mvcEvent);
             $response = $widget->init();
