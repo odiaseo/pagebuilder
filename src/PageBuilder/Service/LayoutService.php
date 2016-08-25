@@ -4,25 +4,25 @@ namespace PageBuilder\Service;
 use PageBuilder\Entity\Join\TemplateSection;
 use PageBuilder\Model\PageModel;
 use PageBuilder\View\Helper\PageBuilder;
+use SynergyCommon\Service\ServiceLocatorAwareInterface;
+use SynergyCommon\Service\ServiceLocatorAwareTrait;
 use Zend\ServiceManager\ServiceManager;
 
 /**
  * Class LayoutService
  * @package PageBuilder\Service
  */
-class LayoutService
+class LayoutService implements ServiceLocatorAwareInterface
 {
-    /** @var  \Zend\ServiceManager\ServiceManager */
-    protected $_serviceManager;
+    use ServiceLocatorAwareTrait;
 
+    /**
+     * LayoutService constructor.
+     * @param ServiceManager $serviceManager
+     */
     public function __construct(ServiceManager $serviceManager)
     {
-        $this->setServiceManager($serviceManager);
-    }
-
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->_serviceManager = $serviceManager;
+        $this->setServiceLocator($serviceManager);
     }
 
     public function updateTemplateSections($templateId, $sections)
@@ -31,7 +31,7 @@ class LayoutService
         $error = false;
 
         /** @var $templateModel \PageBuilder\Model\TemplateModel */
-        $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+        $templateModel = $this->getServiceLocator()->get('pagebuilder\model\template');
 
         try {
             $templateModel->updateTemplateSections($templateId, $sections);
@@ -52,10 +52,10 @@ class LayoutService
         $sections = $selected = array();
 
         /** @var $templateModel \PageBuilder\Model\TemplateModel */
-        $templateModel    = $this->_serviceManager->get('pagebuilder\model\template');
+        $templateModel    = $this->getServiceLocator()->get('pagebuilder\model\template');
         $templateSections = $templateModel->getActiveSections($templateId);
 
-        $sectionModel = $this->_serviceManager->get('pagebuilder\model\section');
+        $sectionModel = $this->getServiceLocator()->get('pagebuilder\model\section');
         $sectionList  = $sectionModel->findAll();
 
         /** @var \PageBuilder\Entity\Join\TemplateSection $templateSection */
@@ -99,7 +99,7 @@ class LayoutService
     public function getPageThemeLayout($pageThemeId)
     {
         /** @var $themeModel \PageBuilder\Model\PageTemplateModel */
-        $themeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
+        $themeModel = $this->getServiceLocator()->get('pagebuilder\model\pageTheme');
 
         $pageTheme = $themeModel->findObject($pageThemeId);
 
@@ -120,13 +120,13 @@ class LayoutService
         $error    = '';
 
         /** @var $pageModel \PageBuilder\Model\PageModel */
-        $pageModel = $this->_serviceManager->get('pagebuilder\model\page');
+        $pageModel = $this->getServiceLocator()->get('pagebuilder\model\page');
 
         /** @var $themeModel \PageBuilder\Model\BaseModel */
-        $themeModel = $this->_serviceManager->get('pagebuilder\model\theme');
+        $themeModel = $this->getServiceLocator()->get('pagebuilder\model\theme');
 
         /** @var $templateModel \PageBuilder\Model\BaseModel */
-        $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+        $templateModel = $this->getServiceLocator()->get('pagebuilder\model\template');
 
         /** @var $page \PageBuilder\Entity\Page */
         $page = $pageModel->getRepository()->find($pageId);
@@ -147,7 +147,7 @@ class LayoutService
         $themeId = $pageTheme = null;
         if ($pageThemeId) {
             /** @var $pageThemeModel \PageBuilder\Model\BaseModel */
-            $pageThemeModel = $this->_serviceManager->get('pagebuilder\model\pageTheme');
+            $pageThemeModel = $this->getServiceLocator()->get('pagebuilder\model\pageTheme');
             $pageTheme      = $pageThemeModel->findObject($pageThemeId);
             $themeId        = $pageTheme->getId();
         }
@@ -186,13 +186,13 @@ class LayoutService
 
         /** @var $templateModel \PageBuilder\Model\TemplateModel */
         $templates  = $templateModel->listTemplates();
-        $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
+        $components = $this->getServiceLocator()->get('pagebuilder\model\component')->listItemsByTitle();
 
         /** @var $widgetUtil \PageBuilder\Util\Widget */
-        $widgetUtil = $this->_serviceManager->get('util\widget');
+        $widgetUtil = $this->getServiceLocator()->get('util\widget');
 
         $widgetList = $widgetUtil->getWidgetList();
-        $urlHelper  = $this->_serviceManager->get('ViewHelperManager')->get('url');
+        $urlHelper  = $this->getServiceLocator()->get('ViewHelperManager')->get('url');
 
         $return = array(
             'error'     => $error,
@@ -233,10 +233,10 @@ class LayoutService
         $error            = '';
 
         /** @var $themeModel \PageBuilder\Model\BaseModel */
-        $themeModel = $this->_serviceManager->get('pagebuilder\model\theme');
+        $themeModel = $this->getServiceLocator()->get('pagebuilder\model\theme');
 
         /** @var $templateModel \PageBuilder\Model\TemplateModel */
-        $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+        $templateModel = $this->getServiceLocator()->get('pagebuilder\model\template');
 
         /** @var $template \PageBuilder\Entity\Template */
         /** @var TemplateSection $templateSection */
@@ -275,12 +275,12 @@ class LayoutService
         }
 
         $templates  = $templateModel->listTemplates();
-        $components = $this->_serviceManager->get('pagebuilder\model\component')->listItemsByTitle();
+        $components = $this->getServiceLocator()->get('pagebuilder\model\component')->listItemsByTitle();
 
         /** @var $widgetUtil \PageBuilder\Util\Widget */
-        $widgetUtil = $this->_serviceManager->get('util\widget');
+        $widgetUtil = $this->getServiceLocator()->get('util\widget');
         $widgetList = $widgetUtil->getWidgetList();
-        $urlHelper  = $this->_serviceManager->get('ViewHelperManager')->get('url');
+        $urlHelper  = $this->getServiceLocator()->get('ViewHelperManager')->get('url');
 
         $return = array(
             'error'     => $error,
@@ -316,7 +316,7 @@ class LayoutService
         try {
 
             /** @var $templateModel \PageBuilder\Model\TemplateModel */
-            $templateModel = $this->_serviceManager->get('pagebuilder\model\template');
+            $templateModel = $this->getServiceLocator()->get('pagebuilder\model\template');
 
             /** @var \PageBuilder\Entity\Template $template */
             if ($template = $templateModel->findObject($templateId)) {
@@ -340,7 +340,7 @@ class LayoutService
     {
         $tagList = array();
         /** @var $builder \PageBuilder\View\Helper\PageBuilder */
-        $builder = $this->_serviceManager->get('ViewHelperManager')->get('buildPage');
+        $builder = $this->getServiceLocator()->get('ViewHelperManager')->get('buildPage');
 
         foreach ($builder->getOptions()->getTags() as $type => $list) {
             asort($list);
@@ -365,7 +365,7 @@ class LayoutService
         /** @var PageModel $pageModel */
 
         $layout    = array();
-        $pageModel = $this->_serviceManager->get('pagebuilder\model\page');
+        $pageModel = $this->getServiceLocator()->get('pagebuilder\model\page');
         $page      = $pageModel->getMainPageById($pageId);
 
         if ($page['layout']) {
@@ -384,7 +384,7 @@ class LayoutService
         }
 
         //get the sites default template's layout
-        if ($site = $this->_serviceManager->get('active\site')) {
+        if ($site = $this->getServiceLocator()->get('active\site')) {
             if ($templateObj = $site->getDefaultTemplate()) {
                 return $templateObj->getLayout();
             }
