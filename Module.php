@@ -9,10 +9,14 @@
 
 namespace PageBuilder;
 
+use PageBuilder\Authentication\Adapter\DbAdapterFactory;
+use PageBuilder\Authentication\AuthenticationServiceFactory;
+use PageBuilder\Authentication\Storage\DbFactory;
 use PageBuilder\Event\Listener\PageBuilderListener;
 use PageBuilder\Service\ActiveThemeFactory;
 use PageBuilder\Service\WidgetInitializer;
 use PageBuilder\Service\WidgetUtilFactory;
+use PageBuilder\Session\SessionStorageFactory;
 use PageBuilder\View\Helper\PageBuilderInitializer;
 use SynergyCommon\Event\Listener\SynergyModuleListener;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
@@ -97,6 +101,7 @@ class Module implements DependencyIndicatorInterface
                 'AffiliateManager\Service\LocalSiteFactory' => 'AffiliateManager\Service\LocalSiteFactory',
                 'active\theme'                              => ActiveThemeFactory::class,
                 'PageBuilder\Util\Widget'                   => WidgetUtilFactory::class,
+                'synergy\session\storage'                   => SessionStorageFactory::class,
             )
         );
     }

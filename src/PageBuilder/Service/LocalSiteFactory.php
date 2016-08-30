@@ -9,7 +9,6 @@ use SynergyCommon\Model\AbstractModel;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 use SynergyCommon\Util;
 use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Storage\Session;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Session\Container;
 
@@ -36,7 +35,7 @@ class LocalSiteFactory implements FactoryInterface
         $request = $serviceLocator->get('application')->getRequest();
         $event   = $serviceLocator->get('application')->getMvcEvent();
 
-        //IMportant to run this first so that the session is initialised
+        //Important to run this first so that the session is initialised
         $manager = $this->initialiseSessionManager($serviceLocator, $request);
 
         list($isConsole, $hostname) = Util::getDomainFromRequest($request, $event);
@@ -95,11 +94,9 @@ class LocalSiteFactory implements FactoryInterface
         $manager = null;
         if ($request instanceof \Zend\Http\PhpEnvironment\Request) {
             if ($serviceLocator->has('session_manager')) {
-                $manager = $serviceLocator->get('session_manager');
                 /** @var AuthenticationService $authService */
-                $authService = $serviceLocator->get('zfcuser_auth_service');
-                $session     = new Session(null, null, $manager);
-                $authService->getStorage()->setStorage($session);
+                $manager = $serviceLocator->get('session_manager');
+                $serviceLocator->get(AuthenticationService::class);
             }
         }
 

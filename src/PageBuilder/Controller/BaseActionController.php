@@ -13,8 +13,8 @@ use SynergyCommon\SiteAwareInterface;
  *
  * @method \Zend\Http\PhpEnvironment\Response getResponse()
  * @method \Zend\Http\PhpEnvironment\Request   getRequest()
- * @method translate()
- * @method translator()
+ * @method translate($text)
+ * @method translator($text)
  * @package Application\Controller
  */
 class BaseActionController extends CommonActionController implements SiteAwareInterface, PageAwareInterface
