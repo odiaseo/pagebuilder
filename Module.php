@@ -9,9 +9,6 @@
 
 namespace PageBuilder;
 
-use PageBuilder\Authentication\Adapter\DbAdapterFactory;
-use PageBuilder\Authentication\AuthenticationServiceFactory;
-use PageBuilder\Authentication\Storage\DbFactory;
 use PageBuilder\Event\Listener\PageBuilderListener;
 use PageBuilder\Service\ActiveThemeFactory;
 use PageBuilder\Service\WidgetInitializer;

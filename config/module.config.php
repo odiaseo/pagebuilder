@@ -1,30 +1,4 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
-if (extension_loaded('redis')) {
-    $memcacheConfig = [
-        'phpSaveHandler' => 'redis',
-        'savePath'       => '127.0.0.1:6379',
-    ];
-} elseif (extension_loaded('memcached')) {
-    $memcacheConfig = [
-        'phpSaveHandler' => 'memcached',
-        'savePath'       => '127.0.0.1:11211?weight=1&timeout=1',
-    ];
-} elseif (extension_loaded('memcache')) {
-    $memcacheConfig = [
-        'phpSaveHandler' => 'memcache',
-        'savePath'       => 'tcp://127.0.0.1:11211?weight=1&timeout=1',
-    ];
-} else {
-    $memcacheConfig = [];
-}
 
 return array(
     'router'          => array(
@@ -125,15 +99,13 @@ return array(
             'SynergyCommon\Entity\AbstractEntityFactory',
         ),
 
-        'invokables' => array(
-            'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\CommonSessionHandler::class,
+        'invokables' => array(//'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\CommonSessionHandler::class,
         ),
         'factories'  => array(
             'PageBuilder\Service\LayoutService'      => 'PageBuilder\Service\LayoutServiceFactory',
             'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
             'PageBuilder\Config\JqGridConfigFactory' => 'PageBuilder\Config\JqGridConfigFactory',
-            'Zend\Session\Config\ConfigInterface'    => 'Zend\Session\Service\SessionConfigFactory',
-            'Zend\Session\SessionManager'            => 'Zend\Session\Service\SessionManagerFactory',
+            //'Zend\Session\SessionManager'            => 'Zend\Session\Service\SessionManagerFactory',
             //'Zend\Session\SaveHandler\SaveHandlerInterface' => DoctrineSessionSaveHandlerFactory::class,
         )
     ),
@@ -345,20 +317,6 @@ return array(
             'directory' => __DIR__ . '/../data/logs',
             'namespace' => 'pagebuilder'
         )
-    ),
-    'session'         => [
-        'config' => [
-            'authentication_expiration_time' => 300
-        ],
-    ],
-    'session_config'  => array_merge(
-        $memcacheConfig,
-        [
-            'remember_me_seconds' => 7200,
-            'cookie_httponly'     => true,
-            'cookie_lifetime'     => 7200,
-            'gc_maxlifetime'      => 7200,
-        ]
     ),
     'super_sites'     => []
 );

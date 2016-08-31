@@ -40,12 +40,11 @@
     "zendframework/zend-mvc": "^3.0.2",
     "synergy/common": "^3.0",
     "monolog/monolog": "^1.18",
-    "satooshi/php-coveralls": "^1.0",
     "gedmo/doctrine-extensions": "^2.4",
-    "synergy/synergydatagrid": "^2.0",
-    "zf-commons/zfc-user-doctrine-orm": "^2.0"
+    "synergy/synergydatagrid": "^2.0"
   },
   "require-dev": {
+    "satooshi/php-coveralls": "^1.0",
     "phpunit/phpunit": "~4.0"
   },
   "autoload": {

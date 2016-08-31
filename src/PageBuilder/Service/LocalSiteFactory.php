@@ -8,9 +8,9 @@ use SynergyCommon\Exception\MissingArgumentException;
 use SynergyCommon\Model\AbstractModel;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 use SynergyCommon\Util;
-use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Session\Container;
+use Zend\Session\SessionManager;
 
 /**
  * Class LocalSiteFactory
@@ -34,9 +34,6 @@ class LocalSiteFactory implements FactoryInterface
         /** @var  $serviceLocator \Zend\Servicemanager\ServiceManager */
         $request = $serviceLocator->get('application')->getRequest();
         $event   = $serviceLocator->get('application')->getMvcEvent();
-
-        //Important to run this first so that the session is initialised
-        $manager = $this->initialiseSessionManager($serviceLocator, $request);
 
         list($isConsole, $hostname) = Util::getDomainFromRequest($request, $event);
 
@@ -65,7 +62,7 @@ class LocalSiteFactory implements FactoryInterface
             throw new MissingArgumentException('Host not found');
         }
 
-        $container = new Container(LocaleAwareTrait::getNamespace(), $manager);
+        $container = new Container(LocaleAwareTrait::getNamespace(), $serviceLocator->get(SessionManager::class));
         if (!$i18nLocale = $site->getI18nLocale()) {
             $i18nLocale = $site->getLocale();
         }
@@ -82,24 +79,5 @@ class LocalSiteFactory implements FactoryInterface
         }
 
         return $site;
-    }
-
-    /**
-     * @param $serviceLocator
-     * @param $request
-     * @return null
-     */
-    private function initialiseSessionManager($serviceLocator, $request)
-    {
-        $manager = null;
-        if ($request instanceof \Zend\Http\PhpEnvironment\Request) {
-            if ($serviceLocator->has('session_manager')) {
-                /** @var AuthenticationService $authService */
-                $manager = $serviceLocator->get('session_manager');
-                $serviceLocator->get(AuthenticationService::class);
-            }
-        }
-
-        return $manager;
     }
 }
