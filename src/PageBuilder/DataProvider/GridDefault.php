@@ -1,7 +1,8 @@
 <?php
 namespace PageBuilder\DataProvider;
 
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -16,7 +17,7 @@ class GridDefault implements FactoryInterface
      *
      * @return array|mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         /** @var \PageBuilder\Entity\Site $site */
         $site = $serviceLocator->get('active\site');
