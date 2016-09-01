@@ -118,6 +118,7 @@ class LayoutService implements ServiceLocatorAwareInterface
     {
         $sections = $templateSections = array();
         $error    = '';
+        $details  = [];
 
         /** @var $pageModel \PageBuilder\Model\PageModel */
         $pageModel = $this->getServiceLocator()->get('pagebuilder\model\page');
@@ -129,21 +130,21 @@ class LayoutService implements ServiceLocatorAwareInterface
         $templateModel = $this->getServiceLocator()->get('pagebuilder\model\template');
 
         /** @var $page \PageBuilder\Entity\Page */
-        $page = $pageModel->getRepository()->find($pageId);
+        if ($page = $pageModel->getRepository()->find($pageId)) {
 
-        $details = array(
-            'id'          => $page->getId(),
-            'title'       => $page->getTitle(),
-            'description' => $page->getDescription(),
-            'template'    => $page->getTemplate() ? $page->getTemplate()->getTitle() : '',
-            'layout'      => '',
-            'pageTheme'   => '',
-            'themeId'     => '',
-            'layoutType'  => 'Custom Layout',
-            'parent'      => $page->getParent() ? $page->getParent()->getTitle() : ''
+            $details = array(
+                'id'          => $page->getId(),
+                'title'       => $page->getTitle(),
+                'description' => $page->getDescription(),
+                'template'    => $page->getTemplate() ? $page->getTemplate()->getTitle() : '',
+                'layout'      => '',
+                'pageTheme'   => '',
+                'themeId'     => '',
+                'layoutType'  => 'Custom Layout',
+                'parent'      => $page->getParent() ? $page->getParent()->getTitle() : ''
 
-        );
-
+            );
+        }
         $themeId = $pageTheme = null;
         if ($pageThemeId) {
             /** @var $pageThemeModel \PageBuilder\Model\BaseModel */
@@ -203,7 +204,7 @@ class LayoutService implements ServiceLocatorAwareInterface
                     'builder', array('id' => $pageId)
                 ),
             'sections'  => $templateSections,
-            'title'     => 'Layout Manager - ' . $page->getTitle(),
+            'title'     => 'Layout Manager - ' . ($page ? $page->getTitle() : ''),
             'widgets'   => array(
                 'title' => 'Widgets',
                 'items' => $widgetUtil->getRegistry(),
@@ -231,6 +232,8 @@ class LayoutService implements ServiceLocatorAwareInterface
     {
         $templateSections = array();
         $error            = '';
+        $sections         = [];
+        $details          = [];
 
         /** @var $themeModel \PageBuilder\Model\BaseModel */
         $themeModel = $this->getServiceLocator()->get('pagebuilder\model\theme');
@@ -241,19 +244,22 @@ class LayoutService implements ServiceLocatorAwareInterface
         /** @var $template \PageBuilder\Entity\Template */
         /** @var TemplateSection $templateSection */
 
-        $template = $templateModel->getRepository()->find($templateId);
-        foreach ($template->getTemplateSections() as $templateSection) {
-            //$sections[$templateSection->getSortOrder()] = $templateSection;
-            $key            = $templateSection->getSortOrder() . '-' . $templateSection->getId();
-            $sections[$key] = $templateSection;
+        if ($template = $templateModel->getRepository()->find($templateId)) {
+            foreach ($template->getTemplateSections() as $templateSection) {
+                //$sections[$templateSection->getSortOrder()] = $templateSection;
+                $key            = $templateSection->getSortOrder() . '-' . $templateSection->getId();
+                $sections[$key] = $templateSection;
+            }
+
+            ksort($sections);
+
+            $details          = $template->toArray();
+            $details['theme'] = array(
+                'id'        => null,
+                'title'     => '',
+                'pageTheme' => ''
+            );
         }
-        ksort($sections);
-        $details          = $template->toArray();
-        $details['theme'] = array(
-            'id'        => null,
-            'title'     => '',
-            'pageTheme' => ''
-        );
 
         /** @var $section \PageBuilder\Entity\Join\TemplateSection */
         foreach ($sections as $section) {
@@ -287,7 +293,7 @@ class LayoutService implements ServiceLocatorAwareInterface
             'page'      => $details,
             'editUrl'   => $urlHelper('template', array('id' => $templateId)),
             'sections'  => $templateSections,
-            'title'     => 'Layout Manager - ' . $template->getTitle(),
+            'title'     => 'Layout Manager - ' . ($template ? $template->getTitle() : ''),
             'widgets'   => array(
                 'title' => 'Widgets',
                 'items' => $widgetUtil->getRegistry(),

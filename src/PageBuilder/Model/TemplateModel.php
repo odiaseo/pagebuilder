@@ -22,7 +22,6 @@ class TemplateModel extends BaseModel
         $result = $query->execute(array(), AbstractQuery::HYDRATE_OBJECT);
 
         return $result;
-
     }
 
     /**
@@ -34,17 +33,17 @@ class TemplateModel extends BaseModel
     public function updateTemplateSections($id, $sections)
     {
         /** @var $entity \PageBuilder\Entity\Template */
-        $entity = $this->findObject($id);
+        if ($entity = $this->findObject($id)) {
 
-        /** @var $ts \PageBuilder\Entity\Join\TemplateSection */
-        foreach ($entity->getTemplateSections() as $ts) {
-            $ts->setIsActive(0);
-        }
-        if ($ts = $entity->getTemplateSections()) {
-            $entity->getTemplateSections()->clear();
-        } else {
-            $entity->setTemplateSections(new ArrayCollection());
-
+            /** @var $ts \PageBuilder\Entity\Join\TemplateSection */
+            foreach ($entity->getTemplateSections() as $ts) {
+                $ts->setIsActive(0);
+            }
+            if ($ts = $entity->getTemplateSections()) {
+                $entity->getTemplateSections()->clear();
+            } else {
+                $entity->setTemplateSections(new ArrayCollection());
+            }
         }
 
         foreach ($sections as $key => $v) {
@@ -88,11 +87,9 @@ class TemplateModel extends BaseModel
                     'layout'      => $item['layout']
                 );
             }
-
         }
 
         return $list;
-
     }
 
     public function updateTemplate($id, $layout, $title = '')

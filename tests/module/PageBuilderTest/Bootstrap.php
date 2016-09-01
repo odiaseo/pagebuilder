@@ -1,6 +1,7 @@
 <?php
 namespace PageBuilderTest;
 
+use Doctrine\ORM\Tools\SchemaTool;
 use Zend\Mvc\Application;
 
 \date_default_timezone_set('UTC');
@@ -65,6 +66,8 @@ class Bootstrap
 
         $serviceManager         = $app->getServiceManager();
         static::$serviceManager = $serviceManager;
+
+        self::setUpDatabase();
     }
 
     public static function getServiceManager()
@@ -87,6 +90,23 @@ class Bootstrap
         $srcDir = realpath($dir . '/../../../');
 
         return $srcDir . '/' . $path;
+    }
+
+    /**
+     * @method getServiceManager()
+     */
+    public static function setUpDatabase()
+    {
+        $file = sys_get_temp_dir() . '/sqlite.db';
+
+        if (file_exists($file)) {
+            unlink($file);
+        }
+        $entityManager = self::getServiceManager()->get('doctrine.entitymanager.orm_default');
+        $tool          = new SchemaTool($entityManager);
+        $classes       = $entityManager->getMetadataFactory()->getAllMetadata();
+        $tool->getDropDatabaseSQL();
+        $tool->createSchema($classes);
     }
 }
 
