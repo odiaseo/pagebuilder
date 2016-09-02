@@ -8,6 +8,7 @@ use SynergyCommon\Service\ServiceLocatorAwareTrait;
 use Zend\EventManager\EventInterface;
 use Zend\Mvc\I18n\Translator;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Helper\Escaper\AbstractHelper;
 use Zend\View\Helper\HelperInterface;
 use Zend\View\Renderer\RendererInterface as Renderer;
 
@@ -302,5 +303,15 @@ abstract class BaseWidget implements WidgetInterface, HelperInterface, ServiceLo
     public function translate($text)
     {
         return $this->translator->translate($text);
+    }
+
+    /**
+     * @param $name
+     *
+     * @return AbstractHelper
+     */
+    public function getHelper($name)
+    {
+        return $this->getServiceLocator()->get('ViewHelperManager')->get($name);
     }
 }
