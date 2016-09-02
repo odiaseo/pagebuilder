@@ -2,12 +2,12 @@
 
 namespace PageBuilder;
 
+use Interop\Container\ContainerInterface;
 use PageBuilder\View\TagAttributes;
 use SynergyCommon\Service\ServiceLocatorAwareInterface;
 use SynergyCommon\Service\ServiceLocatorAwareTrait;
 use Zend\EventManager\EventInterface;
 use Zend\Mvc\I18n\Translator;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\Escaper\AbstractHelper;
 use Zend\View\Helper\HelperInterface;
 use Zend\View\Renderer\RendererInterface as Renderer;
@@ -82,16 +82,24 @@ abstract class BaseWidget implements WidgetInterface, HelperInterface, ServiceLo
      */
     protected $translator;
 
-    public function __construct(
-        Renderer $view,
-        ServiceLocatorInterface $serviceLocator,
-        Translator $translator,
-        EventInterface $event
-    ) {
+    /**
+     * BaseWidget constructor.
+     *
+     * @param Renderer $view
+     * @param ContainerInterface $serviceLocator
+     * @param EventInterface|null $event
+     */
+    public function __construct(Renderer $view, ContainerInterface $serviceLocator = null, EventInterface $event = null)
+    {
+        if ($event) {
+            $this->setMvcEvent($event);
+        }
+
+        if ($serviceLocator) {
+            $this->setServiceLocator($serviceLocator);
+        }
+
         $this->setView($view);
-        $this->translator = $translator;
-        $this->setServiceLocator($serviceLocator);
-        $this->setMvcEvent($event);
     }
 
     public function init()
@@ -296,22 +304,12 @@ abstract class BaseWidget implements WidgetInterface, HelperInterface, ServiceLo
     }
 
     /**
-     * @param $text
-     *
-     * @return string
-     */
-    public function translate($text)
-    {
-        return $this->translator->translate($text);
-    }
-
-    /**
      * @param $name
      *
      * @return AbstractHelper
      */
     public function getHelper($name)
     {
-        return $this->getServiceLocator()->get('ViewHelperManager')->get($name);
+        return $this->getView()->getHelperPluginManager()->get($name);
     }
 }

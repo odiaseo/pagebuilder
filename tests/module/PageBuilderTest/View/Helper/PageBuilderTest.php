@@ -34,9 +34,6 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase
         $widget = $builder->getServiceLocator()->get($alias . 'widget');
         $this->assertInstanceOf($className, $widget);
 
-        $text = $widget->translate('test');
-        $this->assertInternalType('string', $text);
-
         $result = $widget->render();
         $this->assertInternalType('string', $result);
     }

@@ -60,10 +60,8 @@ class WidgetFactory implements AbstractFactoryInterface
             /** @var $view \Zend\View\Renderer\RendererInterface */
             $view = $serviceLocator->get('ViewRenderer');
 
-            $translator = $serviceLocator->get('MvcTranslator');
-
             /** @var $widget \PageBuilder\BaseWidget */
-            $widget = new $data['class']($view, $serviceLocator, $translator, $mvcEvent);
+            $widget = new $data['class']($view, $serviceLocator, $mvcEvent);
             $widget->setId($widgetId);
 
             $response = $widget->init();

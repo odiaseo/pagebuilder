@@ -2,6 +2,8 @@
 
 namespace PageBuilder;
 
+use Zend\EventManager\EventInterface;
+
 /**
  * Interface WidgetInterface.
  */
@@ -33,9 +35,9 @@ interface WidgetInterface
     public function getOptions();
 
     /**
-     * @param $text
+     * @param EventInterface $event
      *
      * @return mixed
      */
-    public function translate($text);
+    public function setMvcEvent(EventInterface $event);
 }
