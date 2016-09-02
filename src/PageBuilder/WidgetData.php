@@ -5,6 +5,7 @@ use Zend\Stdlib\AbstractOptions;
 
 /**
  * Class WidgetData
+ *
  * @package PageBuilder
  */
 class WidgetData extends AbstractOptions

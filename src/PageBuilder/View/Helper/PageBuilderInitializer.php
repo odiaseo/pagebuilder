@@ -8,6 +8,7 @@ use Zend\ServiceManager\Initializer\InitializerInterface;
 
 /**
  * Class WidgetInitializers
+ *
  * @package PageBuilder\Service
  */
 class PageBuilderInitializer implements InitializerInterface
@@ -15,6 +16,7 @@ class PageBuilderInitializer implements InitializerInterface
     /**
      * @param ContainerInterface $serviceManager
      * @param object $helper
+     *
      * @return bool
      */
     public function __invoke(ContainerInterface $serviceManager, $helper)
@@ -23,7 +25,7 @@ class PageBuilderInitializer implements InitializerInterface
         if ($helper instanceof PageBuilder) {
             $config = $serviceManager->get('config');
 
-            $formatters = array();
+            $formatters = [];
             foreach ($config['pagebuilder']['output_formatters'] as $format) {
                 if (is_string($format)) {
                     $formatters[] = $serviceManager->get($format);
@@ -52,6 +54,7 @@ class PageBuilderInitializer implements InitializerInterface
             $options->setOutputFormatters($formatters);
             $helper->setServiceLocator($serviceManager);
             $helper->setOptions($options);
+
             return true;
         }
 

@@ -29,7 +29,7 @@ class Module implements DependencyIndicatorInterface
 
     public function getModuleDependencies()
     {
-        return array('SynergyDataGrid');
+        return ['SynergyDataGrid'];
     }
 
     public function onBootstrap(MvcEvent $e)
@@ -60,20 +60,20 @@ class Module implements DependencyIndicatorInterface
 
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+        return [
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     public function getServiceConfig()
     {
 
-        return array(
-            'aliases'      => array(
+        return [
+            'aliases'      => [
                 'pages_service'     => 'PageBuilder\Service\PageService',
                 'component_service' => 'PageBuilder\Service\ComponentService',
                 'template_service'  => 'PageBuilder\Service\TemplateService',
@@ -82,12 +82,12 @@ class Module implements DependencyIndicatorInterface
                 'util\widget'       => 'PageBuilder\Util\Widget',
                 'session_manager'   => 'Zend\Session\SessionManager',
                 'active\site'       => 'PageBuilder\Service\LocalSiteFactory',
-            ),
-            'initializers' => array(
+            ],
+            'initializers' => [
                 'widget' => WidgetInitializer::class,
-            ),
+            ],
 
-            'factories' => array(
+            'factories' => [
                 'PageBuilder\Service\LocalSiteFactory'      => 'PageBuilder\Service\LocalSiteFactory',
                 'PageBuilder\Service\PageService'           => 'PageBuilder\Service\PageService',
                 'PageBuilder\Navigation\NavigationFactory'  => 'PageBuilder\Navigation\NavigationFactory',
@@ -99,28 +99,31 @@ class Module implements DependencyIndicatorInterface
                 'active\theme'                              => ActiveThemeFactory::class,
                 'PageBuilder\Util\Widget'                   => WidgetUtilFactory::class,
                 'synergy\session\storage'                   => SessionStorageFactory::class,
-            )
-        );
+            ],
+        ];
     }
 
     public function getControllerPluginConfig()
     {
-        return array(
-            'invokables' => array(
+        return [
+            'invokables' => [
                 'buildPage' => 'PageBuilder\Controller\Plugin\PageBuilder',
-            )
-        );
+            ],
+        ];
     }
 
     public function getViewHelperConfig()
     {
-        return array(
-            'invokables'   => array(
+        return [
+            'aliases'      => [
+                'pageBuilder' => 'buildPage',
+            ],
+            'invokables'   => [
                 'buildPage' => 'PageBuilder\View\Helper\PageBuilder',
-            ),
-            'initializers' => array(
-                'initbuilder' => PageBuilderInitializer::class
-            )
-        );
+            ],
+            'initializers' => [
+                'initbuilder' => PageBuilderInitializer::class,
+            ],
+        ];
     }
 }

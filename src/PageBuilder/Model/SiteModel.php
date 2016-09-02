@@ -22,7 +22,7 @@ class SiteModel extends BaseModel
      */
     public function getSettingList(Site $site)
     {
-        $settingList = array();
+        $settingList = [];
         /** @var $setting \PageBuilder\Entity\Setting */
         foreach ($site->getSettings() as $setting) {
             $code               = $setting->getSettingKey()->getCode();
@@ -39,6 +39,7 @@ class SiteModel extends BaseModel
 
     /**
      * @param array $params
+     * @param int $mode
      *
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -47,7 +48,7 @@ class SiteModel extends BaseModel
     {
         /** @var $query QueryBuilder */
         $qb = $this->getFindByQueryBuilder($params, null, 'e');
-        $qb->addSelect(array('x, y, z, a, l'))
+        $qb->addSelect(['x, y, z, a, l'])
             ->innerJoin('e.siteType', 'x')
             ->leftJoin('e.parent', 'z')
             ->leftJoin('e.subDomains', 'a')
@@ -83,13 +84,12 @@ class SiteModel extends BaseModel
         }
 
         $query->andWhere('e.isAdmin = :zero')
-            
             ->setParameters(
-                array(
+                [
                     ':active'   => 1,
                     ':zero'     => 0,
-                    ':siteType' => self::TYPE_VOUCHER
-                )
+                    ':siteType' => self::TYPE_VOUCHER,
+                ]
             );
         $query->setEnableHydrationCache(true);
 
@@ -99,6 +99,7 @@ class SiteModel extends BaseModel
     /**
      * @param int $mode
      * @param null $siteType
+     *
      * @return array
      */
     public function getActiveDomains($mode = AbstractQuery::HYDRATE_OBJECT, $siteType = null)
@@ -109,9 +110,9 @@ class SiteModel extends BaseModel
             ->from($this->getEntity(), 'e')
             ->where('e.isActive = :active')
             ->setParameters(
-                array(
+                [
                     ':active' => 1,
-                )
+                ]
             );
 
         if ($siteType) {

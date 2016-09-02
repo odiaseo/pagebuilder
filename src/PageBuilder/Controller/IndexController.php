@@ -9,7 +9,7 @@
 
 namespace PageBuilder\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use SynergyCommon\Controller\BaseActionController;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -17,7 +17,7 @@ use Zend\View\Model\ViewModel;
  *
  * @package PageBuilder\Controller
  */
-class IndexController extends AbstractActionController
+class IndexController extends BaseActionController
 {
 
     public function indexAction()
@@ -27,7 +27,7 @@ class IndexController extends AbstractActionController
 
     public function adminAction()
     {
-        $gridList = $listItems = array();
+        $gridList = $listItems = [];
 
         /** @var $gridService \SynergyDataGrid\Service\GridService */
         $gridService = $this->getServiceLocator()->get('synergy\service\grid');
@@ -45,10 +45,10 @@ class IndexController extends AbstractActionController
             }
         }
 
-        $return = array(
+        $return = [
             'entities' => $listItems,
-            'grids'    => $gridList
-        );
+            'grids'    => $gridList,
+        ];
 
         return new ViewModel($return);
     }

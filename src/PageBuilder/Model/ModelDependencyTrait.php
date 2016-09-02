@@ -2,24 +2,24 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
 use PageBuilder\Entity\Site;
 use PageBuilder\LocaleAwareInterface;
 use SynergyCommon\CacheAwareInterface;
 use SynergyCommon\Doctrine\CachedEntityManager;
 use SynergyCommon\Model\AbstractModel;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 trait ModelDependencyTrait
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $serviceLocator
      * @param AbstractModel $model
      * @param                         $entity
      *
      * @return BaseModel
      */
-    protected function setDependency(ServiceLocatorInterface $serviceLocator, AbstractModel $model, $entity)
+    protected function setDependency(ContainerInterface $serviceLocator, AbstractModel $model, $entity)
     {
 
         /** @var EntityManager $entityManager */

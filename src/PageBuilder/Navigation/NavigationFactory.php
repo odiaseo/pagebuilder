@@ -1,10 +1,10 @@
 <?php
 namespace PageBuilder\Navigation;
 
+use Interop\Container\ContainerInterface;
 use Zend\Navigation\Exception;
 use Zend\Navigation\Navigation;
 use Zend\Navigation\Service\DefaultNavigationFactory;
-use Interop\Container\ContainerInterface;
 
 /**
  * Class NavigationFactory
@@ -14,6 +14,7 @@ use Interop\Container\ContainerInterface;
 class NavigationFactory extends DefaultNavigationFactory
 {
     protected $_sm;
+
     protected $_model = 'pagebuilder\model\page';
 
     protected function getName()
@@ -26,6 +27,8 @@ class NavigationFactory extends DefaultNavigationFactory
         if (is_callable($config)) {
             return $config($this->_sm);
         }
+
+        return [];
     }
 
     protected function getPages(ContainerInterface $serviceManager)

@@ -6,8 +6,10 @@ use PageBuilder\BaseWidget;
 class Gap extends BaseWidget
 {
     protected $name = 'Gap';
+
     protected $description = 'Content spacer';
-    protected $options = array();
+
+    protected $options = [];
 
     public function render()
     {

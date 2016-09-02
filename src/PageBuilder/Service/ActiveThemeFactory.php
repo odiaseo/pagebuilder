@@ -15,6 +15,7 @@ class ActiveThemeFactory implements FactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
+     *
      * @return mixed
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)

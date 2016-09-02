@@ -19,46 +19,55 @@ class Site extends BaseSite
      * @ORM\Column(type="string", length=75, nullable=true, name="display_title")
      */
     protected $displayTitle;
+
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
     protected $description;
+
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
      */
     protected $strapline;
+
     /**
      * @ORM\Column(type="string", length=5, nullable=true)
      */
     protected $currency;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade="persist")
      */
     protected $siteThemes;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Licence", cascade="persist")
      * @ORM\JoinTable(name="Site_Licence")
      */
     protected $licences;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Setting")
      */
     protected $settings;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="Module", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Module")
      */
     protected $modules;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist", fetch="LAZY")
      */
     protected $subDomains;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Site", fetch="LAZY")
@@ -68,6 +77,7 @@ class Site extends BaseSite
      *      ))
      */
     protected $linkedSites;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="subDomains", cascade={"persist"})
@@ -81,26 +91,31 @@ class Site extends BaseSite
      * @ORM\JoinColumn(name="root_id", referencedColumnName="id", nullable=false)
      */
     protected $rootPage;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade="persist", inversedBy="sites", fetch="LAZY")
      * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id", nullable=false)
      */
     protected $siteType;
+
     /**
      * @ORM\Column(type="string", length=50, nullable=true, name="default_timezone")
      */
     protected $defaultTimezone = 'Europe/London';
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
     protected $defaultTemplate;
+
     /**
      * @ORM\Column(type="boolean", name="is_admin", nullable=true, options={"default" = 0})
      */
     protected $isAdmin = 0;
+
     /**
      * Inverse Side
      *
@@ -108,11 +123,13 @@ class Site extends BaseSite
      * @ORM\ManyToMany(targetEntity="Redirect", mappedBy="sites")
      */
     protected $redirects;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="SiteRank", mappedBy="site", cascade="persist")
      */
     protected $siteRanks;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="Site")
@@ -373,7 +390,7 @@ class Site extends BaseSite
 
     public function getDisplayDomain()
     {
-        if ($this->getIsSubdomain()) {
+        if ($this->getIsSubDomain()) {
             return 'http://' . rtrim($this->domain, '/');
         } else {
             return 'http://www.' . rtrim($this->domain, '/');

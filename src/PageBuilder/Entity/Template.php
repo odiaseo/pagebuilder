@@ -21,18 +21,22 @@ class Template extends CommonBaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $title;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $description;
+
     /**
      * @ORM\Column(type="json_array", nullable=true)
      */
     protected $layout;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\TemplateSection",
@@ -41,6 +45,7 @@ class Template extends CommonBaseEntity
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $templateSections;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="templates")

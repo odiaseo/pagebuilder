@@ -15,6 +15,7 @@ use SynergyCommon\View\Helper\MicroData;
 use Zend\Filter\FilterInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Helper\Navigation;
 
@@ -26,36 +27,41 @@ use Zend\View\Helper\Navigation;
  */
 class PageBuilder extends AbstractHelper
 {
-    const SHARE_KEY      = 'shared';
-    const MAIN_CONTENT   = 'main';
+    const SHARE_KEY = 'shared';
+    const MAIN_CONTENT = 'main';
     const FLASH_MESSAGES = 'flash';
 
-    const LAYOUT_MENU         = 'menu';
+    const LAYOUT_MENU = 'menu';
     const LAYOUT_USER_DEFINED = 'component';
-    const LAYOUT_WIDGET       = 'widget';
-    const LAYOUT_BREADCRUMB   = 'breadcrumb';
+    const LAYOUT_WIDGET = 'widget';
+    const LAYOUT_BREADCRUMB = 'breadcrumb';
 
     private $mainContent;
+
     private $menuTree;
-    private $layout = array();
+
+    private $layout = [];
+
     /** @var \Zend\View\HelperPluginManager */
     protected $pluginManager;
+
     /** @var \Zend\ServiceManager\ServiceManager */
     protected $serviceManager;
 
     /** @var Config\PageBuilderConfig */
     protected $options;
+
     /** @var  \PageBuilder\Entity\Theme */
     private $activeTheme;
 
     public static $sections
-        = array(
+        = [
             'top'    => 'Top Bar',
             'header' => 'Header',
             'menu'   => 'Menu',
             'body'   => 'Body',
-            'footer' => 'Footer'
-        );
+            'footer' => 'Footer',
+        ];
 
     /**
      * Prepare page data and widgets
@@ -101,33 +107,33 @@ class PageBuilder extends AbstractHelper
                 if (array_key_exists('status', $template) and empty($template['status'])) {
                     unset($layout[$index]);
                 } else {
-                    $sectionAttr = isset($template['tagAttributes']) ? $template['tagAttributes'] : array();
+                    $sectionAttr = isset($template['tagAttributes']) ? $template['tagAttributes'] : [];
                     $secAttrObj  = new TagAttributes($sectionAttr);
 
                     if ($secAttrObj->getActive()) {
                         $template['tagAttributes'] = $secAttrObj;
                         if (isset($template['items'])) {
                             foreach ($template['items'] as &$row) {
-                                $rowAttr              = isset($row['tagAttributes']) ? $row['tagAttributes'] : array();
+                                $rowAttr              = isset($row['tagAttributes']) ? $row['tagAttributes'] : [];
                                 $row['tagAttributes'] = new TagAttributes($rowAttr);
                                 if (isset($row['rowItems'])) {
                                     foreach ($row['rowItems'] as &$col) {
                                         $colAttr              = isset($col['tagAttributes']) ? $col['tagAttributes']
-                                            : array();
+                                            : [];
                                         $col['tagAttributes'] = new TagAttributes($colAttr);
                                         if (isset($col['item'])) {
                                             foreach ($col['item'] as $index => $item) {
                                                 list($itemType, $itemId) = explode('-', $item['name']);
                                                 $attr                  = isset($item['tagAttributes'])
                                                     ? $item['tagAttributes']
-                                                    : array();
+                                                    : [];
                                                 $item['tagAttributes'] = new TagAttributes($attr);
                                                 $col['item'][$index]   = $this->getItem(
                                                     $itemType, $itemId, $item['tagAttributes']
                                                 );
                                             }
                                         } else {
-                                            $col['item'] = array();
+                                            $col['item'] = [];
                                         }
                                     }
                                 }
@@ -145,7 +151,7 @@ class PageBuilder extends AbstractHelper
 
     public function __invoke($content = '')
     {
-        $html = array('<a id="top"></a>');
+        $html = ['<a id="top"></a>'];
 
         try {
             if ($layout = $this->getLayout()) {
@@ -182,13 +188,13 @@ class PageBuilder extends AbstractHelper
                                     /** @var $item \PageBuilder\WidgetData */
                                     foreach ($col['item'] as $item) {
                                         list($itemTop, $itemBottom) = $this->getTopBottomContainers(
-                                            $item->getAttributes(), null, count($row['rowItems'])
+                                            $item->getAttributes(), null
                                         );
                                         $html[] = $itemTop;
                                         try {
                                             $itemData = $item->getData();
                                             $mainData = str_replace(
-                                                array('{{' . self::MAIN_CONTENT . '}}'), array($content),
+                                                ['{{' . self::MAIN_CONTENT . '}}'], [$content],
                                                 is_string($itemData) ? $itemData : $itemData->render()
                                             );
                                         } catch (\Exception $exception) {
@@ -283,7 +289,7 @@ class PageBuilder extends AbstractHelper
                 $componentModel = $this->getServiceLocator()->get('pagebuilder\model\component');
 
                 /** @var $component \PageBuilder\Entity\Component */
-                if ($component = $componentModel->findOneTranslatedBy(array('id' => $itemId))) {
+                if ($component = $componentModel->findOneTranslatedBy(['id' => $itemId])) {
                     $data     = $this->transform($component->getContent());
                     $comId    = "data-id='{$itemType}-{$itemId}'";
                     $cssClass = trim("{$itemType} {$component->getCssClass()}");
@@ -311,10 +317,10 @@ class PageBuilder extends AbstractHelper
         }
 
         return new WidgetData(
-            array(
+            [
                 'data'       => $data,
                 'attributes' => $attr,
-            )
+            ]
         );
     }
 
@@ -380,7 +386,7 @@ class PageBuilder extends AbstractHelper
     /**
      * Get service locator
      *
-     * @return ServiceLocatorInterface
+     * @return ServiceManager
      */
     public function getServiceLocator()
     {
@@ -413,13 +419,13 @@ class PageBuilder extends AbstractHelper
                     break;
             }
 
-            $variables = array(
+            $variables = [
                 trim($wrapper),
                 $this->transform(trim($attr->formatClass())),
                 trim($attr->formatId()),
                 trim($attr->formatAttr()),
-                trim($microData)
-            );
+                trim($microData),
+            ];
 
             $variables = array_filter($variables);
 
@@ -441,7 +447,7 @@ class PageBuilder extends AbstractHelper
             $bottom .= '</' . $wrapper . '>';
         }
 
-        return array($top, $bottom);
+        return [$top, $bottom];
     }
 
     /**

@@ -18,30 +18,37 @@ class Module extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $title;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $description = '';
+
     /**
      * @ORM\Column(type="string")
      */
     protected $label;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $thumbnail;
+
     /**
      * @ORM\Column(type="smallint", name="sort_order")
      */
     protected $sortOrder;
+
     /**
      * @ORM\Column(type="boolean")
      */
     protected $isActive;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Licence")

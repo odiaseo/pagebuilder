@@ -21,22 +21,26 @@ class SiteTheme extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Theme", inversedBy="siteThemes")
      * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=false)
      */
     protected $themeId;
+
     /**
      * @ORM\Column(type="boolean", name="is_active")
      */
     protected $isActive = 0;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", inversedBy="siteThemes")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $siteId;
+
     /**
      * @ORM\Column(name="colour_scheme",type="string", length=50, nullable=true)
      */

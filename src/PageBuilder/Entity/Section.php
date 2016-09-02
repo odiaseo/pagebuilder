@@ -21,18 +21,22 @@ class Section extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $title;
+
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string")
      */
     protected $slug;
+
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\TemplateSection", mappedBy="sectionId", cascade={"persist","remove"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\TemplateSection", mappedBy="sectionId",
+     *     cascade={"persist","remove"}, fetch="EAGER")
      * @ORM\JoinTable(name="Template_Section")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */

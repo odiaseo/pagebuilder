@@ -2,8 +2,6 @@
 namespace PageBuilder\Model;
 
 use Doctrine\ORM\AbstractQuery;
-use SynergyCommon\Doctrine\CacheAwareQueryTrait;
-use SynergyCommon\Doctrine\QueryBuilder;
 use SynergyCommon\Model\TranslatableModelTrait;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 
@@ -52,7 +50,7 @@ class PageModel extends BaseModel
 
     public function toHierarchy($collection, $childKey = 'pages')
     {
-        $trees    = $this->getRepository()->toHierarchy($collection, $childKey, array($this, 'buildPage'));
+        $trees    = $this->getRepository()->toHierarchy($collection, $childKey, [$this, 'buildPage']);
         $entities = $this->buildEntityTree();
 
         if ($entities) {
@@ -64,17 +62,17 @@ class PageModel extends BaseModel
 
     protected function buildEntityTree()
     {
-        return array();
+        return [];
     }
 
     public static function buildPage($node, $hasIdentity = false)
     {
-        $params = array();
+        $params = [];
         if ($node['parameters']) {
             parse_str($node['parameters'], $params);
         }
 
-        if (in_array($node['privilege'], array('login', 'logout'))) {
+        if (in_array($node['privilege'], ['login', 'logout'])) {
             if ($node['privilege'] == 'login') {
                 $node['isVisible'] = !$hasIdentity;
             } elseif ($node['privilege'] == 'logout') {
@@ -82,7 +80,7 @@ class PageModel extends BaseModel
             }
         }
 
-        $menu = array(
+        $menu = [
             'id'        => $node['id'],
             'title'     => $node['title'],
             'label'     => empty($node['label']) ? $node['title'] : $node['label'],
@@ -93,8 +91,8 @@ class PageModel extends BaseModel
             'level'     => $node['level'],
             'i18n'      => $node['slug'],
             'icon'      => $node['iconClassName'],
-            'params'    => $params
-        );
+            'params'    => $params,
+        ];
 
         if (!empty($node['uri'])) {
             $menu['uri']    = $node['uri'];
@@ -135,7 +133,7 @@ class PageModel extends BaseModel
 
     public function getNavigation()
     {
-        $navigation = $this->_sm->get('ViewHelperManager')->get('navigation');
+        $navigation = $this->getServiceLocator()->get('ViewHelperManager')->get('navigation');
         $menu       = $navigation('menu');
 
         return $menu;
@@ -143,13 +141,13 @@ class PageModel extends BaseModel
 
     public function listRootMenusByTitle()
     {
-        $list  = array();
+        $list  = [];
         $roots = $this->getRoots();
         foreach ($roots as $item) {
-            $list[$item['id']] = array(
+            $list[$item['id']] = [
                 'title'       => $item['title'],
-                'description' => $item['description']
-            );
+                'description' => $item['description'],
+            ];
         }
 
         return $list;
@@ -219,9 +217,9 @@ class PageModel extends BaseModel
             ->leftJoin('e.parent', 'p')
             ->where('e.id = :id')
             ->setParameters(
-                array(
+                [
                     ':id' => $id,
-                )
+                ]
             );
 
         $qb->setEnableHydrationCache($this->enableResultCache);
@@ -250,6 +248,7 @@ class PageModel extends BaseModel
      * @param null $rootPage
      * @param int $mode
      * @param null $cacheKey
+     *
      * @return mixed
      */
     public function getEntityNavigation($rootPage = null, $mode = AbstractQuery::HYDRATE_ARRAY, $cacheKey = null)
@@ -260,6 +259,6 @@ class PageModel extends BaseModel
         $query = $this->addHints($repo->getNodesHierarchyQuery($rootPage));
         $query = $this->setCacheFlag($query);
 
-        return $query->execute(array(), $mode);
+        return $query->execute([], $mode);
     }
 }

@@ -7,6 +7,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class WidgetUtilFactory
+ *
  * @package PageBuilder\Service
  */
 class WidgetUtilFactory implements FactoryInterface
@@ -15,6 +16,7 @@ class WidgetUtilFactory implements FactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
+     *
      * @return Widget
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)

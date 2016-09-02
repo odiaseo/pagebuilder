@@ -9,15 +9,22 @@ namespace PageBuilder\View;
 class TagAttributes
 {
     public $wrapper = 'div';
-    public $class = array();
+
+    public $class = [];
+
     public $id = '';
+
     public $container = false;
+
     public $container2 = false;
-    public $attributes = array();
-    public $options = array();
+
+    public $attributes = [];
+
+    public $options = [];
+
     public $active = true;
 
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         foreach ($options as $key => $val) {
             $method = 'set' . ucfirst($key);
@@ -54,7 +61,7 @@ class TagAttributes
 
     private function cleanAttr($attributes)
     {
-        $attr  = array();
+        $attr  = [];
         $parts = explode(',', $attributes);
         $parts = array_unique(array_filter($parts));
 
@@ -73,7 +80,7 @@ class TagAttributes
 
     public function formatAttr()
     {
-        $attr = array();
+        $attr = [];
         foreach ($this->attributes as $k => $v) {
             $attr[] = $k . '="' . $v . '"';
         }
@@ -95,7 +102,7 @@ class TagAttributes
 
     public function setClass($class)
     {
-        $this->class = array();
+        $this->class = [];
         $class       = array_unique(array_filter(explode(',', $class)));
         foreach ($class as $c) {
             $this->class[] = $this->_filter($c);

@@ -19,7 +19,7 @@ class TemplateModel extends BaseModel
             ->setParameter(':id', $id)
             ->getQuery();
 
-        $result = $query->execute(array(), AbstractQuery::HYDRATE_OBJECT);
+        $result = $query->execute([], AbstractQuery::HYDRATE_OBJECT);
 
         return $result;
     }
@@ -49,7 +49,7 @@ class TemplateModel extends BaseModel
         foreach ($sections as $key => $v) {
             $order = $key;
             if ($entry = $this->getEntityManager()->getRepository('PageBuilder\Entity\Join\TemplateSection')
-                ->findOneBy(array('templateId' => $id, 'sectionId' => $v))
+                ->findOneBy(['templateId' => $id, 'sectionId' => $v])
             ) {
                 $entry->setSortOrder($order);
                 $entry->setIsActive(1);
@@ -70,22 +70,22 @@ class TemplateModel extends BaseModel
     public function listTemplates()
     {
 
-        $list = array();
+        $list = [];
         $qb   = $this->getEntityManager()->createQueryBuilder();
         /** @var $query \Doctrine\ORM\Query */
         $query = $qb->select('e.id, e.title, e.description, e.layout')
             ->from($this->getEntity(), 'e')
             ->getQuery();
 
-        $result = $query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $result = $query->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         if ($result) {
             foreach ($result as $item) {
-                $list[$item['id']] = array(
+                $list[$item['id']] = [
                     'title'       => $item['title'],
                     'description' => $item['description'],
-                    'layout'      => $item['layout']
-                );
+                    'layout'      => $item['layout'],
+                ];
             }
         }
 

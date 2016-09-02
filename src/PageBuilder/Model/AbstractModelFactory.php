@@ -26,6 +26,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
+     *
      * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName)
@@ -41,6 +42,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
+     *
      * @return BaseModel
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
@@ -74,6 +76,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param $id
      * @param $default
+     *
      * @return mixed
      */
     private function resolveEntityClassName(ContainerInterface $serviceLocator, $id, $default)
@@ -87,6 +90,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
         if ($entityClassName) {
             return new $entityClassName;
         }
+
         return $serviceLocator->get($default);
     }
 }

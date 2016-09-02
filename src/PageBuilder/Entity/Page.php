@@ -23,6 +23,7 @@ class Page extends BasePage
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=true)
      */
     protected $template;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @Gedmo\TreeParent
@@ -30,36 +31,43 @@ class Page extends BasePage
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      */
     protected $parent;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Page", mappedBy="parent", fetch="LAZY")
      * @ORM\OrderBy({"title" = "ASC"})
      */
     protected $children;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\PageTemplate", mappedBy="page" , cascade={"persist"})
      * @ORM\JoinTable(name="Page_Template")
      */
     protected $pageTemplates;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="Resource", cascade="persist", fetch="LAZY")
      * @ORM\JoinTable(name="Page_Resource")
      */
     protected $resources;
+
     /**
      * @ORM\Column(type="string", length=120, nullable=true, name="js_file")
      */
     protected $jsFile = 'frontend';
+
     /**
      * @ORM\Column(type="string", length=120, nullable=true, name="css_file")
      */
     protected $cssFile = 'frontend';
+
     /**
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="rootPage", fetch="LAZY")
      */
     protected $sites;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(

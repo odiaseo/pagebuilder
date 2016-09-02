@@ -33,6 +33,7 @@ class TemplateSectionController extends BasePageRestfulController
     public function update($id, $data)
     {
         $sections = empty($data['sections']) ? [] : $data['sections'];
+
         return $this->_sendPayload(
             $this->_getService($this->_pageServiceKey)->updateTemplateSections($id, $sections)
         );

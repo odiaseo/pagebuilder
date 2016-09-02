@@ -18,43 +18,44 @@ class JqGridConfigFactory implements FactoryInterface
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
+     *
      * @return array
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $datetime = array(
+        $datetime = [
             'edittype'      => 'date',
             'editable'      => true,
             'hidden'        => true,
             'sorttype'      => 'date',
-            'editrules'     => array(
+            'editrules'     => [
                 'edithidden' => true,
                 'required'   => false,
-                'date'       => array(
-                    'datefmt' => self::DATE_FORMAT
-                )
-            ),
+                'date'       => [
+                    'datefmt' => self::DATE_FORMAT,
+                ],
+            ],
             'formatter'     => 'date',
-            'formatoptions' => array(
-                'newformat' => self::DATE_FORMAT
-            ),
-            'editoptions'   => array(
+            'formatoptions' => [
+                'newformat' => self::DATE_FORMAT,
+            ],
+            'editoptions'   => [
                 'format'     => self::DATE_FORMAT,
                 'timeFormat' => 'hh:mm:ss',
                 'region'     => 'en',
-            )
-        );
+            ],
+        ];
 
-        $config = array(
+        $config = [
             'render_script_as_template' => false,
-            'grid_options'              => array(
-                'ajaxGridOptions'    => array(
-                    'type' => 'GET'
-                ),
-                'toolbar'            => array(
+            'grid_options'              => [
+                'ajaxGridOptions'    => [
+                    'type' => 'GET',
+                ],
+                'toolbar'            => [
                     true,
-                    'bottom'
-                ),
+                    'bottom',
+                ],
                 'gridview'           => true,
                 'allowResizeColumns' => false,
                 'forceFit'           => true,
@@ -70,123 +71,123 @@ class JqGridConfigFactory implements FactoryInterface
                 }
             }"
                 ),
-            ),
-            'excluded_columns'          => array(
+            ],
+            'excluded_columns'          => [
                 'children',
                 'password',
                 'root',
-                'siteTheme'
-            ),
+                'siteTheme',
+            ],
             'default_values'            => 'PageBuilder\DataProvider\GridDefault',
-            'column_model'              => array(
-                'slug'             => array(
+            'column_model'              => [
+                'slug'             => [
                     'hidden'    => true,
-                    'editrules' => array(
+                    'editrules' => [
                         'required'   => false,
-                        'edithidden' => true
-                    )
-                ),
-                'siteId'           => array(
+                        'edithidden' => true,
+                    ],
+                ],
+                'siteId'           => [
                     'hidden'    => true,
-                    'editrules' => array(
+                    'editrules' => [
                         'required'   => false,
-                        'edithidden' => true
-                    )
-                ),
-                'label'            => array(
+                        'edithidden' => true,
+                    ],
+                ],
+                'label'            => [
                     'hidden'    => true,
-                    'editrules' => array(
+                    'editrules' => [
                         'required'   => false,
-                        'edithidden' => true
-                    )
-                ),
-                'settingValue'     => array(
-                    'hidden' => false
-                ),
-                'description'      => array(
+                        'edithidden' => true,
+                    ],
+                ],
+                'settingValue'     => [
+                    'hidden' => false,
+                ],
+                'description'      => [
                     'hidden'    => true,
-                    'editrules' => array(
+                    'editrules' => [
                         'required'   => false,
-                        'edithidden' => true
-                    )
-                ),
-                'timezone'         => array(
-                    'editrules'   => array(
+                        'edithidden' => true,
+                    ],
+                ],
+                'timezone'         => [
+                    'editrules'   => [
                         'required' => false,
-                    ),
-                    'editoptions' => array(
+                    ],
+                    'editoptions' => [
                         'defaultValue' => 'UTC',
-                    ),
-                ),
-                'cssId'            => array(
-                    'editrules' => array(
+                    ],
+                ],
+                'cssId'            => [
+                    'editrules' => [
                         'required' => false,
-                    )
-                ),
-                'parameters'       => array(
+                    ],
+                ],
+                'parameters'       => [
                     'hidden'    => true,
-                    'editrules' => array(
+                    'editrules' => [
                         'required'   => false,
-                        'edithidden' => true
-                    )
-                ),
-                'templates'        => array(
+                        'edithidden' => true,
+                    ],
+                ],
+                'templates'        => [
                     'hidden'    => true,
-                    'editrules' => array(
+                    'editrules' => [
                         'required'   => false,
-                        'edithidden' => false
-                    )
-                ),
-                'templateSections' => array(
+                        'edithidden' => false,
+                    ],
+                ],
+                'templateSections' => [
                     'hidden'          => true,
-                    'editrules'       => array(
+                    'editrules'       => [
                         'required'   => false,
-                        'edithidden' => false
-                    ),
+                        'edithidden' => false,
+                    ],
                     'isSubGridAsGrid' => true,
-                ),
-                'layout'           => array(
-                    'hidden' => true
-                ),
-                'pageThemes'       => array(
+                ],
+                'layout'           => [
+                    'hidden' => true,
+                ],
+                'pageThemes'       => [
                     'isSubGridAsGrid' => true,
-                ),
-                'siteThemes'       => array(
+                ],
+                'siteThemes'       => [
                     'isSubGridAsGrid' => true,
-                ),
-                'renewAt'          => $datetime + array(
-                        'editable' => true
-                    ),
-                'updatedAt'        => $datetime + array(
+                ],
+                'renewAt'          => $datetime + [
+                        'editable' => true,
+                    ],
+                'updatedAt'        => $datetime + [
                         'editable' => true,
 
-                    ),
-                'createdAt'        => $datetime + array(
+                    ],
+                'createdAt'        => $datetime + [
                         'hidden' => false,
-                    ),
+                    ],
                 'startAt'          => $datetime,
                 'endAt'            => $datetime,
-            ),
-            'edit_parameters'           => array(
+            ],
+            'edit_parameters'           => [
                 'width'           => 550,
-                'ajaxEditOptions' => array(
-                    'type' => 'PUT'
-                )
-            ),
-            'add_parameters'            => array(
+                'ajaxEditOptions' => [
+                    'type' => 'PUT',
+                ],
+            ],
+            'add_parameters'            => [
                 'width' => 550,
-            ),
-            'delete_parameters'         => array(
-                'ajaxDelOptions' => array(
-                    'type' => 'DELETE'
-                )
-            ),
-            'toolbar_buttons'           => array(
+            ],
+            'delete_parameters'         => [
+                'ajaxDelOptions' => [
+                    'type' => 'DELETE',
+                ],
+            ],
+            'toolbar_buttons'           => [
                 /* Custom toolbar buttons */
                 /** model specific */
-                'specific' => array(
-                    'pageThemes' => array(
-                        'layout-manager' => array(
+                'specific' => [
+                    'pageThemes' => [
+                        'layout-manager' => [
                             'id'         => 'layman',
                             'class'      => 'btn btn-mini',
                             'title'      => 'Layout Manager',
@@ -194,15 +195,15 @@ class JqGridConfigFactory implements FactoryInterface
                             'position'   => 'bottom',
                             'onLoad'     => '',
                             'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
-                            'attributes' => array(
+                            'attributes' => [
                                 'data-endpoint'     => '/pagebuilder/layout/theme',
                                 'data-entity'       => 'themes',
-                                'data-template-url' => '/js/app/templates/layout-manager.html'
-                            )
-                        )
-                    ),
-                    'template'   => array(
-                        'layout-manager'  => array(
+                                'data-template-url' => '/js/app/templates/layout-manager.html',
+                            ],
+                        ],
+                    ],
+                    'template'   => [
+                        'layout-manager'  => [
                             'id'         => 'tempman',
                             'class'      => 'btn btn-mini',
                             'title'      => 'Template Manager',
@@ -210,13 +211,13 @@ class JqGridConfigFactory implements FactoryInterface
                             'position'   => 'bottom',
                             'onLoad'     => '',
                             'callback'   => "function(){  if(synergyDataGrid.pageBuilder) { synergyDataGrid.pageBuilder.manageLayout(this) ; } }",
-                            'attributes' => array(
+                            'attributes' => [
                                 'data-entity'       => 'templates',
                                 'data-endpoint'     => '/pagebuilder/layout/template',
-                                'data-template-url' => '/js/app/templates/layout-manager.html'
-                            )
-                        ),
-                        'section-manager' => array(
+                                'data-template-url' => '/js/app/templates/layout-manager.html',
+                            ],
+                        ],
+                        'section-manager' => [
                             'id'         => 'sectionman',
                             'class'      => 'btn btn-mini',
                             'title'      => 'Sections',
@@ -224,16 +225,16 @@ class JqGridConfigFactory implements FactoryInterface
                             'position'   => 'bottom',
                             'onLoad'     => '',
                             'callback'   => "function(){ if(synergyDataGrid.pageBuilder) {  synergyDataGrid.pageBuilder.manageSections(this) ; } }",
-                            'attributes' => array(
+                            'attributes' => [
                                 'data-entity'       => 'sections',
                                 'data-href'         => '/pagebuilder/template/:id/sections',
-                                'data-template-url' => '/js/app/templates/sections.html'
-                            )
-                        ),
-                    ),
-                )
-            ),
-        );
+                                'data-template-url' => '/js/app/templates/sections.html',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         return $config;
     }

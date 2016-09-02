@@ -7,12 +7,14 @@ use PageBuilder\PageAwareInterface;
 use PageBuilder\PageMetaData;
 use SynergyCommon\Controller\BaseActionController as CommonActionController;
 use SynergyCommon\SiteAwareInterface;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\PhpEnvironment\Response;
 
 /**
  * Class BaseController
  *
- * @method \Zend\Http\PhpEnvironment\Response getResponse()
- * @method \Zend\Http\PhpEnvironment\Request   getRequest()
+ * @method Response getResponse()
+ * @method Request   getRequest()
  * @method translate($text)
  * @method translator($text)
  * @package Application\Controller

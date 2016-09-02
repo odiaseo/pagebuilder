@@ -13,6 +13,7 @@ class PageTemplateModel extends BaseModel
 {
     /**
      * @param $id
+     * @param int $mode
      *
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -70,11 +71,11 @@ class PageTemplateModel extends BaseModel
         /** @var $query \Doctrine\ORM\QueryBuilder */
         try {
             $qb     = $this->getEntityManager()->createQueryBuilder();
-            $params = array(
+            $params = [
                 ':pageId'      => $pageId,
                 ':active'      => 1,
-                ':siteThemeId' => $themeId
-            );
+                ':siteThemeId' => $themeId,
+            ];
             $query  = $qb->select('e, p, t')
                 ->from($this->getEntity(), 'e')
                 ->innerJoin('e.template', 't')

@@ -5,6 +5,7 @@ use DateTime;
 
 /**
  * Class SiteRankModel
+ *
  * @package PageBuilder\Model
  */
 class SiteRankModel extends BaseModel
@@ -52,7 +53,7 @@ class SiteRankModel extends BaseModel
                 [
                     ':start'    => $fromDate,
                     ':end'      => $toDate,
-                    ':siteType' => 1
+                    ':siteType' => 1,
                 ]
             );
 

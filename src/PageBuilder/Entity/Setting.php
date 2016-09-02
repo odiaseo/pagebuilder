@@ -19,16 +19,19 @@ class Setting extends CommonEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @var \PageBuilder\Entity\SettingKey
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SettingKey", fetch="LAZY")
      * @ORM\JoinColumn(name="setting_key_id", referencedColumnName="id", nullable=false)
      */
     protected $settingKey;
+
     /**
      * @ORM\Column(type="string", name="setting_value", length=512)
      */
     protected $settingValue = '';
+
     /**
      * @var Site
      * @ORM\Cache("READ_ONLY")

@@ -1,8 +1,6 @@
 <?php
 namespace PageBuilder\Model;
 
-use SynergyCommon\Doctrine\QueryBuilder;
-
 /**
  * Class RedirectModel
  *
@@ -11,7 +9,7 @@ use SynergyCommon\Doctrine\QueryBuilder;
 class RedirectModel extends BaseModel
 {
 
-    const TYPE_EXACT_MATCH  = 1;
+    const TYPE_EXACT_MATCH = 1;
     const TYPE_PREFIX_MATCH = 2;
     const TYPE_SUFFIX_MATCH = 3;
 

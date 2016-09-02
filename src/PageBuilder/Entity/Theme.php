@@ -21,26 +21,32 @@ class Theme extends CommonBaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $title;
+
     /**
      * @ORM\Column(type="smallint")
      */
     protected $bootstrapVersion = 2;
+
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $description = '';
+
     /**
      * @ORM\Column(name="wrapper_class",type="string", length=30, nullable=true)
      */
     protected $wrapperClass;
+
     /**
      * @ORM\Column(name="wrapper",type="string", length=30, nullable=true)
      */
     protected $wrapper = 'pageTop';
+
     /**
      * @ORM\Column(name="body_class",type="string", length=30, nullable=true)
      */
@@ -50,10 +56,12 @@ class Theme extends CommonBaseEntity
      * @ORM\Column(name="background_image",type="string", nullable=true)
      */
     protected $backgroundImage;
+
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $thumbnail;
+
     /**
      * Place holder for the association
      *
@@ -69,6 +77,7 @@ class Theme extends CommonBaseEntity
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Template", mappedBy="theme")
      */
     protected $templates;
+
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string")
@@ -261,6 +270,7 @@ class Theme extends CommonBaseEntity
                 return $siteTheme->getColourScheme();
             }
         }
+
         return '';
     }
 }

@@ -19,7 +19,7 @@ class SettingModel extends BaseModel
      */
     public function getSettingList(Site $site)
     {
-        $settingList = array();
+        $settingList = [];
         $items       = $this->getSettingBySiteId($site->getId());
         /** @var $setting \PageBuilder\Entity\Setting */
         foreach ($items as $setting) {
@@ -37,6 +37,7 @@ class SettingModel extends BaseModel
 
     /**
      * @param $siteId
+     *
      * @return array
      */
     public function getSettingBySiteId($siteId)
@@ -53,6 +54,7 @@ class SettingModel extends BaseModel
     /**
      * @param $settingKeyId
      * @param array $params
+     *
      * @return Setting
      */
     public function getSettingByKey($settingKeyId, array $params)

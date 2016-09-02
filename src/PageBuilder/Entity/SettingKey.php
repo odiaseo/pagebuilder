@@ -20,27 +20,33 @@ class SettingKey extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
     /**
      * @ORM\Column(type="string", length=120, unique=true)
      */
     private $title;
+
     /**
      * @Gedmo\Slug(fields={"title"}, updatable=false)
      * @ORM\Column(type="string")
      */
     private $code;
+
     /**
      * @ORM\Column(type="string", name="default_value", nullable=true)
      */
     private $defaultValue = '';
+
     /**
      * @ORM\Column(type="string", length=25, name="input_type")
      */
     private $inputType = 'text';
+
     /**
      * @ORM\Column(type="string", name="data_type", nullable=true)
      */
     private $dataType;
+
     /**
      * @ORM\Column(type="text", name="help_info")
      */

@@ -35,6 +35,7 @@ class SiteRank extends CommonEntity
      * @ORM\Column(type="integer")
      */
     protected $popularity;
+
     /**
      * @var \DateTime
      *

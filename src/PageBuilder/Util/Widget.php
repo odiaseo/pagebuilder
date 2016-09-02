@@ -2,7 +2,7 @@
 
 namespace PageBuilder\Util;
 
-use Zend\ServiceManager\ServiceManager;
+use Interop\Container\ContainerInterface;
 
 /**
  * Class Widget
@@ -13,17 +13,21 @@ class Widget
 {
     const CACHE_LOCATION = 'data/cache/config/widgets.php';
 
-    public static $registry = array();
+    public static $registry = [];
 
     /** @var array */
     protected $widgetList;
 
     /** @var \Zend\ServiceManager\ServiceManager */
     protected $serviceManager;
+
     /** @var array */
     private $dataStore = [];
 
-    public function setServiceManager(ServiceManager $serviceManager)
+    /**
+     * @param ContainerInterface $serviceManager
+     */
+    public function setServiceManager(ContainerInterface $serviceManager)
     {
         $this->serviceManager = $serviceManager;
     }
@@ -47,7 +51,7 @@ class Widget
             $store = include self::CACHE_LOCATION;
         } else {
             $store        = [];
-            $finalList    = array();
+            $finalList    = [];
             $config       = $this->serviceManager->get('config');
             $dirLocations = (array)$config['pagebuilder']['widgets']['paths'];
 
@@ -83,28 +87,28 @@ class Widget
                             $id         = strtolower($id);
                             $category   = basename(dirname($splFileInfo->getPathname()));
 
-                            $data = array(
+                            $data = [
                                 'id'          => $id,
                                 'class'       => $className,
                                 'category'    => ($category == 'Widget') ? 'General' : $category,
                                 'title'       => $attributes['name'] ?: $widgetId,
                                 'description' => $attributes['description'] ?: 'No description found',
-                                'options'     => $attributes['options']
-                            );
+                                'options'     => $attributes['options'],
+                            ];
 
-                            $path          = array($id => $data);
+                            $path          = [$id => $data];
                             $store[0][$id] = $data;
                         } else {
                             continue;
                         }
                     } else {
                         $dirName = $splFileInfo->getFilename();
-                        $path    = array($dirName => array());
+                        $path    = [$dirName => []];
                     }
 
                     for ($depth = $iterator->getDepth() - 1; $depth >= 0; $depth--) {
                         $dirName = $iterator->getSubIterator($depth)->current()->getFilename();
-                        $path    = array($dirName => $path);
+                        $path    = [$dirName => $path];
                     }
 
                     uasort(

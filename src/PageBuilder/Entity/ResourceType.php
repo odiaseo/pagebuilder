@@ -20,18 +20,22 @@ class ResourceType extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $title;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $description;
+
     /**
      * @ORM\Column(type="string", name="icon_class_name")
      */
     protected $iconClassName = 'icon-th';
+
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string")

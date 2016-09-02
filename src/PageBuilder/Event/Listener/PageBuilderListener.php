@@ -1,4 +1,5 @@
 <?php
+
 namespace PageBuilder\Event\Listener;
 
 use Zend\EventManager\EventManagerInterface;
@@ -7,13 +8,11 @@ use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\MvcEvent;
 
 /**
- * Class PageBuilderListener
- *
- * @package PageBuilder\Event\Listener
+ * Class PageBuilderListener.
  */
 class PageBuilderListener implements ListenerAggregateInterface
 {
-    protected $listeners = array();
+    protected $listeners = [];
 
     /** @var \Zend\ServiceManager\ServiceManager */
     protected $_serviceManager;
@@ -29,18 +28,16 @@ class PageBuilderListener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events, $priority = 1)
     {
-
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initialiseWidgets'), -2);
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'renderErrorPage'), 9998);
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'renderErrorPage'), 9999);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, [$this, 'initialiseWidgets'], -2);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_RENDER_ERROR, [$this, 'renderErrorPage'], 9998);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, [$this, 'renderErrorPage'], 9999);
     }
 
     public function detach(EventManagerInterface $events)
     {
         foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
+            $events->detach($listener);
+            unset($this->listeners[$index]);
         }
     }
 
@@ -62,7 +59,7 @@ class PageBuilderListener implements ListenerAggregateInterface
 
     public function initialiseWidgets(MvcEvent $event)
     {
-        /** @var Request $request */
+        /* @var Request $request */
         $moduleEnabled = false;
         $request       = $this->_serviceManager->get('request');
 
@@ -76,7 +73,7 @@ class PageBuilderListener implements ListenerAggregateInterface
             /** @var $options \PageBuilder\View\Helper\Config\PageBuilderConfig */
             $options    = $helper->getOptions();
             $controller = $event->getRouteMatch()->getParam('controller');
-            list($module,) = explode('\\', $controller);
+            list($module) = explode('\\', $controller);
 
             $enabledModules = $options->getModules();
 
@@ -87,7 +84,7 @@ class PageBuilderListener implements ListenerAggregateInterface
             if ($options->getEnabled() and $moduleEnabled and $options->getMainNavigation()) {
 
                 /** @var $navigation \Zend\View\Helper\Navigation */
-                /** @var $menuTree \Zend\View\Helper\Navigation */
+                /* @var $menuTree \Zend\View\Helper\Navigation */
                 $navigation = $viewHelperManager->get('navigation');
                 $menuTree   = $navigation($options->getMainNavigation());
                 $container  = $menuTree->getContainer();
@@ -98,9 +95,9 @@ class PageBuilderListener implements ListenerAggregateInterface
                 } else {
                     $pageId = $this->_serviceManager->get('active\site')->getRootPage()->getId();
                 }
-                /** @var $model \pageBuilder\Model\PageModel */
+                /* @var $model \pageBuilder\Model\PageModel */
                 /** @var $activeTheme \SynergyCommon\Entity\AbstractEntity */
-                /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
+                /* @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
 
                 $activeTheme = $this->_serviceManager->get('active\theme') ?: null;
                 $pageBuilder = $viewHelperManager->get('buildPage');
@@ -136,7 +133,7 @@ class PageBuilderListener implements ListenerAggregateInterface
 
         if (empty($errorPage)) {
             /** @var $errorPage \SynergyCommon\Entity\BasePage */
-            $errorPage = $model->findOneBy(array('slug' => 'error-page'));
+            $errorPage = $model->findOneBy(['slug' => 'error-page']);
         } else {
             $errorPage = $model->findObject($errorPage->getId());
         }

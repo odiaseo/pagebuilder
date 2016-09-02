@@ -26,6 +26,7 @@ class LocalSiteFactory implements FactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
+     *
      * @return mixed|Site
      * @throws MissingArgumentException
      */
@@ -43,7 +44,7 @@ class LocalSiteFactory implements FactoryInterface
             $globalDomain = Util::cleanDomain($config['pagebuilder']['global_domain']);
             $model        = $serviceLocator->get('pagebuilder\model\site');
 
-            if (!$site = $model->findSiteBy(array('domain' => $hostname))) {
+            if (!$site = $model->findSiteBy(['domain' => $hostname])) {
                 $message = "Site is not registered";
                 $serviceLocator->get('logger')->warn($hostname . ' - domain was requested but not found');
                 if (!$isConsole and $hostname != $globalDomain) {

@@ -1,15 +1,16 @@
 <?php
 namespace PageBuilder\Service;
 
+use Interop\Container\ContainerInterface;
 use PageBuilder\Entity\Join\TemplateSection;
 use PageBuilder\Model\PageModel;
 use PageBuilder\View\Helper\PageBuilder;
 use SynergyCommon\Service\ServiceLocatorAwareInterface;
 use SynergyCommon\Service\ServiceLocatorAwareTrait;
-use Zend\ServiceManager\ServiceManager;
 
 /**
  * Class LayoutService
+ *
  * @package PageBuilder\Service
  */
 class LayoutService implements ServiceLocatorAwareInterface
@@ -18,9 +19,10 @@ class LayoutService implements ServiceLocatorAwareInterface
 
     /**
      * LayoutService constructor.
-     * @param ServiceManager $serviceManager
+     *
+     * @param ContainerInterface $serviceManager
      */
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct(ContainerInterface $serviceManager)
     {
         $this->setServiceLocator($serviceManager);
     }
@@ -41,15 +43,15 @@ class LayoutService implements ServiceLocatorAwareInterface
             $error   = true;
         }
 
-        return array(
+        return [
             'message' => $message,
-            'error'   => $error
-        );
+            'error'   => $error,
+        ];
     }
 
     public function getActiveTemplateSections($templateId)
     {
-        $sections = $selected = array();
+        $sections = $selected = [];
 
         /** @var $templateModel \PageBuilder\Model\TemplateModel */
         $templateModel    = $this->getServiceLocator()->get('pagebuilder\model\template');
@@ -63,10 +65,10 @@ class LayoutService implements ServiceLocatorAwareInterface
             $id            = $templateSection->getSectionId()->getId();
             $sortOrder     = $templateSection->getSortOrder();
             $title         = $templateSection->getSectionId()->getTitle() . ' (' . $sortOrder . ')';
-            $sections[$id] = array(
+            $sections[$id] = [
                 'title' => $title,
-                'order' => $sortOrder
-            );
+                'order' => $sortOrder,
+            ];
             $selected[]    = $id;
         }
 
@@ -74,19 +76,19 @@ class LayoutService implements ServiceLocatorAwareInterface
         foreach ($sectionList as $section) {
             $id = $section->getId();
             if (!isset($sections[$id])) {
-                $sections[$id] = array(
+                $sections[$id] = [
                     'title' => $section->getTitle(),
-                    'order' => 0
-                );
+                    'order' => 0,
+                ];
             }
         }
 
         ksort($selected);
 
-        return array(
+        return [
             'templateSections' => $selected,
-            'sections'         => (object)$sections
-        );
+            'sections'         => (object)$sections,
+        ];
     }
 
     /**
@@ -116,7 +118,7 @@ class LayoutService implements ServiceLocatorAwareInterface
      */
     public function getPageLayout($pageId, $pageThemeId = null)
     {
-        $sections = $templateSections = array();
+        $sections = $templateSections = [];
         $error    = '';
         $details  = [];
 
@@ -132,7 +134,7 @@ class LayoutService implements ServiceLocatorAwareInterface
         /** @var $page \PageBuilder\Entity\Page */
         if ($page = $pageModel->getRepository()->find($pageId)) {
 
-            $details = array(
+            $details = [
                 'id'          => $page->getId(),
                 'title'       => $page->getTitle(),
                 'description' => $page->getDescription(),
@@ -141,9 +143,9 @@ class LayoutService implements ServiceLocatorAwareInterface
                 'pageTheme'   => '',
                 'themeId'     => '',
                 'layoutType'  => 'Custom Layout',
-                'parent'      => $page->getParent() ? $page->getParent()->getTitle() : ''
+                'parent'      => $page->getParent() ? $page->getParent()->getTitle() : '',
 
-            );
+            ];
         }
         $themeId = $pageTheme = null;
         if ($pageThemeId) {
@@ -169,11 +171,11 @@ class LayoutService implements ServiceLocatorAwareInterface
         /** @var $section \PageBuilder\Entity\Join\TemplateSection */
         foreach ($sections as $section) {
             $slug                    = $section->getSectionId()->getSlug();
-            $templateSections[$slug] = array(
+            $templateSections[$slug] = [
                 'title'  => $section->getSectionId()->getTitle(),
                 'status' => $section->getIsActive() ? 1 : 0,
-                'class'  => $section->getIsActive() ? '' : 'in-active'
-            );
+                'class'  => $section->getIsActive() ? '' : 'in-active',
+            ];
         }
 
         if ($themeData = $themeModel->getRepository()->findAll()) {
@@ -182,7 +184,7 @@ class LayoutService implements ServiceLocatorAwareInterface
                 $details['themes'][$theme->getId()] = $theme->toArray();
             }
         } else {
-            $details['themes'] = array();
+            $details['themes'] = [];
         }
 
         /** @var $templateModel \PageBuilder\Model\TemplateModel */
@@ -195,42 +197,42 @@ class LayoutService implements ServiceLocatorAwareInterface
         $widgetList = $widgetUtil->getWidgetList();
         $urlHelper  = $this->getServiceLocator()->get('ViewHelperManager')->get('url');
 
-        $return = array(
+        $return = [
             'error'     => $error,
             'page'      => $details,
             'editUrl'   => $pageThemeId
-                ? $urlHelper('builder\theme', array('id' => $pageThemeId))
+                ? $urlHelper('builder\theme', ['id' => $pageThemeId])
                 : $urlHelper(
-                    'builder', array('id' => $pageId)
+                    'builder', ['id' => $pageId]
                 ),
             'sections'  => $templateSections,
             'title'     => 'Layout Manager - ' . ($page ? $page->getTitle() : ''),
-            'widgets'   => array(
+            'widgets'   => [
                 'title' => 'Widgets',
                 'items' => $widgetUtil->getRegistry(),
                 'total' => count($widgetUtil->getRegistry()),
                 'list'  => $widgetList,
-                'id'    => PageBuilder::LAYOUT_WIDGET
-            ),
-            'assets'    => array(
-                PageBuilder::LAYOUT_USER_DEFINED => array(
+                'id'    => PageBuilder::LAYOUT_WIDGET,
+            ],
+            'assets'    => [
+                PageBuilder::LAYOUT_USER_DEFINED => [
                     'title' => 'User Defined',
-                    'items' => $components
-                )
-            ),
-            'templates' => array(
+                    'items' => $components,
+                ],
+            ],
+            'templates' => [
                 'title' => 'Templates',
-                'items' => $templates
-            ),
-            'tags'      => $this->_getTaglist()
-        );
+                'items' => $templates,
+            ],
+            'tags'      => $this->_getTaglist(),
+        ];
 
         return $return;
     }
 
     public function getTemplateLayout($templateId)
     {
-        $templateSections = array();
+        $templateSections = [];
         $error            = '';
         $sections         = [];
         $details          = [];
@@ -254,21 +256,21 @@ class LayoutService implements ServiceLocatorAwareInterface
             ksort($sections);
 
             $details          = $template->toArray();
-            $details['theme'] = array(
+            $details['theme'] = [
                 'id'        => null,
                 'title'     => '',
-                'pageTheme' => ''
-            );
+                'pageTheme' => '',
+            ];
         }
 
         /** @var $section \PageBuilder\Entity\Join\TemplateSection */
         foreach ($sections as $section) {
             $slug                    = $section->getSectionId()->getSlug();
-            $templateSections[$slug] = array(
+            $templateSections[$slug] = [
                 'title'  => $section->getSectionId()->getTitle(),
                 'class'  => $section->getIsActive() ? '' : 'in-active',
-                'status' => $section->getIsActive() ? 1 : 0
-            );
+                'status' => $section->getIsActive() ? 1 : 0,
+            ];
         }
 
         if ($themeData = $themeModel->getRepository()->findAll()) {
@@ -277,7 +279,7 @@ class LayoutService implements ServiceLocatorAwareInterface
                 $details['themes'][$theme->getId()] = $theme->toArray();
             }
         } else {
-            $details['themes'] = array();
+            $details['themes'] = [];
         }
 
         $templates  = $templateModel->listTemplates();
@@ -288,31 +290,31 @@ class LayoutService implements ServiceLocatorAwareInterface
         $widgetList = $widgetUtil->getWidgetList();
         $urlHelper  = $this->getServiceLocator()->get('ViewHelperManager')->get('url');
 
-        $return = array(
+        $return = [
             'error'     => $error,
             'page'      => $details,
-            'editUrl'   => $urlHelper('template', array('id' => $templateId)),
+            'editUrl'   => $urlHelper('template', ['id' => $templateId]),
             'sections'  => $templateSections,
             'title'     => 'Layout Manager - ' . ($template ? $template->getTitle() : ''),
-            'widgets'   => array(
+            'widgets'   => [
                 'title' => 'Widgets',
                 'items' => $widgetUtil->getRegistry(),
                 'total' => count($widgetUtil->getRegistry()),
                 'list'  => $widgetList,
-                'id'    => PageBuilder::LAYOUT_WIDGET
-            ),
-            'assets'    => array(
-                PageBuilder::LAYOUT_USER_DEFINED => array(
+                'id'    => PageBuilder::LAYOUT_WIDGET,
+            ],
+            'assets'    => [
+                PageBuilder::LAYOUT_USER_DEFINED => [
                     'title' => 'User Defined',
-                    'items' => $components
-                )
-            ),
-            'templates' => array(
+                    'items' => $components,
+                ],
+            ],
+            'templates' => [
                 'title' => 'Templates',
-                'items' => $templates
-            ),
-            'tags'      => $this->_getTaglist()
-        );
+                'items' => $templates,
+            ],
+            'tags'      => $this->_getTaglist(),
+        ];
 
         return $return;
     }
@@ -326,25 +328,25 @@ class LayoutService implements ServiceLocatorAwareInterface
 
             /** @var \PageBuilder\Entity\Template $template */
             if ($template = $templateModel->findObject($templateId)) {
-                $template->setlayout($layout);
+                $template->setLayout($layout);
                 $templateModel->save($template);
             }
 
-            return array(
+            return [
                 'error'   => false,
-                'message' => sprintf('Template #%d updated successfully', $templateId)
-            );
+                'message' => sprintf('Template #%d updated successfully', $templateId),
+            ];
         } catch (\Exception $exception) {
-            return array(
+            return [
                 'error'   => true,
-                'message' => $exception->getMessage()
-            );
+                'message' => $exception->getMessage(),
+            ];
         }
     }
 
     protected function _getTaglist()
     {
-        $tagList = array();
+        $tagList = [];
         /** @var $builder \PageBuilder\View\Helper\PageBuilder */
         $builder = $this->getServiceLocator()->get('ViewHelperManager')->get('buildPage');
 
@@ -370,7 +372,7 @@ class LayoutService implements ServiceLocatorAwareInterface
         /** @var $templateObj \PageBuilder\Entity\Template */
         /** @var PageModel $pageModel */
 
-        $layout    = array();
+        $layout    = [];
         $pageModel = $this->getServiceLocator()->get('pagebuilder\model\page');
         $page      = $pageModel->getMainPageById($pageId);
 

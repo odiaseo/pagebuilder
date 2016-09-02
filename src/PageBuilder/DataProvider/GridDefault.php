@@ -3,7 +3,6 @@ namespace PageBuilder\DataProvider;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class GridDefault
@@ -13,23 +12,25 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class GridDefault implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $serviceLocator
+     * @param string $requestedName
+     * @param array|null $options
      *
-     * @return array|mixed
+     * @return array
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         /** @var \PageBuilder\Entity\Site $site */
         $site = $serviceLocator->get('active\site');
-        $data = array(
-            'global'   => array(
+        $data = [
+            'global'   => [
                 'site'      => $site->getId(),
                 'siteId'    => $site->getId(),
                 'createdAt' => date('Y-m-d H:i:s'),
                 'timezone'  => 'UTC',
-            ),
-            'specific' => array()
-        );
+            ],
+            'specific' => [],
+        ];
 
         return $data;
     }

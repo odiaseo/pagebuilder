@@ -6,12 +6,8 @@ use PageBuilder\BaseWidget;
 class StatusMessages extends BaseWidget
 {
     protected $name = 'Flash Message';
+
     protected $description = 'Displays status and error messages';
-
-    public function __construct()
-    {
-
-    }
 
     public function render()
     {

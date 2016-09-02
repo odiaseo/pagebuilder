@@ -21,14 +21,17 @@ class Redirect extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string",  length=149)
      */
     protected $source;
+
     /**
      * @ORM\Column(type="string",  length=149, name="redirect_destination")
      */
     protected $redirectDestination;
+
     /**
      * @ORM\Column(type="smallint", name="redirect_type")
      */

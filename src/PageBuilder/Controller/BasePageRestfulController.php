@@ -5,6 +5,7 @@ use SynergyCommon\Controller\BaseRestfulController;
 
 /**
  * Class BaseRestfulController
+ *
  * @package PageBuilder\Controller
  */
 class BasePageRestfulController extends BaseRestfulController

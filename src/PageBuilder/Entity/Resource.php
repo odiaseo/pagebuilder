@@ -22,36 +22,43 @@ class Resource extends CommonEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @Gedmo\Translatable
      * @ORM\Column(type="string")
      */
     protected $title;
+
     /**
      * @Gedmo\Translatable
      * @ORM\Column(type="text")
      */
     protected $description;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="ResourceType", cascade="persist")
      * @ORM\JoinColumn(name="resource_type_id", referencedColumnName="id", nullable=false)
      */
     protected $resourceType;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $resourceUrl = '';
+
     /**
      * @ORM\Column(type="boolean", name="is_generic", nullable=true)
      */
     protected $isGeneric = 0;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="Site", cascade="persist")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $dataSource;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(

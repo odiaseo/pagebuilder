@@ -9,7 +9,8 @@ use SynergyCommon\Entity\AbstractEntity;
  * Template Section Join table
  *
  * @ORM\Entity
- * @ORM\Table(name="Template_Section", uniqueConstraints={@ORM\UniqueConstraint(name="tsx_idx", columns={"template_id", "section_id"})})
+ * @ORM\Table(name="Template_Section", uniqueConstraints={@ORM\UniqueConstraint(name="tsx_idx", columns={"template_id",
+ *     "section_id"})})
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class TemplateSection extends AbstractEntity
@@ -20,21 +21,25 @@ class TemplateSection extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template", inversedBy="templateSections", cascade={"all"})
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
      */
     protected $templateId;
+
     /**
      * @ORM\Column(type="integer", name="sort_order")
      */
     protected $sortOrder = 0;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Section", inversedBy="templates", cascade={"all"})
      * @ORM\JoinColumn(name="section_id", referencedColumnName="id", nullable=false)
      */
     protected $sectionId;
+
     /**
      * @ORM\Column(type="boolean", name="is_active")
      */

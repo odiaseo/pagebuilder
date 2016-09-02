@@ -21,23 +21,28 @@ class SiteType extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string", length=50)
      */
     protected $title;
+
     /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $description;
+
     /**
      * @ORM\Column(type="string", nullable=true, name="facebook_page")
      */
     protected $facebookPage;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="siteType")
      */
     protected $sites;
+
     /**
      * @ORM\Column(type="string", length=50, name="app_id")
      */

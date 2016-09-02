@@ -24,18 +24,21 @@ class PageTemplate extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Template", inversedBy="templatePages")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id", nullable=false)
      */
     protected $template;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", inversedBy="pageTemplates")
      * @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=false)
      */
     protected $page;
+
     /**
      * @var Site
      * @ORM\Cache("READ_ONLY")
@@ -43,6 +46,7 @@ class PageTemplate extends AbstractEntity
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $site;
+
     /**
      * @ORM\Column(type="boolean", name="is_active")
      */

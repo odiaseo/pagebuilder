@@ -6,6 +6,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class WidgetUtilFactory
+ *
  * @package PageBuilder\Service
  */
 class LayoutServiceFactory implements FactoryInterface

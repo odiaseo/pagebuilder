@@ -11,21 +11,24 @@ use Zend\Stdlib\AbstractOptions;
 class PageBuilderConfig extends AbstractOptions
 {
     /**
-     * Filter to filter the HTML should be servicemanger alias to a a \Zend\Filter\FilterInterface istance
+     * Filter to filter the HTML should be serviceManger alias to a a \Zend\Filter\FilterInterface instance
      */
     protected $filter;
+
     /**
      * Enable/Disable the view helper
      *
      * @var boolean
      */
     protected $enabled;
+
     /**
      * Directory locations where to find widgets
      *
      * @var array
      */
-    protected $widgets = array();
+    protected $widgets = [];
+
     /**
      * Zend navigation alias to get the main Zend Navigation menu that drives the
      * page builder
@@ -33,11 +36,13 @@ class PageBuilderConfig extends AbstractOptions
      * @var string
      */
     protected $mainNavigation;
+
     /**
      * @deprecated
      * @var array
      */
     protected $entities;
+
     /**
      * Allowed HTML tags to be used in building the page
      *
@@ -45,31 +50,34 @@ class PageBuilderConfig extends AbstractOptions
      *
      */
     protected $tags;
+
     /**
      * Map Css class to Twitter Bootstrap 2 css classes
      *
      * @var array
      */
     protected $cssClassmap;
+
     /**
      * Replaces placeholders
      *
      * @var array
      */
     protected $replacements;
+
     /**
      * Formatters to formats user defined data before rendering to the view
      *
      * @var array
      */
-    protected $outputFormatters = array();
+    protected $outputFormatters = [];
 
     /**
      * Modules the helper should be enabled for
      *
      * @var array
      */
-    protected $modules = array();
+    protected $modules = [];
 
     /**
      * @var int

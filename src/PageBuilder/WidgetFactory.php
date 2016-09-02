@@ -13,12 +13,15 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 class WidgetFactory implements AbstractFactoryInterface
 {
     const WIDGET_SUFFIX = 'widget';
-    protected $_config = array();
-    public static $registry = array();
+
+    protected $_config = [];
+
+    public static $registry = [];
 
     /**
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
+     *
      * @return bool
      */
     public function canCreate(ContainerInterface $serviceLocator, $requestedName)
@@ -38,6 +41,7 @@ class WidgetFactory implements AbstractFactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
+     *
      * @return $this|bool|BaseWidget
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
@@ -48,20 +52,20 @@ class WidgetFactory implements AbstractFactoryInterface
         /** @var $util \PageBuilder\Util\Widget */
         $util = $serviceLocator->get('util\widget');
 
-        if ($data = $util->widgetExist($widgetId, $serviceLocator)) {
-            /** @var $widget \PageBuilder\BaseWidget */
-            $widget = new $data['class']();
-            $widget->setId($widgetId);
+        if ($data = $util->widgetExist($widgetId)) {
 
             /** @var $mvcEvent \Zend\Mvc\MvcEvent */
             $mvcEvent = $serviceLocator->get('application')->getMvcEvent();
 
-            /** @var $viewhelper \Zend\View\Renderer\RendererInterface */
-            $viewhelper = $serviceLocator->get('ViewRenderer');
+            /** @var $view \Zend\View\Renderer\RendererInterface */
+            $view = $serviceLocator->get('ViewRenderer');
 
-            $widget->setServiceLocator($serviceLocator);
-            $widget->setView($viewhelper);
-            $widget->setMvcEvent($mvcEvent);
+            $translator = $serviceLocator->get('MvcTranslator');
+
+            /** @var $widget \PageBuilder\BaseWidget */
+            $widget = new $data['class']($view, $serviceLocator, $translator, $mvcEvent);
+            $widget->setId($widgetId);
+
             $response = $widget->init();
 
             //send response if we have a widget returning a response instance
@@ -73,6 +77,7 @@ class WidgetFactory implements AbstractFactoryInterface
                 return $widget;
             }
         }
+
         return false;
     }
 }

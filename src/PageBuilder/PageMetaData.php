@@ -12,21 +12,30 @@ use Zend\Stdlib\AbstractOptions;
 class PageMetaData extends AbstractOptions
 {
     public $title = '';
+
     public $description = '';
+
     public $keywords = '';
 
     public $image = '';
+
     public $alt = '';
+
     public $thumbnail;
 
     public $section = 'vouchers-discounts';
-    public $categories = array();
+
+    public $categories = [];
+
     public $searchTerm;
+
     public $type = 'website';
 
     //SEO Header Metadata
     protected $metaDescription;
+
     protected $metaTitle;
+
     protected $metaKeywords;
 
     /** @var string */
@@ -34,14 +43,18 @@ class PageMetaData extends AbstractOptions
 
     /** @var \Zend\Stdlib\AbstractOptions */
     protected $settings;
+
     /**
      * Used for google search input on search results
      *
      * @var string
      */
     protected $searchTermString = 'keyword';
+
     protected $strapline = '';
+
     protected $searchResultRouteName = 'google\deal-search\redirect';
+
     protected $noIndex = false;
 
     /**

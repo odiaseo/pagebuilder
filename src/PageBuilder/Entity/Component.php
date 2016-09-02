@@ -23,24 +23,29 @@ class Component extends AbstractEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $title;
+
     /**
      * @Gedmo\Translatable
      * @ORM\Column(type="text", nullable=false)
      */
     protected $content;
+
     /**
      * @Gedmo\Slug(fields={"title"}, updatable=false)
      * @ORM\Column(type="string", name="cssid")
      */
     protected $cssId;
+
     /**
      * @ORM\Column(type="string", nullable=true, name="css_class")
      */
     protected $cssClass;
+
     /**
      * @ORM\Cache("READ_ONLY")
      * @ORM\OneToMany(
@@ -50,6 +55,7 @@ class Component extends AbstractEntity
      * )
      */
     protected $translations;
+
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=100)
