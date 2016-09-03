@@ -134,7 +134,7 @@ class PageModel extends BaseModel
     public function getNavigation()
     {
         $navigation = $this->getServiceLocator()->get('ViewHelperManager')->get('navigation');
-        $menu       = $navigation('menu');
+        $menu       = $navigation('site\pages');
 
         return $menu;
     }

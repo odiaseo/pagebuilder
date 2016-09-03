@@ -8,7 +8,7 @@ return array(
                 'options' => array(
                     'route'    => '/pagebuilder-app',
                     'defaults' => array(
-                        'controller' => 'PageBuilder\Controller\Index',
+                        'controller' => PageBuilder\Controller\IndexController::class,
                         'action'     => 'index',
                     ),
                 ),
@@ -18,7 +18,7 @@ return array(
                 'options' => array(
                     'route'    => '/pagebuilder/admin',
                     'defaults' => array(
-                        'controller' => 'PageBuilder\Controller\Index',
+                        'controller' => PageBuilder\Controller\IndexController::class,
                         'action'     => 'admin',
                     ),
                 ),
@@ -30,7 +30,7 @@ return array(
                     'defaults'    => array(
                         '__NAMESPACE__' => 'PageBuilder\Controller',
                         'module'        => 'page-builder',
-                        'controller'    => 'PageBuilder\Controller\Page'
+                        'controller'    => \PageBuilder\Controller\PageController::class
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+'
@@ -44,7 +44,7 @@ return array(
                     'defaults'    => array(
                         '__NAMESPACE__' => 'PageBuilder\Controller',
                         'module'        => 'page-builder',
-                        'controller'    => 'PageBuilder\Controller\Template'
+                        'controller'    => \PageBuilder\Controller\TemplateController::class
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+'
@@ -58,7 +58,7 @@ return array(
                     'defaults'    => array(
                         '__NAMESPACE__' => 'PageBuilder\Controller',
                         'module'        => 'page-builder',
-                        'controller'    => 'PageBuilder\Controller\TemplateSection'
+                        'controller'    => \PageBuilder\Controller\TemplateSectionController::class
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+'
@@ -72,7 +72,7 @@ return array(
                     'defaults'    => array(
                         '__NAMESPACE__' => 'PageBuilder\Controller',
                         'module'        => 'page-builder',
-                        'controller'    => 'PageBuilder\Controller\Index',
+                        'controller'    => \PageBuilder\Controller\IndexController::class,
                         'action'        => 'crud'
                     ),
                     'constraints' => array(
