@@ -57,7 +57,9 @@ class SiteRankModel extends BaseModel
                 ]
             );
 
-        if ($limit) {
+        if ($siteId) {
+            $siteList = array_filter(array_unique(array_merge($siteList, (array)$siteId)));
+        } elseif ($limit) {
             $subQueryBuilder = $builder = $this->getEntityManager()->createQuerybuilder();
             $subQuery        = $subQueryBuilder->select('f.id, s.id site_id')
                 ->from($this->getEntity(), 'f')
@@ -69,10 +71,10 @@ class SiteRankModel extends BaseModel
             foreach ($subQuery->getQuery()->getArrayResult() as $item) {
                 $siteList[] = $item['site_id'];
             }
+        }
 
-            if ($siteList) {
-                $query->andWhere($builder->expr()->in('s.id', $siteList));
-            }
+        if ($siteList) {
+            $query->andWhere($builder->expr()->in('s.id', $siteList));
         }
         switch ($filter) {
             case 'year':
