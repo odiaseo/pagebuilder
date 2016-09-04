@@ -8,6 +8,7 @@ use PageBuilder\LocaleAwareInterface;
 use SynergyCommon\CacheAwareInterface;
 use SynergyCommon\Doctrine\CachedEntityManager;
 use SynergyCommon\Model\AbstractModel;
+use Zend\Authentication\AuthenticationService;
 
 trait ModelDependencyTrait
 {
@@ -29,8 +30,9 @@ trait ModelDependencyTrait
         $site          = null;
         $filterName    = 'super_sites';
 
-        if ($serviceLocator->has('zfcuser_auth_service')) {
-            $authService = $serviceLocator->get('zfcuser_auth_service');
+        if ($serviceLocator->has(AuthenticationService::class)) {
+            /** @var AuthenticationService $authService */
+            $authService = $serviceLocator->get(AuthenticationService::class);
             $identity    = $authService->hasIdentity();
             $model->setIdentity($authService->getIdentity());
         } else {
