@@ -26,7 +26,6 @@ use Zend\Mvc\MvcEvent;
  */
 class Module implements DependencyIndicatorInterface
 {
-
     public function getModuleDependencies()
     {
         return ['SynergyDataGrid'];

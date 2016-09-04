@@ -38,6 +38,9 @@ class LocalSiteFactory implements FactoryInterface
 
         list($isConsole, $hostname) = Util::getDomainFromRequest($request, $event);
 
+        //Important that this function is called here to initialize session
+        $manager = $serviceLocator->get(SessionManager::class);
+
         if ($hostname) {
             /** @var SiteModel $model */
             $config       = $serviceLocator->get('config');
@@ -63,7 +66,7 @@ class LocalSiteFactory implements FactoryInterface
             throw new MissingArgumentException('Host not found');
         }
 
-        $container = new Container(LocaleAwareTrait::getNamespace(), $serviceLocator->get(SessionManager::class));
+        $container = new Container(LocaleAwareTrait::getNamespace(), $manager);
         if (!$i18nLocale = $site->getI18nLocale()) {
             $i18nLocale = $site->getLocale();
         }
