@@ -440,6 +440,10 @@ class Site extends BaseSite
      */
     public function getAllowedSites()
     {
+        if ($this->getIsAdmin()) {
+            return [];
+        }
+
         $ids[] = $this->getId();
         if ($this->getSubDomains() and $this->getSubDomains()->count()) {
             $subDomains = $this->getSubDomains();
@@ -466,7 +470,6 @@ class Site extends BaseSite
 
         return $ids;
     }
-
 
     /**
      * Get sum of all offers
