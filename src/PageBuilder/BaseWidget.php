@@ -10,6 +10,7 @@ use Zend\EventManager\EventInterface;
 use Zend\Mvc\I18n\Translator;
 use Zend\View\Helper\Escaper\AbstractHelper;
 use Zend\View\Helper\HelperInterface;
+use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Renderer\RendererInterface as Renderer;
 
 /**
@@ -26,7 +27,7 @@ abstract class BaseWidget implements WidgetInterface, HelperInterface, ServiceLo
      */
     private $initialised = false;
 
-    /** @var Renderer */
+    /** @var PhpRenderer */
     protected $view;
 
     /**
@@ -296,7 +297,7 @@ abstract class BaseWidget implements WidgetInterface, HelperInterface, ServiceLo
     /**
      * Get the View object.
      *
-     * @return Renderer
+     * @return PhpRenderer
      */
     public function getView()
     {
