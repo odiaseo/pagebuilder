@@ -3,7 +3,7 @@ namespace PageBuilder\Model;
 
 use PageBuilder\Entity\Site;
 use SynergyCommon\Model\AbstractModel;
-use Zend\Session\Container;
+use Zend\Console\Request;
 
 /**
  * Class BaseModel
@@ -39,9 +39,12 @@ class BaseModel extends AbstractModel
     {
         /** @var Site $site */
         if ($this->getServiceLocator()->has('active\site')) {
-            $site      = $this->getServiceLocator()->get('active\site');
-            $namespace = $site->getSessionNamespace();
-            (new Container($namespace))->offsetSet(self::FILTER_SESSION_KEY, true);
+            $request = $this->getServiceLocator()->get('request');
+            if ($request instanceof Request) {
+                $request->getParams()->offsetSet(self::FILTER_SESSION_KEY, true);
+            } else {
+                $request->getQuery()->offsetset(self::FILTER_SESSION_KEY, true);
+            }
         }
     }
 }
