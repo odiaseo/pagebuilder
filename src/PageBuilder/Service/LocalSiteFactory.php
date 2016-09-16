@@ -49,7 +49,7 @@ class LocalSiteFactory implements FactoryInterface
 
             if (!$site = $model->findSiteBy(['domain' => $hostname])) {
                 $message = "Site is not registered";
-                $serviceLocator->get('logger')->warn($hostname . ' - domain was requested but not found');
+                //$serviceLocator->get('logger')->warn($hostname . ' - domain was requested but not found');
                 if (!$isConsole and $hostname != $globalDomain) {
                     $destination = sprintf('http://www.%s?nfh=%s', $globalDomain, $hostname);
                     header('HTTP/1.1 302 Domain not found');
