@@ -40,7 +40,7 @@
     "synergy/common": "^3.0",
     "monolog/monolog": "^1.18",
     "gedmo/doctrine-extensions": "^2.4",
-    "synergy/synergydatagrid": "^2.0"
+    "synergy/synergydatagrid": "^2"
   },
   "require-dev": {
     "satooshi/php-coveralls": "^1.0",
