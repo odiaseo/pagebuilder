@@ -48,7 +48,7 @@ class SiteModel extends BaseModel
     {
         /** @var $query QueryBuilder */
         $qb = $this->getFindByQueryBuilder($params, null, 'e');
-        $qb->addSelect(['x, y, z, a, l'])
+        $qb->addSelect('x,y,z,a,l')
             ->innerJoin('e.siteType', 'x')
             ->leftJoin('e.parent', 'z')
             ->leftJoin('e.subDomains', 'a')
@@ -56,7 +56,7 @@ class SiteModel extends BaseModel
             ->leftJoin('e.rootPage', 'y');
 
         if ($mode != AbstractQuery::HYDRATE_OBJECT) {
-            $qb->setEnableHydrationCache($this->enableResultCache);
+            $qb->setEnableHydrationCache($this->isEnableResultCache());
         }
         $site = $qb->getQuery()->getOneOrNullResult($mode);
 

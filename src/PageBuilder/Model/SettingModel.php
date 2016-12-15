@@ -44,8 +44,8 @@ class SettingModel extends BaseModel
     {
         /** @var $query QueryBuilder */
         $params = ['dataSource' => $siteId];
-        $qb     = $this->getFindByQueryBuilder($params, null, 'e');
-        $qb->addSelect('k')
+        $qb     = $this->getFindByQueryBuilder($params, null, 'e', ['id','settingValue']);
+        $qb->addSelect('partial k.{id,code,defaultValue}')
             ->innerJoin('e.settingKey', 'k');
 
         return $qb->getQuery()->getResult();
