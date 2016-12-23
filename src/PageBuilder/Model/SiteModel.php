@@ -14,6 +14,7 @@ class SiteModel extends BaseModel
 {
 
     const TYPE_VOUCHER = 1;
+    const TYPE_PRODUCT = 2;
 
     /**
      * @param $site
@@ -58,6 +59,7 @@ class SiteModel extends BaseModel
         if ($mode != AbstractQuery::HYDRATE_OBJECT) {
             $qb->setEnableHydrationCache($this->isEnableResultCache());
         }
+
         $site = $qb->getQuery()->getOneOrNullResult($mode);
 
         return $site;
@@ -65,22 +67,25 @@ class SiteModel extends BaseModel
 
     /**
      * @param bool $voucherSites
+     * @param int $mode
      *
      * @return array
      */
-    public function getActiveVoucherSites($voucherSites = true)
+    public function getActiveVoucherSites($voucherSites = true, $mode = AbstractQuery::HYDRATE_ARRAY)
     {
         /** @var QueryBuilder $query */
         $query = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('e.id, e.domain, e.isSubDomain, e.locale, e.displayTitle, e.isAdmin')
+            ->select('partial e.{id,domain,isSubDomain,locale,displayTitle,isAdmin}')
             ->from($this->getEntity(), 'e')
             ->where('e.isActive = :active');
 
         if ($voucherSites) {
             $query->andWhere('e.siteType = :siteType');
+            $type = self::TYPE_VOUCHER;
         } else {
-            $query->andWhere('e.siteType <> :siteType');
+            $query->andWhere('e.siteType = :siteType');
+            $type = self::TYPE_PRODUCT;
         }
 
         $query->andWhere('e.isAdmin = :zero')
@@ -88,12 +93,15 @@ class SiteModel extends BaseModel
                 [
                     ':active'   => 1,
                     ':zero'     => 0,
-                    ':siteType' => self::TYPE_VOUCHER,
+                    ':siteType' => $type,
                 ]
             );
-        $query->setEnableHydrationCache(true);
 
-        return $query->getQuery()->getArrayResult();
+        if ($mode == AbstractQuery::HYDRATE_ARRAY) {
+            $query->setEnableHydrationCache($this->isEnableResultCache());
+        }
+
+        return $query->getQuery()->setHydrationMode($mode)->execute();
     }
 
     /**

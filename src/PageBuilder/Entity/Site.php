@@ -10,7 +10,11 @@ use SynergyCommon\Entity\BaseSite;
  * A Site.
  *
  * @ORM\Entity
- * @ORM\Table(name="Site", indexes={@ORM\Index(name="IDX_DOMAIN", columns={"domain", "is_active"})})
+ * @ORM\Table(name="Site", indexes={
+ *     @ORM\Index(name="IDX_DOMAIN", columns={"domain", "is_active"}),
+ *     @ORM\Index(name="IDX_ACT_TYP_ADMIN", columns={"is_active","site_type_id", "is_admin"}),
+ *     @ORM\Index(name="IDX_TYP_PGE_DOM", columns={"site_type_id","root_id", "is_active"})
+ *     })
  * @ORM\Cache(usage="READ_ONLY", region="Static")
  */
 class Site extends BaseSite
