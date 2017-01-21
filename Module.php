@@ -11,6 +11,7 @@ namespace PageBuilder;
 
 use PageBuilder\Event\Listener\PageBuilderListener;
 use PageBuilder\Service\ActiveThemeFactory;
+use PageBuilder\Service\Factory\RedisCacheAdapterFactory;
 use PageBuilder\Service\WidgetInitializer;
 use PageBuilder\Service\WidgetUtilFactory;
 use PageBuilder\Session\SessionStorageFactory;
@@ -98,6 +99,7 @@ class Module implements DependencyIndicatorInterface
                 'active\theme'                              => ActiveThemeFactory::class,
                 'PageBuilder\Util\Widget'                   => WidgetUtilFactory::class,
                 'synergy\session\storage'                   => SessionStorageFactory::class,
+                'cache\adapter\redis'                       => RedisCacheAdapterFactory::class,
             ],
         ];
     }
