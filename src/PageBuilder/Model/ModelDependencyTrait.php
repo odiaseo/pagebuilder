@@ -49,7 +49,7 @@ trait ModelDependencyTrait
         if (!$model instanceof SiteModel) {
             $site = $serviceLocator->get('active\site');
 
-            if (in_array($site->getId(), $config['super_sites']) and
+            if ($site and in_array($site->getId(), $config['super_sites']) and
                 $entityManager->getFilters()->has($filterName) and
                 $entityManager->getFilters()->isEnabled($filterName)
             ) {

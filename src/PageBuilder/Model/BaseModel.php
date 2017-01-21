@@ -3,7 +3,7 @@ namespace PageBuilder\Model;
 
 use PageBuilder\Entity\Site;
 use SynergyCommon\Model\AbstractModel;
-use Zend\Console\Request;
+use Zend\Session\Container;
 
 /**
  * Class BaseModel
@@ -35,16 +35,20 @@ class BaseModel extends AbstractModel
         return $this->_entityInstance;
     }
 
+    /**
+     * @return bool
+     */
     public function disableSiteFilter()
     {
         /** @var Site $site */
         if ($this->getServiceLocator()->has('active\site')) {
-            $request = $this->getServiceLocator()->get('request');
-            if ($request instanceof Request) {
-                $request->getParams()->offsetSet(self::FILTER_SESSION_KEY, true);
-            } else {
-                $request->getQuery()->offsetset(self::FILTER_SESSION_KEY, true);
-            }
+            $site      = $this->getServiceLocator()->get('active\site');
+            $namespace = $site->getSessionNamespace();
+            $container = new Container($namespace);
+
+            return $container->offsetSet(self::FILTER_SESSION_KEY, 1);
         }
+
+        return false;
     }
 }
