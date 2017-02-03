@@ -27,14 +27,14 @@ use Zend\View\Helper\Navigation;
  */
 class PageBuilder extends AbstractHelper
 {
-    const SHARE_KEY = 'shared';
-    const MAIN_CONTENT = 'main';
+    const SHARE_KEY      = 'shared';
+    const MAIN_CONTENT   = 'main';
     const FLASH_MESSAGES = 'flash';
 
-    const LAYOUT_MENU = 'menu';
+    const LAYOUT_MENU         = 'menu';
     const LAYOUT_USER_DEFINED = 'component';
-    const LAYOUT_WIDGET = 'widget';
-    const LAYOUT_BREADCRUMB = 'breadcrumb';
+    const LAYOUT_WIDGET       = 'widget';
+    const LAYOUT_BREADCRUMB   = 'breadcrumb';
 
     private $mainContent;
 
@@ -377,7 +377,9 @@ class PageBuilder extends AbstractHelper
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
+        /** @var ServiceManager $serviceLocator */
         $this->serviceManager = $serviceLocator;
+        $this->serviceManager->setAllowOverride(true);
         $this->setPluginManager($serviceLocator);
 
         return $this;

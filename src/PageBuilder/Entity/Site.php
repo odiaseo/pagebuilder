@@ -403,7 +403,7 @@ class Site extends BaseSite
 
     public function getSessionNamespace()
     {
-        return preg_replace('/[^a-z0-9A-Z]/', '', $this->getDomain());
+        return 'sess' . preg_replace('/[^a-z0-9A-Z]/', '', $this->getDomain());
     }
 
     /**
