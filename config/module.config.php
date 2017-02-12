@@ -115,12 +115,15 @@ return array(
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
+        'template_map'             => include __DIR__ . '/../template_map.php',
+        /*
         'template_map'             => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/partials/user-message' => __DIR__ . '/../view/layout/partials/user-message.phtml',
             'pagebuilder/index/index' => __DIR__ . '/../view/pagebuilder/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
+        ),*/
         'helper_map'               => array(
             'displayGrid' => 'PageBuilder\View\Helper\DisplayGrid',
         ),

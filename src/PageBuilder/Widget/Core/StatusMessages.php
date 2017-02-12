@@ -11,6 +11,6 @@ class StatusMessages extends BaseWidget
 
     public function render()
     {
-        return $this->getView()->render('layout/partials/user-message.phtml');
+        return $this->getView()->render('layout/partials/user-message');
     }
 }
