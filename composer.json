@@ -48,11 +48,10 @@
   },
   "autoload": {
     "psr-0": {
-      "PageBuilder": "src/",
       "PageBuilderTest": "tests/module/"
     },
     "psr-4": {
-      "PageBuilder\\": "src/"
+      "PageBuilder\\": "src/PageBuilder"
     },
     "classmap": [
       "./Module.php",
