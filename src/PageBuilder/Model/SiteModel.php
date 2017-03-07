@@ -68,10 +68,11 @@ class SiteModel extends BaseModel
     /**
      * @param bool $voucherSites
      * @param int $mode
-     *
+     * @param int $page
+     * @param int | null $limit
      * @return array
      */
-    public function getActiveVoucherSites($voucherSites = true, $mode = AbstractQuery::HYDRATE_ARRAY)
+    public function getActiveVoucherSites($voucherSites = true, $mode = AbstractQuery::HYDRATE_ARRAY, $page = 1, $limit = null)
     {
         /** @var QueryBuilder $query */
         $query = $this->getEntityManager()
@@ -86,6 +87,12 @@ class SiteModel extends BaseModel
         } else {
             $query->andWhere('e.siteType = :siteType');
             $type = self::TYPE_PRODUCT;
+        }
+
+        if ($page and $limit) {
+            $firstResult = ($page - 1) * $limit;
+            $query->setFirstResult($firstResult)
+                ->setMaxResults($limit);
         }
 
         $query->andWhere('e.isAdmin = :zero')
