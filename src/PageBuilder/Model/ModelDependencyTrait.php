@@ -24,6 +24,7 @@ trait ModelDependencyTrait
     {
 
         /** @var EntityManager $entityManager */
+        $cacheStatus   = $serviceLocator->get('synergy\cache\status');
         $entityManager = $serviceLocator->get('doctrine.entitymanager.' . $model->getOrm());
         $config        = $serviceLocator->get('config');
         $site          = null;
@@ -32,7 +33,10 @@ trait ModelDependencyTrait
         if ($serviceLocator->has(AuthenticationService::class)) {
             /** @var AuthenticationService $authService */
             $authService = $serviceLocator->get(AuthenticationService::class);
+            $identity    = $authService->hasIdentity();
             $model->setIdentity($authService->getIdentity());
+        } else {
+            $identity = false;
         }
 
         if (is_string($entity)) {
@@ -41,7 +45,6 @@ trait ModelDependencyTrait
             $model->setEntityInstance($entity);
             $model->setEntity(get_class($entity));
         }
-
         /** @var Site $site */
         if (!$model instanceof SiteModel) {
             $site = $serviceLocator->get('active\site');
@@ -63,12 +66,10 @@ trait ModelDependencyTrait
         if ($model instanceof CacheAwareInterface) {
             $model->setCache('system\cache');
         }
+        $enabled       = (!$identity and $cacheStatus->enabled);
+        $cachedManager = new CachedEntityManager($entityManager, $enabled);
 
-        /** @var CachedEntityManager $cachedManager */
-        $cachedManager = $serviceLocator->get(CachedEntityManager::class);
-        $cachedManager->setEntityManager($entityManager);
-
-        $model->setEnableResultCache($cachedManager->isEnableResultCache());
+        $model->setEnableResultCache($enabled);
         $model->setLogger($serviceLocator->get('logger'));
         $model->setEntityManager($cachedManager);
         $model->setServiceLocator($serviceLocator);
