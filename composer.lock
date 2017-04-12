@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "89b50146d78c91795c79e0017af89e9c",
-    "content-hash": "ef1ac5a3af6192e2bb1ba0026767e7a0",
+    "hash": "29e2d171de043886e6141689f21bc730",
+    "content-hash": "e2ce73fe4fd15d9ac6f9e4ce1d9ac40e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2886,23 +2886,17 @@
         },
         {
             "name": "synergy/common",
-            "version": "v4.0.1",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odiaseo/synergy-common.git",
-                "reference": "a70285a5d3b2cdd8f8990b68bdcc7e839811fd76"
+                "reference": "77969f1dfbb9cf43d3f12600e471b94635c69722"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/a70285a5d3b2cdd8f8990b68bdcc7e839811fd76",
-                "reference": "a70285a5d3b2cdd8f8990b68bdcc7e839811fd76",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://toran.vaboose.org/repo/private/dists/%package%/%version%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/77969f1dfbb9cf43d3f12600e471b94635c69722",
+                "reference": "77969f1dfbb9cf43d3f12600e471b94635c69722",
+                "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-orm-module": "dev-master",
@@ -2940,6 +2934,7 @@
                     "./Module.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -2954,37 +2949,27 @@
                 "abstract classes",
                 "synergy library"
             ],
-            "support": {
-                "source": "https://github.com/odiaseo/synergy-common/tree/v4.0.1",
-                "issues": "https://github.com/odiaseo/synergy-common/issues"
-            },
-            "time": "2017-03-01 13:06:45"
+            "time": "2017-04-12 09:42:37"
         },
         {
             "name": "synergy/synergydatagrid",
-            "version": "v3.0.1",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odiaseo/zf2-datagrid.git",
-                "reference": "b01fc12d3b62483f333d3173c57e4e0f80ba1ef6"
+                "reference": "325be5396fcab899611ff802f45f7df7a3c236a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odiaseo/zf2-datagrid/zipball/b01fc12d3b62483f333d3173c57e4e0f80ba1ef6",
-                "reference": "b01fc12d3b62483f333d3173c57e4e0f80ba1ef6",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://toran.vaboose.org/repo/private/dists/%package%/%version%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "url": "https://api.github.com/repos/odiaseo/zf2-datagrid/zipball/325be5396fcab899611ff802f45f7df7a3c236a9",
+                "reference": "325be5396fcab899611ff802f45f7df7a3c236a9",
+                "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-orm-module": "dev-master",
                 "monolog/monolog": "^1.18",
                 "php": ">=5.5",
-                "synergy/common": "^4.0",
+                "synergy/common": "^5",
                 "zendframework/zend-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
                 "zendframework/zend-mvc": "^3.0.2",
                 "zendframework/zendframework": "^3.0.2"
@@ -3009,6 +2994,7 @@
                     "tests/module/SynergyDataGridTest/Module.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -3026,11 +3012,7 @@
                 "module",
                 "zf2"
             ],
-            "support": {
-                "source": "https://github.com/odiaseo/zf2-datagrid/tree/v3.0.1",
-                "issues": "https://github.com/odiaseo/zf2-datagrid/issues"
-            },
-            "time": "2017-03-01 13:17:10"
+            "time": "2017-04-12 09:49:23"
         },
         {
             "name": "webmozart/assert",
