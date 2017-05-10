@@ -1,4 +1,5 @@
 <?php
+
 namespace PageBuilder;
 
 use Zend\Stdlib\AbstractOptions;
@@ -186,6 +187,10 @@ class PageMetaData extends AbstractOptions
             $this->metaDescription = $this->description;
         }
 
+        if (!$this->metaDescription) {
+            $this->metaDescription = $this->getMetaTitle();
+        }
+
         return $this->metaDescription;
     }
 
@@ -207,6 +212,9 @@ class PageMetaData extends AbstractOptions
 
     public function setMetaTitle($metaTitle)
     {
+        if ($this->metaTitle) {
+            $metaTitle = $this->metaTitle . ' - ' . $metaTitle;
+        }
         $this->metaTitle = $metaTitle;
 
         return $this;
