@@ -122,11 +122,6 @@ class Site extends BaseSite
     protected $isAdmin = 0;
 
     /**
-     * @ORM\Column(type="boolean", name="is_secure", nullable=true, options={"default" = 0})
-     */
-    protected $isSecure = 0;
-
-    /**
      * Inverse Side
      *
      * @ORM\Cache("READ_ONLY")
@@ -157,22 +152,6 @@ class Site extends BaseSite
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
         $this->siteRanks   = new ArrayCollection();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsSecure()
-    {
-        return $this->isSecure;
-    }
-
-    /**
-     * @param mixed $isSecure
-     */
-    public function setIsSecure($isSecure)
-    {
-        $this->isSecure = $isSecure;
     }
 
     /**
