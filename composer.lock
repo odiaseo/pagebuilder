@@ -1910,16 +1910,16 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2"
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2",
-                "reference": "3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/7f066a26a962dbe58ddea9f72a4e82874a3975a4",
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4",
                 "shasum": ""
             },
             "require": {
@@ -1958,7 +1958,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-05-18T13:44:30+00:00"
+            "time": "2017-05-22T07:24:03+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -2570,16 +2570,16 @@
         },
         {
             "name": "synergy/common",
-            "version": "v5.1.0",
+            "version": "v5.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odiaseo/synergy-common.git",
-                "reference": "393c52027a5b1b20809b48e31fe36abad8372e57"
+                "reference": "1a7750c449c8c3d88cddb52cdc9fdcf16833f33b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/393c52027a5b1b20809b48e31fe36abad8372e57",
-                "reference": "393c52027a5b1b20809b48e31fe36abad8372e57",
+                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/1a7750c449c8c3d88cddb52cdc9fdcf16833f33b",
+                "reference": "1a7750c449c8c3d88cddb52cdc9fdcf16833f33b",
                 "shasum": ""
             },
             "require": {
@@ -2633,7 +2633,7 @@
                 "abstract classes",
                 "synergy library"
             ],
-            "time": "2017-05-17T20:03:22+00:00"
+            "time": "2017-05-21T07:52:25+00:00"
         },
         {
             "name": "synergy/solarium-module",
@@ -2692,16 +2692,16 @@
         },
         {
             "name": "synergy/synergydatagrid",
-            "version": "v4.0.1",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/odiaseo/zf2-datagrid.git",
-                "reference": "b5402a5ceaa3429de92546f84d55c8bfa5d545eb"
+                "url": "https://github.com/odiaseo/zf-datagrid.git",
+                "reference": "03b5928e9fdeb681f94961d0056ee92a3e04291d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odiaseo/zf2-datagrid/zipball/b5402a5ceaa3429de92546f84d55c8bfa5d545eb",
-                "reference": "b5402a5ceaa3429de92546f84d55c8bfa5d545eb",
+                "url": "https://api.github.com/repos/odiaseo/zf-datagrid/zipball/03b5928e9fdeb681f94961d0056ee92a3e04291d",
+                "reference": "03b5928e9fdeb681f94961d0056ee92a3e04291d",
                 "shasum": ""
             },
             "require": {
@@ -2751,7 +2751,7 @@
                 "module",
                 "zf2"
             ],
-            "time": "2017-04-12T10:36:25+00:00"
+            "time": "2017-05-19T19:54:22+00:00"
         },
         {
             "name": "webmozart/assert",

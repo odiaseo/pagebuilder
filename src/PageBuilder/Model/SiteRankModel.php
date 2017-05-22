@@ -39,7 +39,7 @@ class SiteRankModel extends BaseModel
                 'DATE(e.rankedAt) regDay',
                 's.domain domain',
                 '1 valid',
-                'e.rankedAt',
+                'e.rankedAt createdAt',
             ]
         )->from($this->getEntity(), 'e')
             ->innerJoin('e.site', 's')
