@@ -1,10 +1,11 @@
 <?php
+
 namespace PageBuilder\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use SynergyCommon\Entity\BaseSite;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SynergyCommon\Entity\BaseSite;
 
 /**
  * A Site.
@@ -295,8 +296,8 @@ class Site extends BaseSite
     public function getLocalisedTitle()
     {
         return $this->displayTitle . ' ' . \Locale::getDisplayRegion(
-            $this->getLocale()
-        );
+                $this->getLocale()
+            );
     }
 
     public function setParent($parent)
@@ -394,10 +395,12 @@ class Site extends BaseSite
 
     public function getDisplayDomain()
     {
+        $scheme = $this->getIsSecure() ? 'https' : 'http';
+
         if ($this->getIsSubDomain()) {
-            return 'http://' . rtrim($this->domain, '/');
+            return $scheme . '://' . rtrim($this->domain, '/');
         } else {
-            return 'http://www.' . rtrim($this->domain, '/');
+            return $scheme . '://www.' . rtrim($this->domain, '/');
         }
     }
 
