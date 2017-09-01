@@ -26,8 +26,8 @@
     "zendframework/zend-mvc": "^3",
     "monolog/monolog": "^1.18",
     "gedmo/doctrine-extensions": "^2.4",
-    "synergy/synergydatagrid": "^4",
-    "synergy/common": "^5"
+    "synergy/synergydatagrid": "*",
+    "synergy/common": "*"
   },
   "require-dev": {
     "satooshi/php-coveralls": "^1.0",
