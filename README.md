@@ -1,4 +1,8 @@
-[![Build Status](https://travis-ci.org/odiaseo/pagebuilder.svg?branch=master)](https://travis-ci.org/odiaseo/pagebuilder)
+[![Build Status](https://travis-ci.org/odiaseo/pagebuilder.svg)](https://github.com/odiaseo/pagebuilder)
+[![Latest Stable Version](https://poser.pugx.org/synergy/pagebuilder/v/stable)](https://packagist.org/packages/synergy/pagebuilder)
+[![Total Downloads](https://poser.pugx.org/synergy/pagebuilder/downloads)](https://packagist.org/packages/synergy/pagebuilder)
+[![composer.lock](https://poser.pugx.org/synergy/pagebuilder/composerlock)](https://packagist.org/packages/synergy/pagebuilder)
+[![Coverage Status](https://coveralls.io/repos/github/odiaseo/pagebuilder/badge.svg?branch=master)](https://coveralls.io/github/odiaseo/pagebuilder?branch=master)
 
 # Dependencies
 ## Backend
