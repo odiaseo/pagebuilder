@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ba5e960f09c404c1ba58dfd3c659ebe",
+    "content-hash": "8d8690e31fb479850643e157f3e93944",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2585,23 +2585,23 @@
         },
         {
             "name": "synergy/common",
-            "version": "v6.1.3",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odiaseo/synergy-common.git",
-                "reference": "778ec155dc748266b51d69f7a3358cb6f274b3b1"
+                "reference": "f6d01c6a4c2d060f99d0f3d02fee5f6e1ee9f770"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/778ec155dc748266b51d69f7a3358cb6f274b3b1",
-                "reference": "778ec155dc748266b51d69f7a3358cb6f274b3b1",
+                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/f6d01c6a4c2d060f99d0f3d02fee5f6e1ee9f770",
+                "reference": "f6d01c6a4c2d060f99d0f3d02fee5f6e1ee9f770",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-orm-module": "^1.1",
                 "gedmo/doctrine-extensions": "^2.4",
                 "monolog/monolog": "^1.18",
-                "php": ">=5.6",
+                "php": ">=7.1",
                 "synergy/solarium-module": "^3.1",
                 "zendframework/zend-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
                 "zendframework/zend-i18n-resources": "*",
@@ -2649,7 +2649,7 @@
                 "abstract classes",
                 "synergy library"
             ],
-            "time": "2017-11-18T05:05:09+00:00"
+            "time": "2017-11-18T05:17:34+00:00"
         },
         {
             "name": "synergy/solarium-module",
@@ -6952,7 +6952,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6"
+        "php": ">=7.1"
     },
     "platform-dev": []
 }
