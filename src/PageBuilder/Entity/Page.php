@@ -47,13 +47,6 @@ class Page extends BasePage
     protected $pageTemplates;
 
     /**
-     * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToMany(targetEntity="Resource", cascade="persist", fetch="LAZY")
-     * @ORM\JoinTable(name="Page_Resource")
-     */
-    protected $resources;
-
-    /**
      * @ORM\Column(type="string", length=120, nullable=true, name="js_file")
      */
     protected $jsFile = 'frontend';
@@ -84,7 +77,6 @@ class Page extends BasePage
         $this->children     = new ArrayCollection();
         $this->sites        = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->resources    = new ArrayCollection();
     }
 
     public function addTranslation(PageTranslation $t)
@@ -125,22 +117,6 @@ class Page extends BasePage
     public function setCssFile($cssFile)
     {
         $this->cssFile = $cssFile;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getResources()
-    {
-        return $this->resources;
-    }
-
-    /**
-     * @param mixed $resources
-     */
-    public function setResources($resources)
-    {
-        $this->resources = $resources;
     }
 
     /**

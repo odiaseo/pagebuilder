@@ -18,7 +18,6 @@ class GenericModelTest extends \PHPUnit_Framework_TestCase
         $this->stack = [
             'site',
             'component',
-            'licence',
             'redirect',
             'resource',
             'section',

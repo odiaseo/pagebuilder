@@ -28,7 +28,7 @@ class Theme extends CommonBaseEntity
     protected $title;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", name="bootstrap_version")
      */
     protected $bootstrapVersion = 2;
 

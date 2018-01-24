@@ -23,6 +23,11 @@ class ResourceTranslation extends AbstractTranslation
     protected $object;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length=255, options={"default"=""})
+     */
+    protected $content;
+
+    /**
      * Convenient constructor
      *
      * @param string $locale

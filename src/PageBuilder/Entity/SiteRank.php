@@ -9,7 +9,7 @@ use SynergyCommon\Entity\BaseEntity as CommonEntity;
  * Alexa Ranking By Day
  *
  * @ORM\Entity
- * @ORM\Table(name="SiteRank",
+ * @ORM\Table(name="Site_Rank",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="site_ranked_at", columns={
  *         "site_id", "ranked_at"
  *     })})

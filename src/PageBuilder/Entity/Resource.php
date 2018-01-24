@@ -31,7 +31,7 @@ class Resource extends CommonEntity
 
     /**
      * @Gedmo\Translatable
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
     protected $description;
 

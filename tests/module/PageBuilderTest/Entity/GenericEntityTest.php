@@ -37,8 +37,6 @@ class GenericEntityTest extends \PHPUnit_Framework_TestCase
         $this->stack = [
             BaseEntity::class,
             Component::class,
-            Licence::class,
-            Module::class,
             Page::class,
             Redirect::class,
             Resource::class,

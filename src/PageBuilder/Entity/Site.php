@@ -48,24 +48,11 @@ class Site extends BaseSite
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Licence", cascade="persist")
-     * @ORM\JoinTable(name="Site_Licence")
-     */
-    protected $licences;
-
-    /**
-     * @ORM\Cache("READ_ONLY")
      * @ORM\ManyToMany(targetEntity="PageBuilder\Entity\Setting", cascade={"persist"}, fetch="LAZY")
      * @ORM\JoinTable(name="Site_Setting")
      */
     protected $settings;
 
-    /**
-     * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToMany(targetEntity="Module", cascade={"persist"}, fetch="LAZY")
-     * @ORM\JoinTable(name="Site_Module")
-     */
-    protected $modules;
 
     /**
      * @ORM\Cache("READ_ONLY")
@@ -144,10 +131,8 @@ class Site extends BaseSite
 
     public function __construct()
     {
-        $this->licences    = new ArrayCollection();
         $this->settings    = new ArrayCollection();
         $this->siteThemes  = new ArrayCollection();
-        $this->modules     = new ArrayCollection();
         $this->subDomains  = new ArrayCollection();
         $this->linkedSites = new ArrayCollection();
         $this->redirects   = new ArrayCollection();
@@ -333,16 +318,6 @@ class Site extends BaseSite
         return $this->defaultTimezone;
     }
 
-    public function setModules($modules)
-    {
-        $this->modules = $modules;
-    }
-
-    public function getModules()
-    {
-        return $this->modules;
-    }
-
     public function setSiteThemes($siteThemes)
     {
         $this->siteThemes = $siteThemes;
@@ -351,16 +326,6 @@ class Site extends BaseSite
     public function getSiteThemes()
     {
         return $this->siteThemes;
-    }
-
-    public function setLicences($licences)
-    {
-        $this->licences = $licences;
-    }
-
-    public function getLicences()
-    {
-        return $this->licences;
     }
 
     public function setSettings($settings)

@@ -37,7 +37,7 @@ class Component extends AbstractEntity
 
     /**
      * @Gedmo\Slug(fields={"title"}, updatable=false)
-     * @ORM\Column(type="string", name="cssid")
+     * @ORM\Column(type="string", name="identifier", length=255, options={"default"=""})
      */
     protected $cssId;
 
