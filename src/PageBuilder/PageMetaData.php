@@ -210,9 +210,10 @@ class PageMetaData extends AbstractOptions
         return $this->metaKeywords;
     }
 
-    public function setMetaTitle($metaTitle)
+
+    public function setMetaTitle($metaTitle, $force = false)
     {
-        if ($this->metaTitle) {
+        if ($this->metaTitle and !$force) {
             $metaTitle = $this->metaTitle . ' - ' . $metaTitle;
         }
         $this->metaTitle = $metaTitle;
