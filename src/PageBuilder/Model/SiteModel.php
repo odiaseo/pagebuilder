@@ -82,7 +82,7 @@ class SiteModel extends BaseModel
             ->where('e.isActive = :active');
 
         if ($voucherSites) {
-            $query->andWhere('e.siteType = :siteType');
+            $query->andWhere('e.siteType = :siteType OR e.siteType = :kuponType');
             $type = self::TYPE_VOUCHER;
         } else {
             $query->andWhere('e.siteType = :siteType');
@@ -101,6 +101,7 @@ class SiteModel extends BaseModel
                     ':active'   => 1,
                     ':zero'     => 0,
                     ':siteType' => $type,
+                    ':kuponType' => 5,
                 ]
             );
 
@@ -110,6 +111,7 @@ class SiteModel extends BaseModel
 
         return $query->getQuery()->setHydrationMode($mode)->execute();
     }
+
 
     /**
      * @param int $mode
