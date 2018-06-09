@@ -75,6 +75,12 @@ class SiteModel extends BaseModel
     public function getActiveVoucherSites($voucherSites = true, $mode = AbstractQuery::HYDRATE_ARRAY, $page = 1, $limit = null)
     {
         /** @var QueryBuilder $query */
+
+        $params = [
+            ':active'   => 1,
+            ':zero'     => 0,
+        ];
+
         $query = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('partial e.{id,domain,isSubDomain,locale,displayTitle,isAdmin,voucherCount}')
@@ -84,10 +90,12 @@ class SiteModel extends BaseModel
         if ($voucherSites) {
             $query->andWhere('e.siteType = :siteType OR e.siteType = :kuponType');
             $type = self::TYPE_VOUCHER;
+            $params[':kuponType'] = $type;
         } else {
             $query->andWhere('e.siteType = :siteType');
             $type = self::TYPE_PRODUCT;
         }
+
 
         if ($page and $limit) {
             $firstResult = ($page - 1) * $limit;
@@ -95,15 +103,10 @@ class SiteModel extends BaseModel
                 ->setMaxResults($limit);
         }
 
+        $params[':siteType'] = $type;
+
         $query->andWhere('e.isAdmin = :zero')
-            ->setParameters(
-                [
-                    ':active'   => 1,
-                    ':zero'     => 0,
-                    ':siteType' => $type,
-                    ':kuponType' => 5,
-                ]
-            );
+            ->setParameters($params);
 
         if ($mode == AbstractQuery::HYDRATE_ARRAY) {
             $query->setEnableHydrationCache($this->isEnableResultCache());
