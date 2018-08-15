@@ -45,7 +45,7 @@ class SiteRankModel extends BaseModel
             ->innerJoin('e.site', 's')
             ->where('e.rankedAt >= :start')
             ->andWhere('e.rankedAt <= :end')
-            ->andWhere('s.siteType = :siteType')
+            //->andWhere('s.siteType = :siteType')
             ->addOrderBy('e.rankedAt')
             ->addOrderBy('e.popularity')
             ->addGroupBy('e.site')
@@ -53,7 +53,7 @@ class SiteRankModel extends BaseModel
                 [
                     ':start'    => $fromDate,
                     ':end'      => $toDate,
-                    ':siteType' => 1,
+                   // ':siteType' => 1,
                 ]
             );
 
