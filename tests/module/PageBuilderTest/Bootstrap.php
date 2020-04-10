@@ -2,7 +2,7 @@
 namespace PageBuilderTest;
 
 use Doctrine\ORM\Tools\SchemaTool;
-use Zend\Mvc\Application;
+use Laminas\Mvc\Application;
 
 \date_default_timezone_set('UTC');
 error_reporting(E_ALL | E_STRICT);
@@ -61,7 +61,7 @@ class Bootstrap
 
         include __DIR__ . '/../../../init_autoloader.php';
 
-        /** @var \Zend\Mvc\Application $app */
+        /** @var \Laminas\Mvc\Application $app */
         $app = Application::init($config);
 
         $serviceManager         = $app->getServiceManager();

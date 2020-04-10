@@ -3,9 +3,9 @@ namespace PageBuilder\Model;
 
 use Interop\Container\ContainerInterface;
 use SynergyCommon\Entity\AbstractEntity;
-use Zend\Filter\Word\CamelCaseToDash;
-use Zend\Filter\Word\DashToCamelCase;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\Filter\Word\CamelCaseToDash;
+use Laminas\Filter\Word\DashToCamelCase;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 /**
  * Class AbstractModelFactory
@@ -47,7 +47,7 @@ class AbstractModelFactory implements AbstractFactoryInterface
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        /** @var $authService \Zend\Authentication\AuthenticationService */
+        /** @var $authService \Laminas\Authentication\AuthenticationService */
         $modelId = str_replace($this->_configPrefix, '', $requestedName);
         $idParts = explode('\\', $modelId);
         $filter  = new DashToCamelCase();

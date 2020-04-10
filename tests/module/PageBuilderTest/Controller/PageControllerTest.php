@@ -4,15 +4,15 @@ namespace PageBuilderTest\Controller;
 use PageBuilder\Controller\PageController;
 use PageBuilder\View\Helper\PageBuilder;
 use PageBuilderTest\Bootstrap;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\Console\Router\RouteMatch;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\Console\Router\RouteMatch;
+use Laminas\View\Model\ViewModel;
 
 /**
  * Class GridControllerTest
  * @package SynergyDataGridTest\Controller
  */
-class PageControllerTest extends \PHPUnit_Framework_TestCase
+class PageControllerTest extends \PHPUnit\Framework\TestCase
 {
     protected $serviceManager;
 

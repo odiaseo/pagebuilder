@@ -7,8 +7,8 @@ use PageBuilder\PageAwareInterface;
 use PageBuilder\PageMetaData;
 use SynergyCommon\Controller\BaseActionController as CommonActionController;
 use SynergyCommon\SiteAwareInterface;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Http\PhpEnvironment\Response;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Http\PhpEnvironment\Response;
 
 /**
  * Class BaseController
@@ -32,7 +32,7 @@ class BaseActionController extends CommonActionController implements SiteAwareIn
     /** @var  PageMetaData */
     protected $_pageMetadata;
 
-    /** @var \Zend\Log\Logger */
+    /** @var \Laminas\Log\Logger */
     protected $_log;
 
     /**
@@ -90,7 +90,7 @@ class BaseActionController extends CommonActionController implements SiteAwareIn
     }
 
     /**
-     * @param \Zend\Log\Logger $log
+     * @param \Laminas\Log\Logger $log
      *
      * @return $this
      */
@@ -102,7 +102,7 @@ class BaseActionController extends CommonActionController implements SiteAwareIn
     }
 
     /**
-     * @return \Zend\Log\Logger
+     * @return \Laminas\Log\Logger
      */
     public function getLog()
     {

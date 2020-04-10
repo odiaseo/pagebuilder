@@ -17,9 +17,9 @@ use PageBuilder\Service\WidgetUtilFactory;
 use PageBuilder\Session\SessionStorageFactory;
 use PageBuilder\View\Helper\PageBuilderInitializer;
 use SynergyCommon\Event\Listener\SynergyModuleListener;
-use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\MvcEvent;
+use Laminas\ModuleManager\Feature\DependencyIndicatorInterface;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * Class Module
@@ -34,7 +34,7 @@ class Module implements DependencyIndicatorInterface
 
     public function onBootstrap(MvcEvent $e)
     {
-        /** @var $eventManager \Zend\EventManager\EventManager */
+        /** @var $eventManager \Laminas\EventManager\EventManager */
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -43,7 +43,7 @@ class Module implements DependencyIndicatorInterface
         $listener       = new PageBuilderListener($serviceLocator);
         $listener->attach($eventManager);
 
-        /** @var $serviceLocator \Zend\ServiceManager\ServiceManager */
+        /** @var $serviceLocator \Laminas\ServiceManager\ServiceManager */
         $serviceLocator = $e->getApplication()->getServiceManager();
 
         $synergyListener = new SynergyModuleListener();
@@ -61,7 +61,7 @@ class Module implements DependencyIndicatorInterface
     public function getAutoloaderConfig()
     {
         return [
-            'Zend\Loader\StandardAutoloader' => [
+            'Laminas\Loader\StandardAutoloader' => [
                 'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ],
@@ -80,7 +80,7 @@ class Module implements DependencyIndicatorInterface
                 'widget_service'    => 'PageBuilder\Service\WidgetService',
                 'pagebuilder\menu'  => 'PageBuilder\Navigation\NavigationFactory',
                 'util\widget'       => 'PageBuilder\Util\Widget',
-                'session_manager'   => 'Zend\Session\SessionManager',
+                'session_manager'   => 'Laminas\Session\SessionManager',
                 'active\site'       => 'PageBuilder\Service\LocalSiteFactory',
             ],
             'initializers' => [

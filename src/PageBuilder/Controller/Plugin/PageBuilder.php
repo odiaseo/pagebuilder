@@ -2,7 +2,7 @@
 namespace PageBuilder\Controller\Plugin;
 
 use SynergyCommon\Controller\BaseActionController;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
  * Class PageBuilder

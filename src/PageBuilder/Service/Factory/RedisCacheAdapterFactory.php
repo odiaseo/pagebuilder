@@ -2,8 +2,8 @@
 namespace PageBuilder\Service\Factory;
 
 use Interop\Container\ContainerInterface;
-use Zend\Cache\StorageFactory;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Cache\StorageFactory;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class RedisCacheAdapterFactory
@@ -15,7 +15,7 @@ class RedisCacheAdapterFactory implements FactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
-     * @return \Zend\Cache\Storage\StorageInterface
+     * @return \Laminas\Cache\Storage\StorageInterface
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {

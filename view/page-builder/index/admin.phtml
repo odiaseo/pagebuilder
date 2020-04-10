@@ -11,7 +11,7 @@
     <?php
     $firstGrid = current($grids);
     $firstGrid->getJsCode()->addCustomScript(
-        new \Zend\Json\Expr(";jQuery('.nav-tabs').on('shown', function(){ jQuery(window).trigger('resize');   }); ")
+        new \Laminas\Json\Expr(";jQuery('.nav-tabs').on('shown', function(){ jQuery(window).trigger('resize');   }); ")
     );
     ?>
 

@@ -18,7 +18,7 @@ class Widget
     /** @var array */
     protected $widgetList;
 
-    /** @var \Zend\ServiceManager\ServiceManager */
+    /** @var \Laminas\ServiceManager\ServiceManager */
     protected $serviceManager;
 
     /** @var array */

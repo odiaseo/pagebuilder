@@ -4,8 +4,8 @@ namespace PageBuilder\Session;
 use Interop\Container\ContainerInterface;
 use PageBuilder\Entity\Site;
 use SynergyCommon\Exception\MissingArgumentException;
-use Zend\Authentication\Storage\Session;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Authentication\Storage\Session;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class LocalSiteFactory

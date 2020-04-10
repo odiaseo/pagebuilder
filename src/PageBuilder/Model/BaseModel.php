@@ -3,7 +3,7 @@ namespace PageBuilder\Model;
 
 use PageBuilder\Entity\Site;
 use SynergyCommon\Model\AbstractModel;
-use Zend\Session\Container;
+use Laminas\Session\Container;
 
 /**
  * Class BaseModel

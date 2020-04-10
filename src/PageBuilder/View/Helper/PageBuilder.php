@@ -12,12 +12,12 @@ use PageBuilder\WidgetData;
 use PageBuilder\WidgetFactory;
 use SynergyCommon\Entity\AbstractEntity;
 use SynergyCommon\View\Helper\MicroData;
-use Zend\Filter\FilterInterface;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceManager;
-use Zend\View\Helper\AbstractHelper;
-use Zend\View\Helper\Navigation;
+use Laminas\Filter\FilterInterface;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\View\Helper\AbstractHelper;
+use Laminas\View\Helper\Navigation;
 
 /**
  * Class PageBuilder
@@ -42,10 +42,10 @@ class PageBuilder extends AbstractHelper
 
     private $layout = [];
 
-    /** @var \Zend\View\HelperPluginManager */
+    /** @var \Laminas\View\HelperPluginManager */
     protected $pluginManager;
 
-    /** @var \Zend\ServiceManager\ServiceManager */
+    /** @var \Laminas\ServiceManager\ServiceManager */
     protected $serviceManager;
 
     /** @var Config\PageBuilderConfig */

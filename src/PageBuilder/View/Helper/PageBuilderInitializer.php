@@ -4,7 +4,7 @@ namespace PageBuilder\View\Helper;
 use Interop\Container\ContainerInterface;
 use PageBuilder\FormatterInterface;
 use PageBuilder\View\Helper\Config\PageBuilderConfig;
-use Zend\ServiceManager\Initializer\InitializerInterface;
+use Laminas\ServiceManager\Initializer\InitializerInterface;
 
 /**
  * Class WidgetInitializers
@@ -21,7 +21,7 @@ class PageBuilderInitializer implements InitializerInterface
      */
     public function __invoke(ContainerInterface $serviceManager, $helper)
     {
-        /** @var $serviceManager \Zend\ServiceManager\ServiceManager */
+        /** @var $serviceManager \Laminas\ServiceManager\ServiceManager */
         if ($helper instanceof PageBuilder) {
             $config = $serviceManager->get('config');
 

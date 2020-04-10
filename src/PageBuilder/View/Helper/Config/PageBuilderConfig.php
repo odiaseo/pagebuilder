@@ -1,7 +1,7 @@
 <?php
 namespace PageBuilder\View\Helper\Config;
 
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 /**
  * Class PageBuilderConfig
@@ -11,7 +11,7 @@ use Zend\Stdlib\AbstractOptions;
 class PageBuilderConfig extends AbstractOptions
 {
     /**
-     * Filter to filter the HTML should be serviceManger alias to a a \Zend\Filter\FilterInterface instance
+     * Filter to filter the HTML should be serviceManger alias to a a \Laminas\Filter\FilterInterface instance
      */
     protected $filter;
 

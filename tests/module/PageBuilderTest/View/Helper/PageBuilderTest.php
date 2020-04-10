@@ -9,7 +9,7 @@ use PageBuilderTest\Bootstrap;
 /**
  * @backupGlobals disabled
  */
-class PageBuilderTest extends \PHPUnit_Framework_TestCase
+class PageBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testPageBuilderInstance()
     {

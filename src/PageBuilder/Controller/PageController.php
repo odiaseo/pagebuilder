@@ -14,7 +14,7 @@ class PageController extends BasePageRestfulController
      *
      * @param mixed $id
      *
-     * @return mixed|\Zend\View\Model\ModelInterface
+     * @return mixed|\Laminas\View\Model\ModelInterface
      */
     public function get($id)
     {

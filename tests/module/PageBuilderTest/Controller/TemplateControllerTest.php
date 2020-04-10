@@ -3,15 +3,15 @@ namespace PageBuilderTest\Controller;
 
 use PageBuilder\Controller\TemplateController;
 use PageBuilderTest\Bootstrap;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\Console\Router\RouteMatch;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\Console\Router\RouteMatch;
+use Laminas\View\Model\ViewModel;
 
 /**
  * Class TemplateControllerTest
  * @package PageBuilderTest\Controller
  */
-class TemplateControllerTest extends \PHPUnit_Framework_TestCase
+class TemplateControllerTest extends \PHPUnit\Framework\TestCase
 {
     protected $serviceManager;
 

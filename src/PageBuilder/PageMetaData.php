@@ -2,7 +2,7 @@
 
 namespace PageBuilder;
 
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 /**
  * Display page header information about offer rows
@@ -42,7 +42,7 @@ class PageMetaData extends AbstractOptions
     /** @var string */
     protected $domain;
 
-    /** @var \Zend\Stdlib\AbstractOptions */
+    /** @var \Laminas\Stdlib\AbstractOptions */
     protected $settings;
 
     /**
@@ -149,7 +149,7 @@ class PageMetaData extends AbstractOptions
     }
 
     /**
-     * @param \Zend\Stdlib\AbstractOptions $settings
+     * @param \Laminas\Stdlib\AbstractOptions $settings
      */
     public function setSettings($settings)
     {
@@ -157,7 +157,7 @@ class PageMetaData extends AbstractOptions
     }
 
     /**
-     * @return \Zend\Stdlib\AbstractOptions
+     * @return \Laminas\Stdlib\AbstractOptions
      */
     public function getSettings()
     {

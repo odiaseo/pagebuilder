@@ -22,12 +22,12 @@ use PageBuilder\Entity\SiteType;
 use PageBuilder\Entity\Template;
 use PageBuilder\Entity\Theme;
 use PageBuilderTest\Bootstrap;
-use Zend\Filter\StringTrim;
+use Laminas\Filter\StringTrim;
 
 /**
  * Class run generic tests on entites. Verifies simple getters/setters
  */
-class GenericEntityTest extends \PHPUnit_Framework_TestCase
+class GenericEntityTest extends \PHPUnit\Framework\TestCase
 {
     protected $serviceManager;
     protected $stack = [];
@@ -178,7 +178,7 @@ class GenericEntityTest extends \PHPUnit_Framework_TestCase
     /**
      * @param $test
      * @param $result
-     * @dataProvider testDataProvider
+     * @dataProvider sampleDataProvider
      */
     public function testRemoveWhiteSpace($test, $result)
     {
@@ -186,7 +186,7 @@ class GenericEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($result, $entity->removeWhiteSpace($test));
     }
 
-    public function testDataProvider()
+    public function sampleDataProvider()
     {
         return [
             ['test' . PHP_EOL, 'test'],

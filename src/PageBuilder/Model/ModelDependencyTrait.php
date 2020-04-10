@@ -8,7 +8,7 @@ use PageBuilder\LocaleAwareInterface;
 use SynergyCommon\CacheAwareInterface;
 use SynergyCommon\Doctrine\CachedEntityManager;
 use SynergyCommon\Model\AbstractModel;
-use Zend\Authentication\AuthenticationService;
+use Laminas\Authentication\AuthenticationService;
 
 trait ModelDependencyTrait
 {

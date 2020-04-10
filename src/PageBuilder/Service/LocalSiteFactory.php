@@ -1,16 +1,18 @@
 <?php
+
 namespace PageBuilder\Service;
 
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\ServiceManager;
 use PageBuilder\Entity\Site;
 use PageBuilder\Model\SiteModel;
 use SynergyCommon\Exception\MissingArgumentException;
 use SynergyCommon\Model\AbstractModel;
 use SynergyCommon\ModelTrait\LocaleAwareTrait;
 use SynergyCommon\Util;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Session\Container;
-use Zend\Session\SessionManager;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Session\Container;
+use Laminas\Session\SessionManager;
 
 /**
  * Class LocalSiteFactory
@@ -26,26 +28,31 @@ class LocalSiteFactory implements FactoryInterface
      * @param ContainerInterface $serviceLocator
      * @param string $requestedName
      * @param array|null $options
-     *
-     * @return mixed|Site
+     * @return mixed|object|Site
      * @throws MissingArgumentException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        /** @var  $serviceLocator \Zend\Servicemanager\ServiceManager */
+        /** @var  $serviceLocator ServiceManager */
         $request = $serviceLocator->get('application')->getRequest();
-        $event   = $serviceLocator->get('application')->getMvcEvent();
+        $event = $serviceLocator->get('application')->getMvcEvent();
 
         list($isConsole, $hostname) = Util::getDomainFromRequest($request, $event);
 
-        //Important that this function is called here to initialize session
-        $manager = $serviceLocator->get(SessionManager::class);
+        try {
+            //Important that this function is called here to initialize session
+            $manager = $serviceLocator->get(SessionManager::class);
+        } catch (\Exception $e) {
+            $manager = null;
+            //do nothing
+        }
 
-        if ($hostname) {
+            if ($hostname) {
             /** @var SiteModel $model */
-            $config       = $serviceLocator->get('config');
+            $config = $serviceLocator->get('config');
             $globalDomain = Util::cleanDomain($config['pagebuilder']['global_domain']);
-            $model        = $serviceLocator->get('pagebuilder\model\site');
+            $model = $serviceLocator->get('pagebuilder\model\site');
 
             if (!$site = $model->findSiteBy(['domain' => $hostname])) {
                 $message = "Site is not registered";

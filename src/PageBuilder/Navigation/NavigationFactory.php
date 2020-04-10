@@ -2,9 +2,9 @@
 namespace PageBuilder\Navigation;
 
 use Interop\Container\ContainerInterface;
-use Zend\Navigation\Exception;
-use Zend\Navigation\Navigation;
-use Zend\Navigation\Service\DefaultNavigationFactory;
+use Laminas\Navigation\Exception;
+use Laminas\Navigation\Navigation;
+use Laminas\Navigation\Service\DefaultNavigationFactory;
 
 /**
  * Class NavigationFactory

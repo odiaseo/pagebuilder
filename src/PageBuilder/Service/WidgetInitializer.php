@@ -4,8 +4,8 @@ namespace PageBuilder\Service;
 use Interop\Container\ContainerInterface;
 use PageBuilder\BaseWidget;
 use PageBuilder\WidgetInterface;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\ServiceManager\Initializer\InitializerInterface;
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\ServiceManager\Initializer\InitializerInterface;
 
 /**
  * Class WidgetInitializers
@@ -23,7 +23,7 @@ class WidgetInitializer implements InitializerInterface
     public function __invoke(ContainerInterface $serviceLocator, $widget)
     {
         /** @var $widget  BaseWidget */
-        /** @var $mvcEvent \Zend\Mvc\MvcEvent */
+        /** @var $mvcEvent \Laminas\Mvc\MvcEvent */
         if ($widget instanceof WidgetInterface) {
             $mvcEvent = $serviceLocator->get('application')->getMvcEvent();
             $widget->setServiceLocator($serviceLocator);

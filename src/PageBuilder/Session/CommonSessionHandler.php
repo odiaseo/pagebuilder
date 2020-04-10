@@ -1,7 +1,7 @@
 <?php
 namespace PageBuilder\Session;
 
-use Zend\Session\SaveHandler\SaveHandlerInterface;
+use Laminas\Session\SaveHandler\SaveHandlerInterface;
 
 /**
  * Class MemcachedSession

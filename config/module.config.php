@@ -99,14 +99,14 @@ return array(
             'SynergyCommon\Entity\AbstractEntityFactory',
         ),
 
-        'invokables' => array(//'Zend\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\CommonSessionHandler::class,
+        'invokables' => array(//'Laminas\Session\SaveHandler\SaveHandlerInterface' => \PageBuilder\Session\CommonSessionHandler::class,
         ),
         'factories'  => array(
             'PageBuilder\Service\LayoutService'      => 'PageBuilder\Service\LayoutServiceFactory',
             'PageBuilder\DataProvider\GridDefault'   => 'PageBuilder\DataProvider\GridDefault',
             'PageBuilder\Config\JqGridConfigFactory' => 'PageBuilder\Config\JqGridConfigFactory',
-            //'Zend\Session\SessionManager'            => 'Zend\Session\Service\SessionManagerFactory',
-            //'Zend\Session\SaveHandler\SaveHandlerInterface' => DoctrineSessionSaveHandlerFactory::class,
+            //'Laminas\Session\SessionManager'            => 'Laminas\Session\Service\SessionManagerFactory',
+            //'Laminas\Session\SaveHandler\SaveHandlerInterface' => DoctrineSessionSaveHandlerFactory::class,
         )
     ),
     'view_manager'    => array(

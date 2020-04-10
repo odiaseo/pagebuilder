@@ -1,53 +1,54 @@
 {
-  "name": "synergy/pagebuilder",
-  "description": "Generate widgetized pages",
-  "license": "BSD-3-Clause",
-  "keywords": [
-    "page builder",
-    "jqgrid",
-    "zf3",
-    "module",
-    "widgets"
-  ],
-  "homepage": "https://github.com/odiaseo/pagebuilder",
-  "authors": [
-    {
-      "name": "Pele Odiase",
-      "email": "peleodiase@yahoo.co.uk"
-    }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "require": {
-    "php": ">=7.1",
-    "zendframework/zend-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
-    "zendframework/zendframework": "^3",
-    "doctrine/doctrine-orm-module": "^1.1",
-    "zendframework/zend-mvc": "^3",
-    "monolog/monolog": "^1.18",
-    "gedmo/doctrine-extensions": "^2.4",
-    "synergy/synergydatagrid": "*",
-    "synergy/common": "*"
-  },
-  "require-dev": {
-    "satooshi/php-coveralls": "^2.0",
-    "phpunit/phpunit": "~4"
-  },
-  "autoload": {
-    "psr-0": {
-      "PageBuilderTest": "tests/module/"
+    "name": "synergy/pagebuilder",
+    "description": "Generate widgetized pages",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "page builder",
+        "jqgrid",
+        "zf3",
+        "module",
+        "widgets"
+    ],
+    "homepage": "https://github.com/odiaseo/pagebuilder",
+    "authors": [
+        {
+            "name": "Pele Odiase",
+            "email": "peleodiase@yahoo.co.uk"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.4",
+        "laminas/laminas-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
+        "zendframework/zendframework": "^3",
+        "doctrine/doctrine-orm-module": "^1.1",
+        "laminas/laminas-mvc": "^3",
+        "monolog/monolog": "^1.18",
+        "gedmo/doctrine-extensions": "^2.4",
+        "synergy/synergydatagrid": "*",
+        "synergy/common": "*",
+        "laminas/laminas-dependency-plugin": "^1.0"
     },
-    "psr-4": {
-      "PageBuilder\\": "src/PageBuilder"
+    "require-dev": {
+        "satooshi/php-coveralls": "^2.0",
+        "phpunit/phpunit": "~6.0"
     },
-    "classmap": [
-      "./Module.php",
-      "./tests/module/PageBuilderTest/Module.php"
-    ]
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0.x-dev"
+    "autoload": {
+        "psr-0": {
+            "PageBuilderTest": "tests/module/"
+        },
+        "psr-4": {
+            "PageBuilder\\": "src/PageBuilder"
+        },
+        "classmap": [
+            "./Module.php",
+            "./tests/module/PageBuilderTest/Module.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     }
-  }
 }

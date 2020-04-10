@@ -3,20 +3,20 @@ namespace PageBuilderTest\Servicee;
 
 use PageBuilder\Controller\PageController;
 use PageBuilderTest\Bootstrap;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\MvcEvent;
-use Zend\Router\Http\TreeRouteStack as HttpRouter;
-use Zend\Router\RouteMatch;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Router\Http\TreeRouteStack as HttpRouter;
+use Laminas\Router\RouteMatch;
 
 /**
  * @backupGlobals disabled
  */
-class PageTest extends \PHPUnit_Framework_TestCase
+class PageTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \Zend\ServiceManager\ServiceManager */
+    /** @var \Laminas\ServiceManager\ServiceManager */
     protected $serviceManager;
 
-    /** @var \Zend\Mvc\Application */
+    /** @var \Laminas\Mvc\Application */
     protected $app;
 
     /** @var \Doctrine\Orm\EntityManager */
@@ -24,15 +24,15 @@ class PageTest extends \PHPUnit_Framework_TestCase
 
     protected $controller;
 
-    /** @var \Zend\Http\PhpEnvironment\Request $request */
+    /** @var \Laminas\Http\PhpEnvironment\Request $request */
     protected $request;
 
     protected $response;
 
-    /** @var  \Zend\Router\RouteMatch */
+    /** @var  \Laminas\Router\RouteMatch */
     protected $routeMatch;
 
-    /** @var  \Zend\Mvc\MvcEvent */
+    /** @var  \Laminas\Mvc\MvcEvent */
     protected $event;
 
     public function setUp()

@@ -2,10 +2,10 @@
 
 namespace PageBuilder\Event\Listener;
 
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\MvcEvent;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * Class PageBuilderListener.
@@ -14,7 +14,7 @@ class PageBuilderListener implements ListenerAggregateInterface
 {
     protected $listeners = [];
 
-    /** @var \Zend\ServiceManager\ServiceManager */
+    /** @var \Laminas\ServiceManager\ServiceManager */
     protected $_serviceManager;
 
     public function __construct($serviceManager)
@@ -47,7 +47,7 @@ class PageBuilderListener implements ListenerAggregateInterface
         $request   = $this->_serviceManager->get('request');
 
         if ($errorPage and $request instanceof Request) {
-            /** @var $viewHelperManager \Zend\View\HelperPluginManager */
+            /** @var $viewHelperManager \Laminas\View\HelperPluginManager */
             $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
 
             /** @var $pageBuilder \PageBuilder\View\Helper\PageBuilder */
@@ -64,7 +64,7 @@ class PageBuilderListener implements ListenerAggregateInterface
         $request       = $this->_serviceManager->get('request');
 
         if ($request instanceof Request and !$request->isXmlHttpRequest() and $app = $event->getApplication()) {
-            /** @var $viewHelperManager \Zend\View\HelperPluginManager */
+            /** @var $viewHelperManager \Laminas\View\HelperPluginManager */
             $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
 
             /** @var $helper \PageBuilder\View\Helper\PageBuilder */
@@ -83,8 +83,8 @@ class PageBuilderListener implements ListenerAggregateInterface
 
             if ($options->getEnabled() and $moduleEnabled and $options->getMainNavigation()) {
 
-                /** @var $navigation \Zend\View\Helper\Navigation */
-                /* @var $menuTree \Zend\View\Helper\Navigation */
+                /** @var $navigation \Laminas\View\Helper\Navigation */
+                /* @var $menuTree \Laminas\View\Helper\Navigation */
                 $navigation = $viewHelperManager->get('navigation');
                 $menuTree   = $navigation($options->getMainNavigation());
                 $container  = $menuTree->getContainer();
@@ -112,10 +112,10 @@ class PageBuilderListener implements ListenerAggregateInterface
      */
     private function findErrorPage()
     {
-        /** @var $viewHelperManager \Zend\View\HelperPluginManager */
+        /** @var $viewHelperManager \Laminas\View\HelperPluginManager */
         $viewHelperManager = $this->_serviceManager->get('ViewHelperManager');
 
-        /** @var $navigation \Zend\View\Helper\Navigation */
+        /** @var $navigation \Laminas\View\Helper\Navigation */
         $navigation = $viewHelperManager->get('navigation');
 
         /** @var $helper \PageBuilder\View\Helper\PageBuilder */
@@ -124,7 +124,7 @@ class PageBuilderListener implements ListenerAggregateInterface
         /** @var $options \PageBuilder\View\Helper\Config\PageBuilderConfig */
         $options = $helper->getOptions();
 
-        /** @var $menuTree \Zend\View\Helper\Navigation */
+        /** @var $menuTree \Laminas\View\Helper\Navigation */
         $menuTree = $navigation($options->getMainNavigation());
 
         $errorPage = $menuTree->getContainer()->findOneBy('privilege', 'error-page');

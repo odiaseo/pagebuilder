@@ -6,12 +6,12 @@ use Interop\Container\ContainerInterface;
 use PageBuilder\View\TagAttributes;
 use SynergyCommon\Service\ServiceLocatorAwareInterface;
 use SynergyCommon\Service\ServiceLocatorAwareTrait;
-use Zend\EventManager\EventInterface;
-use Zend\Mvc\I18n\Translator;
-use Zend\View\Helper\Escaper\AbstractHelper;
-use Zend\View\Helper\HelperInterface;
-use Zend\View\Renderer\PhpRenderer;
-use Zend\View\Renderer\RendererInterface as Renderer;
+use Laminas\EventManager\EventInterface;
+use Laminas\Mvc\I18n\Translator;
+use Laminas\View\Helper\Escaper\AbstractHelper;
+use Laminas\View\Helper\HelperInterface;
+use Laminas\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\RendererInterface as Renderer;
 
 /**
  * Class BaseWidget.

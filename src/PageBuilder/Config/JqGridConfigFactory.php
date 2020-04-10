@@ -2,8 +2,8 @@
 namespace PageBuilder\Config;
 
 use Interop\Container\ContainerInterface;
-use Zend\Json\Expr;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Json\Expr;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class JqGridConfigFactory

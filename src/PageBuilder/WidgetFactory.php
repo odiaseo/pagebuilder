@@ -2,8 +2,9 @@
 namespace PageBuilder;
 
 use Interop\Container\ContainerInterface;
-use Zend\Http\Response;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\Http\Response;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\ServiceManager;
 
 /**
  * Class WidgetFactory
@@ -46,7 +47,7 @@ class WidgetFactory implements AbstractFactoryInterface
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        /** @var $serviceLocator \Zend\Servicemanager\ServiceManager */
+        /** @var $serviceLocator ServiceManager */
         $widgetId = str_replace(self::WIDGET_SUFFIX, '', $requestedName);
 
         /** @var $util \PageBuilder\Util\Widget */
@@ -54,10 +55,10 @@ class WidgetFactory implements AbstractFactoryInterface
 
         if ($data = $util->widgetExist($widgetId)) {
 
-            /** @var $mvcEvent \Zend\Mvc\MvcEvent */
+            /** @var $mvcEvent \Laminas\Mvc\MvcEvent */
             $mvcEvent = $serviceLocator->get('application')->getMvcEvent();
 
-            /** @var $view \Zend\View\Renderer\RendererInterface */
+            /** @var $view \Laminas\View\Renderer\RendererInterface */
             $view = $serviceLocator->get('ViewRenderer');
 
             /** @var $widget \PageBuilder\BaseWidget */

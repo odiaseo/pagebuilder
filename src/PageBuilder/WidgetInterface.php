@@ -2,7 +2,7 @@
 
 namespace PageBuilder;
 
-use Zend\EventManager\EventInterface;
+use Laminas\EventManager\EventInterface;
 
 /**
  * Interface WidgetInterface.

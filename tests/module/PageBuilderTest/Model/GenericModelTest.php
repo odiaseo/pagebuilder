@@ -7,7 +7,7 @@ use PageBuilderTest\Bootstrap;
 /**
  * Class run generic tests on entites. Verifies simple getters/setters
  */
-class GenericModelTest extends \PHPUnit_Framework_TestCase
+class GenericModelTest extends \PHPUnit\Framework\TestCase
 {
 
     protected $serviceManager;
