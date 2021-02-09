@@ -2,6 +2,7 @@ language: php
 php:
    - '7.4'
 install:
+   - composer self-update --1 --snapshot
    - composer install
 script:
   - mkdir -p build/logs
