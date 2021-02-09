@@ -1191,6 +1191,7 @@
                 "reflection",
                 "static"
             ],
+            "abandoned": "roave/better-reflection",
             "time": "2020-03-27T11:06:43+00:00"
         },
         {
@@ -5401,31 +5402,27 @@
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.0.3",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9"
+                "reference": "6ede70583e101030bcace4dcddd648f760ddf642"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9",
-                "reference": "bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9",
+                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/6ede70583e101030bcace4dcddd648f760ddf642",
+                "reference": "6ede70583e101030bcace4dcddd648f760ddf642",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^5.6 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.1",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.1 || ^9.3",
                 "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-develop": "1.1.x-dev"
-                },
                 "laminas": {
                     "module": "Laminas\\ZendFrameworkBridge"
                 }
@@ -5455,7 +5452,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-04-03T16:01:00+00:00"
+            "time": "2020-09-14T14:23:00+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6252,6 +6249,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2017-11-27T05:48:46+00:00"
         },
         {
@@ -7413,16 +7411,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.4.39",
+            "version": "v3.4.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "9d4e22943b73acc1ba50595b7de1a01fe9dbad48"
+                "reference": "31fde73757b6bad247c54597beef974919ec6860"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/9d4e22943b73acc1ba50595b7de1a01fe9dbad48",
-                "reference": "9d4e22943b73acc1ba50595b7de1a01fe9dbad48",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/31fde73757b6bad247c54597beef974919ec6860",
+                "reference": "31fde73757b6bad247c54597beef974919ec6860",
                 "shasum": ""
             },
             "require": {
@@ -7434,6 +7432,7 @@
             "require-dev": {
                 "psr/log": "~1.0",
                 "symfony/config": "~2.8|~3.0|~4.0",
+                "symfony/debug": "~3.4|~4.4",
                 "symfony/dependency-injection": "~3.3|~4.0",
                 "symfony/expression-language": "~2.8|~3.0|~4.0",
                 "symfony/stopwatch": "~2.8|~3.0|~4.0"
@@ -7443,11 +7442,6 @@
                 "symfony/http-kernel": ""
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.4-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\EventDispatcher\\": ""
@@ -7486,7 +7480,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-15T09:38:08+00:00"
+            "time": "2020-10-24T10:57:07+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -7635,16 +7629,16 @@
         },
         {
             "name": "synergy/common",
-            "version": "v7.0.0",
+            "version": "v7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odiaseo/synergy-common.git",
-                "reference": "1d1bcb95b52a1fca0d4259902097b240f4c733bc"
+                "reference": "00a9cb1640a3c1d9087c219497bb085e489f0a46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/1d1bcb95b52a1fca0d4259902097b240f4c733bc",
-                "reference": "1d1bcb95b52a1fca0d4259902097b240f4c733bc",
+                "url": "https://api.github.com/repos/odiaseo/synergy-common/zipball/00a9cb1640a3c1d9087c219497bb085e489f0a46",
+                "reference": "00a9cb1640a3c1d9087c219497bb085e489f0a46",
                 "shasum": ""
             },
             "require": {
@@ -7656,7 +7650,7 @@
                 "laminas/laminas-mvc": "^3",
                 "monolog/monolog": "^1.18",
                 "php": ">=7.4",
-                "synergy/solarium-module": "^3.1",
+                "synergy/solarium-module": "*",
                 "zendframework/zendframework": "^3"
             },
             "require-dev": {
@@ -7700,32 +7694,35 @@
                 "abstract classes",
                 "synergy library"
             ],
-            "time": "2020-04-10T11:01:16+00:00"
+            "time": "2020-04-10T12:09:08+00:00"
         },
         {
             "name": "synergy/solarium-module",
-            "version": "v3.1.0",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odiaseo/synergy-solarium.git",
-                "reference": "8197b5926b7d28ea58d9a9b8164a498e9e2d9c7a"
+                "reference": "a75fed5dd18e9d096603afef5164ba65a4a547a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odiaseo/synergy-solarium/zipball/8197b5926b7d28ea58d9a9b8164a498e9e2d9c7a",
-                "reference": "8197b5926b7d28ea58d9a9b8164a498e9e2d9c7a",
+                "url": "https://api.github.com/repos/odiaseo/synergy-solarium/zipball/a75fed5dd18e9d096603afef5164ba65a4a547a7",
+                "reference": "a75fed5dd18e9d096603afef5164ba65a4a547a7",
                 "shasum": ""
             },
             "require": {
+                "doctrine/instantiator": "^1.3",
+                "laminas/laminas-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
+                "laminas/laminas-dependency-plugin": "^1.0",
+                "laminas/laminas-mvc": "^3",
+                "php": ">=7.4",
                 "solarium/solarium": "~3",
-                "zendframework/zend-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
-                "zendframework/zend-mvc": "^3",
                 "zendframework/zendframework": "^3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~5",
-                "satooshi/php-coveralls": "^1",
-                "zendframework/zend-developer-tools": "dev-master"
+                "laminas/laminas-developer-tools": "dev-master",
+                "phpunit/phpunit": "~6.0",
+                "satooshi/php-coveralls": "^2.2"
             },
             "type": "zf3-module",
             "autoload": {
@@ -7748,14 +7745,14 @@
                     "email": "peleodiase@yahoo.co.uk"
                 }
             ],
-            "description": "Zend Framework 3 integration with solarium solr search client client",
+            "description": "Zend Framework 3 integration with solarium solr search client",
             "keywords": [
                 "search",
                 "solarium",
                 "solr",
                 "zf3"
             ],
-            "time": "2017-05-17T19:34:33+00:00"
+            "time": "2020-04-10T12:05:14+00:00"
         },
         {
             "name": "synergy/synergydatagrid",
@@ -7912,12 +7909,12 @@
             "version": "1.7.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
                 "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
