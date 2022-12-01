@@ -45,7 +45,7 @@ class SiteRank extends CommonEntity
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToOne(targetEntity="Site", cascade="persist", inversedBy="siteRanks", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Site", cascade={"persist"}, inversedBy="siteRanks", fetch="LAZY")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $site;

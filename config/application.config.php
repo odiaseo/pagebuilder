@@ -37,11 +37,9 @@ return array(
         'Laminas\Db',
         'Laminas\Log',
         'Laminas\Mail',
-        'Laminas\Mvc\Console',
         'Laminas\Navigation',
         'Laminas\Paginator',
         'Laminas\Serializer',
-        'Laminas\ServiceManager\Di',
         'Laminas\Router',
         'Laminas\Validator',
         'Laminas\Hydrator',
@@ -52,6 +50,7 @@ return array(
         'SynergyDataGrid',
         'PageBuilder',
         'Laminas\ZendFrameworkBridge',
+        'Laminas\Diactoros',
     ),
     'module_listener_options' => array(
         'module_paths'             => array(

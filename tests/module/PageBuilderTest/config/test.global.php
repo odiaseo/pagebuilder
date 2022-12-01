@@ -3,7 +3,7 @@ return array(
     'doctrine' => array(
         'connection' => array(
             'orm_default' => array(
-                'driverClass' => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
+                'driverClass' => 'Doctrine\DBAL\Driver\PDO\Sqlite\Driver',
                 'params'      => array(
                     'driver'   => 'pdo_sqlite',
                     'host'     => '127.0.0.1',

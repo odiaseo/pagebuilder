@@ -37,7 +37,7 @@ class Resource extends CommonEntity
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToOne(targetEntity="ResourceType", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="ResourceType", cascade={"persist"})
      * @ORM\JoinColumn(name="resource_type_id", referencedColumnName="id", nullable=false)
      */
     protected $resourceType;
@@ -54,7 +54,7 @@ class Resource extends CommonEntity
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToOne(targetEntity="Site", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="Site", cascade={"persist"})
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $dataSource;

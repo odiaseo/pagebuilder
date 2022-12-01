@@ -42,7 +42,7 @@ class Site extends BaseSite
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade="persist")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Join\SiteTheme", mappedBy="siteId", cascade={"persist"})
      */
     protected $siteThemes;
 
@@ -56,7 +56,7 @@ class Site extends BaseSite
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade="persist", fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="PageBuilder\Entity\Site", mappedBy="parent", cascade={"persist"}, fetch="LAZY")
      */
     protected $subDomains;
 
@@ -79,14 +79,14 @@ class Site extends BaseSite
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", cascade="persist", inversedBy="sites")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Page", cascade={"persist"}, inversedBy="sites")
      * @ORM\JoinColumn(name="root_id", referencedColumnName="id", nullable=false)
      */
     protected $rootPage;
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade="persist", inversedBy="sites", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\SiteType", cascade={"persist"}, inversedBy="sites", fetch="LAZY")
      * @ORM\JoinColumn(name="site_type_id", referencedColumnName="id", nullable=false)
      */
     protected $siteType;
@@ -118,7 +118,7 @@ class Site extends BaseSite
 
     /**
      * @ORM\Cache("READ_ONLY")
-     * @ORM\OneToMany(targetEntity="SiteRank", mappedBy="site", cascade="persist")
+     * @ORM\OneToMany(targetEntity="SiteRank", mappedBy="site", cascade={"persist"})
      */
     protected $siteRanks;
 

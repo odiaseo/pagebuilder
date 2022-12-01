@@ -16,7 +16,7 @@ class PageControllerTest extends \PHPUnit\Framework\TestCase
 {
     protected $serviceManager;
 
-    public function setUp()
+    public function setUp(): void
     {
 
         $this->serviceManager = Bootstrap::getServicemanager();

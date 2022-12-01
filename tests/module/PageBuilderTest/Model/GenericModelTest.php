@@ -13,7 +13,7 @@ class GenericModelTest extends \PHPUnit\Framework\TestCase
     protected $serviceManager;
     protected $stack = [];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->stack = [
             'site',

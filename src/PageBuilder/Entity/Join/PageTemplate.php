@@ -42,7 +42,7 @@ class PageTemplate extends AbstractEntity
     /**
      * @var Site
      * @ORM\Cache("READ_ONLY")
-     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="PageBuilder\Entity\Site", cascade={"persist"})
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id", nullable=false)
      */
     protected $site;

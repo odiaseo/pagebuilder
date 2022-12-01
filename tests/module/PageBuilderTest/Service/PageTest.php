@@ -35,7 +35,7 @@ class PageTest extends \PHPUnit\Framework\TestCase
     /** @var  \Laminas\Mvc\MvcEvent */
     protected $event;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
