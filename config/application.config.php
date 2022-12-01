@@ -23,6 +23,7 @@ if (APPLICATION_ENV == 'development') {
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
+        'Laminas\Di',
         'Laminas\Mvc\Plugin\Identity',
         'Laminas\Mvc\Plugin\FilePrg',
         'Laminas\Mvc\Plugin\FlashMessenger',
@@ -50,6 +51,7 @@ return array(
         'SynergyCommon',
         'SynergyDataGrid',
         'PageBuilder',
+        'Laminas\ZendFrameworkBridge',
     ),
     'module_listener_options' => array(
         'module_paths'             => array(
