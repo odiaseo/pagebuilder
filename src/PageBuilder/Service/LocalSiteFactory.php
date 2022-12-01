@@ -3,6 +3,8 @@
 namespace PageBuilder\Service;
 
 use Interop\Container\ContainerInterface;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceManager;
 use PageBuilder\Entity\Site;
 use PageBuilder\Model\SiteModel;
@@ -38,7 +40,7 @@ class LocalSiteFactory implements FactoryInterface
         $request = $serviceLocator->get('application')->getRequest();
         $event = $serviceLocator->get('application')->getMvcEvent();
 
-        list($isConsole, $hostname) = Util::getDomainFromRequest($request, $event);
+        list($isConsole, $hostname) = $this->getDomainFromRequest($request, $event);
 
         try {
             //Important that this function is called here to initialize session
@@ -48,7 +50,7 @@ class LocalSiteFactory implements FactoryInterface
             //do nothing
         }
 
-            if ($hostname) {
+        if ($hostname) {
             /** @var SiteModel $model */
             $config = $serviceLocator->get('config');
             $globalDomain = Util::cleanDomain($config['pagebuilder']['global_domain']);
@@ -91,5 +93,33 @@ class LocalSiteFactory implements FactoryInterface
         }
 
         return $site;
+    }
+
+    /**
+     * @param $request
+     * @param MvcEvent $event
+     *
+     * @return array
+     */
+    public static function getDomainFromRequest($request, MvcEvent $event = null)
+    {
+        $isConsole = false;
+        $host = null;
+        if ($request instanceof Request and $uri = $request->getUri()) {
+            /** @var $request \Laminas\Http\PhpEnvironment\Request */
+            $host = $uri->getHost();
+        }
+        if (empty($host) && $request instanceof Request) {
+            $isConsole = true;
+            /** @var $routeMatch \Laminas\Router\RouteMatch */
+            if ($event and $routeMatch = $event->getRouteMatch()) {
+                $host = $routeMatch->getParam('host', $routeMatch->getParam(self::CLIENT_DOMAIN_KEY, null));
+            }
+        } elseif (empty($host)) {
+            /** @var $request \Laminas\Http\PhpEnvironment\Request */
+            $host = $request->getServer('HTTP_HOST', $request->getQuery(self::CLIENT_DOMAIN_KEY, null));
+        }
+
+        return [$isConsole, Util::cleanDomain($host)];
     }
 }
